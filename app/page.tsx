@@ -37,16 +37,33 @@ export default function Home() {
         <header className="flex items-center justify-between px-8 md:px-12 h-16 mt-4 md:mt-6">
           <Logo />
           <div className="flex items-center gap-4">
-            <Button>See a demo</Button>
+            <Button
+              asChild
+              variant="outline"
+              className="rounded-none border-white/30 bg-white/5 text-white/90 text-xs font-medium tracking-widest uppercase backdrop-blur-sm h-9 px-5 hover:bg-white/10 hover:text-white hover:border-white/50 shadow-none"
+            >
+              <a
+                href="https://calendar.notion.so/meet/alekkarp/chat"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                See a demo
+              </a>
+            </Button>
           </div>
         </header>
 
         {/* Hero — centered, 40px gap between elements */}
         <main className="flex-1 flex flex-col items-center justify-center text-center px-6 pb-32 pt-10">
-          {/* Announcement pill — label-12, pill radius */}
-          <div className="inline-flex items-center gap-2 px-4 h-8 rounded-full border border-white/30 bg-white/10 text-xs font-medium tracking-widest text-white/70 mb-10 backdrop-blur-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-white/50" />
+          {/* Eyebrow — technical tag with square indicator and corner ticks */}
+          <div className="group relative inline-flex items-center gap-2 px-4 h-8 rounded-none border border-white/30 bg-white/5 text-xs font-medium tracking-widest text-white/70 mb-10 backdrop-blur-sm">
+            <span className="size-1.5 bg-white/60" />
             ELECTRICAL CONSTRUCTION AI
+            {/* Corner ticks */}
+            <span className="pointer-events-none absolute -top-px -left-px size-1.5 border-t border-l border-white/60" />
+            <span className="pointer-events-none absolute -top-px -right-px size-1.5 border-t border-r border-white/60" />
+            <span className="pointer-events-none absolute -bottom-px -left-px size-1.5 border-b border-l border-white/60" />
+            <span className="pointer-events-none absolute -bottom-px -right-px size-1.5 border-b border-r border-white/60" />
           </div>
 
           {/* heading-72: 72px, 600, -4.32px — fluid between 40px and 72px */}
@@ -70,7 +87,30 @@ export default function Home() {
             coordinate, execute, and scale like never before.
           </p>
 
-          <Button size="lg">Talk to us</Button>
+          {/* Primary CTA — technical button with corner-bracket accents */}
+          <div className="group relative inline-flex">
+            <Button
+              asChild
+              size="lg"
+              className="rounded-none bg-white text-black text-xs font-semibold tracking-widest uppercase h-11 px-7 hover:bg-white/90"
+            >
+              <a
+                href="https://calendar.notion.so/meet/alekkarp/chat"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Talk to us
+                <span className="ml-2 inline-block transition-transform group-hover:translate-x-0.5">
+                  &rarr;
+                </span>
+              </a>
+            </Button>
+            {/* Corner ticks */}
+            <span className="pointer-events-none absolute -top-1 -left-1 size-2 border-t border-l border-white/60 transition-colors group-hover:border-white" />
+            <span className="pointer-events-none absolute -top-1 -right-1 size-2 border-t border-r border-white/60 transition-colors group-hover:border-white" />
+            <span className="pointer-events-none absolute -bottom-1 -left-1 size-2 border-b border-l border-white/60 transition-colors group-hover:border-white" />
+            <span className="pointer-events-none absolute -bottom-1 -right-1 size-2 border-b border-r border-white/60 transition-colors group-hover:border-white" />
+          </div>
         </main>
 
       </div>
