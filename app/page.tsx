@@ -58,7 +58,7 @@ export default function Home() {
           {/* Eyebrow — technical tag with square indicator and corner ticks */}
           <div className="group relative inline-flex items-center gap-2 px-4 h-8 rounded-none border border-white/30 bg-white/5 text-xs font-medium tracking-widest text-white/70 mb-10 backdrop-blur-sm">
             <span className="size-1.5 bg-white/60" />
-            ELECTRICAL CONSTRUCTION AI
+            NEW ERA OF ELECTRICAL CONSTRUCTION
             {/* Corner ticks */}
             <span className="pointer-events-none absolute -top-px -left-px size-1.5 border-t border-l border-white/60" />
             <span className="pointer-events-none absolute -top-px -right-px size-1.5 border-t border-r border-white/60" />
