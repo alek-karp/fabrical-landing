@@ -1,16 +1,17 @@
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/logo";
 
 export default function Home() {
   return (
     <div
       className="min-h-screen flex flex-col text-white relative"
       style={{
-        backgroundImage: "url('/hero-home.webp')",
+        backgroundImage:
+          "linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('/hero-home.webp')",
         backgroundSize: "cover",
         backgroundPosition: "center top",
       }}
     >
-      <div className="absolute inset-0 bg-black/30 pointer-events-none" />
 
       {/* Technical frame — inset margin/header/footer lines with corner squares */}
       <div className="pointer-events-none absolute inset-4 md:inset-6 z-20">
@@ -30,15 +31,7 @@ export default function Home() {
       <div className="relative z-10 flex flex-col min-h-screen">
         {/* Nav — 64px height, 24px side padding */}
         <header className="flex items-center justify-between px-8 md:px-12 h-16 mt-4 md:mt-6">
-          <div className="flex items-center gap-8">
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center">
-                <div className="w-4 h-4 rounded-full bg-white/60" />
-              </div>
-              {/* heading-14: 14px, 600, -0.28px */}
-              <span className="text-white text-sm font-semibold tracking-[-0.28px]">Fabrical</span>
-            </div>
-          </div>
+          <Logo />
           <div className="flex items-center gap-4">
             <Button>See a demo</Button>
           </div>
@@ -50,10 +43,9 @@ export default function Home() {
           <a
             href="#"
             className="inline-flex items-center gap-2 px-4 h-8 rounded-full border border-white/30 bg-white/10 text-xs font-medium tracking-widest text-white/70 hover:text-white transition-colors mb-10 backdrop-blur-sm"
-            style={{ borderRadius: 9999 }}
           >
             <span className="w-1.5 h-1.5 rounded-full bg-white/50" />
-            HELION LAUNCHES HALLUCINATIONS CORRECTION
+            ELECTRICAL CONSTRUCTION AI
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
               <path d="M4 2.5L8 6L4 9.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
