@@ -5,12 +5,12 @@ import { cn } from "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
-const title = "Helion — The intelligence layer for electrical construction";
+const title = "Fabrical — The intelligence layer for electrical construction";
 const description =
-  "The next era of energy, compute, manufacturing, and infrastructure depends on electrical contractors. Helion builds AI systems that help them coordinate, execute, and scale like never before.";
+  "The next era of energy, compute, manufacturing, and infrastructure depends on electrical contractors. Fabrical builds AI systems that help them coordinate, execute, and scale like never before.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://helion.build"),
+  metadataBase: new URL("https://fabrical.ai"),
   title,
   description,
   icons: {
@@ -25,8 +25,8 @@ export const metadata: Metadata = {
     type: "website",
     title,
     description,
-    siteName: "Helion",
-    images: [{ url: "/hero-datacenter.webp", width: 1200, height: 630, alt: "Helion" }],
+    siteName: "Fabrical",
+    images: [{ url: "/hero-datacenter.webp", width: 1200, height: 630, alt: "Fabrical" }],
   },
   twitter: {
     card: "summary_large_image",
