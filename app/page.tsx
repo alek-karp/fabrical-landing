@@ -3,15 +3,19 @@ import { Logo } from "@/components/logo";
 
 export default function Home() {
   return (
-    <div
-      className="min-h-screen flex flex-col text-white relative"
-      style={{
-        backgroundImage:
-          "linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('/hero-home.webp')",
-        backgroundSize: "cover",
-        backgroundPosition: "center top",
-      }}
-    >
+    <div className="min-h-screen flex flex-col text-white relative overflow-hidden">
+
+      {/* Background layer — slightly blurred, scaled up to avoid soft edges */}
+      <div
+        className="pointer-events-none absolute inset-0 z-0 scale-105"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/hero-datacenter.webp')",
+          backgroundSize: "cover",
+          backgroundPosition: "center top",
+          filter: "blur(3px)",
+        }}
+      />
 
       {/* Technical frame — inset margin/header/footer lines with corner squares */}
       <div className="pointer-events-none absolute inset-4 md:inset-6 z-20">
@@ -40,16 +44,10 @@ export default function Home() {
         {/* Hero — centered, 40px gap between elements */}
         <main className="flex-1 flex flex-col items-center justify-center text-center px-6 pb-32 pt-10">
           {/* Announcement pill — label-12, pill radius */}
-          <a
-            href="#"
-            className="inline-flex items-center gap-2 px-4 h-8 rounded-full border border-white/30 bg-white/10 text-xs font-medium tracking-widest text-white/70 hover:text-white transition-colors mb-10 backdrop-blur-sm"
-          >
+          <div className="inline-flex items-center gap-2 px-4 h-8 rounded-full border border-white/30 bg-white/10 text-xs font-medium tracking-widest text-white/70 mb-10 backdrop-blur-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-white/50" />
             ELECTRICAL CONSTRUCTION AI
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-              <path d="M4 2.5L8 6L4 9.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </a>
+          </div>
 
           {/* heading-72: 72px, 600, -4.32px — fluid between 40px and 72px */}
           <h1
