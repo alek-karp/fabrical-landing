@@ -12,9 +12,24 @@ export default function Home() {
     >
       <div className="absolute inset-0 bg-black/10 pointer-events-none" />
 
+      {/* Technical frame — inset margin/header/footer lines with corner squares */}
+      <div className="pointer-events-none absolute inset-4 md:inset-6 z-20">
+        {/* Margin lines (left/right) */}
+        <div className="absolute inset-y-0 left-0 w-px bg-white/20" />
+        <div className="absolute inset-y-0 right-0 w-px bg-white/20" />
+        {/* Header/footer lines (top/bottom) */}
+        <div className="absolute inset-x-0 top-0 h-px bg-white/20" />
+        <div className="absolute inset-x-0 bottom-0 h-px bg-white/20" />
+        {/* Perfect squares at the corners */}
+        <div className="absolute -top-1 -left-1 size-2 bg-white" />
+        <div className="absolute -top-1 -right-1 size-2 bg-white" />
+        <div className="absolute -bottom-1 -left-1 size-2 bg-white" />
+        <div className="absolute -bottom-1 -right-1 size-2 bg-white" />
+      </div>
+
       <div className="relative z-10 flex flex-col min-h-screen">
         {/* Nav — 64px height, 24px side padding */}
-        <header className="flex items-center justify-between px-6 h-16">
+        <header className="flex items-center justify-between px-8 md:px-12 h-16 mt-4 md:mt-6">
           <div className="flex items-center gap-8">
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center">
@@ -25,7 +40,6 @@ export default function Home() {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <Button variant="ghost">Sign in</Button>
             <Button>See a demo</Button>
           </div>
         </header>
@@ -54,14 +68,16 @@ export default function Home() {
               letterSpacing: "clamp(-1.5px, -0.06em, -4.32px)",
             }}
           >
-            AI that talks like a human.
+            Building the intelligence layer
             <br />
-            Handles millions of conversations.
+            for electrical construction.
           </h1>
 
           {/* copy-18: 18px, 400, 28px line-height */}
-          <p className="text-lg text-white/70 mb-10" style={{ lineHeight: "28px" }}>
-            AI agents for enterprise support
+          <p className="text-lg text-white/70 mb-10 max-w-2xl" style={{ lineHeight: "28px" }}>
+            The next era of energy, compute, manufacturing, and infrastructure
+            depends on electrical contractors. We build AI systems that help them
+            coordinate, execute, and scale like never before.
           </p>
 
           <Button size="lg">Talk to us</Button>
