@@ -10,7 +10,7 @@ export default function Home() {
         backgroundPosition: "center top",
       }}
     >
-      <div className="absolute inset-0 bg-black/10 pointer-events-none" />
+      <div className="absolute inset-0 bg-black/30 pointer-events-none" />
 
       {/* Technical frame — inset margin/header/footer lines with corner squares */}
       <div className="pointer-events-none absolute inset-4 md:inset-6 z-20">
