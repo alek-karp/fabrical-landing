@@ -14,6 +14,10 @@ Example: `feat(landing): add hero section`
 
 Do not add unnecessary comments, including sectional comments. Only keep comments that clarify non-obvious intent or constraints.
 
+# Page Structure
+
+Pages should be composed from components. If a page needs substantial custom code, move that code into a dedicated component and import it into the page to keep the page modular.
+
 # Verification
 
 Only run `bun run verify` to verify work.
