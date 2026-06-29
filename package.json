@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "biome check",
+    "verify": "tsc --noEmit && biome check",
     "format": "biome format --write"
   },
   "dependencies": {

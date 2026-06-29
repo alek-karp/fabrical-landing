@@ -18,7 +18,9 @@ export const metadata: Metadata = {
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
     ],
-    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
   },
   manifest: "/site.webmanifest",
   openGraph: {
@@ -26,7 +28,14 @@ export const metadata: Metadata = {
     title,
     description,
     siteName: "Fabrical",
-    images: [{ url: "/hero-datacenter.webp", width: 1200, height: 630, alt: "Fabrical" }],
+    images: [
+      {
+        url: "/hero-datacenter.webp",
+        width: 1200,
+        height: 630,
+        alt: "Fabrical",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -44,7 +53,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn("dark", "h-full", "antialiased", "font-sans", inter.variable)}
+      className={cn(
+        "dark",
+        "h-full",
+        "antialiased",
+        "font-sans",
+        inter.variable,
+      )}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

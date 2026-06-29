@@ -13,3 +13,7 @@ Example: `feat(landing): add hero section`
 # Comments
 
 Do not add unnecessary comments, including sectional comments. Only keep comments that clarify non-obvious intent or constraints.
+
+# Verification
+
+Only run `bun run verify` to verify work.
