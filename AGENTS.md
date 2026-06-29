@@ -9,3 +9,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 Use the pattern `prefix(area): message` with no body/description.
 
 Example: `feat(landing): add hero section`
+
+# Comments
+
+Do not add unnecessary comments, including sectional comments. Only keep comments that clarify non-obvious intent or constraints.
