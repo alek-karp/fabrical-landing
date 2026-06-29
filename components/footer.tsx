@@ -114,7 +114,7 @@ export function Footer() {
 
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-0 left-1/2 w-[110vw] -translate-x-1/2 translate-y-[22%] select-none text-center text-[clamp(7rem,23vw,27rem)] font-bold leading-none tracking-normal text-black/15"
+        className="pointer-events-none absolute bottom-0 left-1/2 w-[110vw] -translate-x-1/2 translate-y-[22%] select-none text-center font-heading text-[clamp(7rem,23vw,27rem)] font-bold leading-none tracking-normal text-black/15"
       >
         Fabrical.
       </div>

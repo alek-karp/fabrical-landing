@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+});
 
 const title = "Fabrical — The intelligence layer for electrical construction";
 const description =
@@ -59,6 +63,7 @@ export default function RootLayout({
         "antialiased",
         "font-sans",
         inter.variable,
+        spaceGrotesk.variable,
       )}
     >
       <body className="min-h-full flex flex-col">{children}</body>
