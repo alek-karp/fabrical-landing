@@ -28,20 +28,20 @@ const loadRows = [
 
 const articles = [
   {
-    eyebrow: "01 - FIELD OPS",
-    date: "JUN 2026",
-    title: "State-of-the-art execution control for electrical teams",
-    tags: ["Lookahead", "Labor", "Risk"],
-    body: "Fabrical keeps constraint logs, crew plans, and prefabrication signals aligned so project teams see the next blocker before it reaches the field.",
-    action: "Read field note",
+    eyebrow: "01 - PLAN",
+    date: "LIVE SYSTEM",
+    title: "Turn project documents into an executable electrical plan",
+    tags: ["Drawings", "Scopes", "Constraints"],
+    body: "Fabrical reads drawings, schedules, RFIs, change logs, and procurement updates, then turns them into the next decisions your PMs, supers, and foremen need to make.",
+    action: "See planning workflow",
     foot: "482 activities - 17 foremen - live constraint sync",
   },
   {
-    eyebrow: "02 - PREFAB",
-    date: "JUN 2026",
-    title: "Routing packages that arrive ready for the shop",
-    tags: ["Spools", "BOM", "QA"],
-    body: "Mocked assemblies move from drawings to materialized work packages with estimated hours, required stock, and install sequence already attached.",
+    eyebrow: "02 - BUILD",
+    date: "FIELD READY",
+    title: "Release work packages crews can execute without rework",
+    tags: ["Spools", "BOM", "Sequence"],
+    body: "Assemblies move from coordination into field and prefab packages with labor, material, install sequence, and risk context already attached.",
     foot: "36% faster release - 24% fewer shop questions",
   },
 ];
@@ -164,30 +164,30 @@ function LoadCard() {
   );
 }
 
-function ResearchIntro() {
+function ProductIntro() {
   return (
     <section className="border-b border-[#d6c28a] px-6 py-8 md:px-12 lg:px-16">
-      <SectionLabel>Research</SectionLabel>
-      <div className="grid min-h-[360px] items-end gap-10 pt-16 lg:grid-cols-[1fr_0.9fr]">
+      <SectionLabel>Platform</SectionLabel>
+      <div className="grid min-h-[360px] items-end gap-10 pt-16 lg:grid-cols-[1.35fr_0.65fr]">
         <div className="pb-4">
-          <h1 className="max-w-4xl text-6xl font-semibold leading-[0.96] tracking-normal text-[#07111f] md:text-7xl lg:text-8xl">
-            Field systems research
+          <h1 className="max-w-5xl text-5xl font-semibold leading-[0.98] tracking-normal text-[#07111f] md:text-6xl lg:text-7xl">
+            Electrical construction, connected
           </h1>
           <p className="mt-8 max-w-2xl text-lg leading-8 text-[#667181]">
-            Mocked notes on coordination, retrieval, labor planning, and how
-            intelligent workflows move electrical projects from plan to
-            installation.
+            Fabrical connects estimating, coordination, procurement, prefab, and
+            field execution so teams always know what is ready, what is blocked,
+            and what changed.
           </p>
           <div className="mt-10 flex flex-wrap gap-3">
             <Button className="h-11 rounded-none bg-[#fbbf24] px-5 text-black hover:bg-[#e6b94f]">
-              Check code
+              See the product
               <ArrowRight data-icon="inline-end" />
             </Button>
             <Button
               variant="outline"
               className="h-11 rounded-none border-[#bca765] bg-transparent px-5 text-[#1f2937] shadow-none hover:bg-[#fff1bf]"
             >
-              Explore docs
+              Talk to sales
             </Button>
           </div>
         </div>
@@ -208,7 +208,7 @@ function ResearchIntro() {
   );
 }
 
-function PrimaryResearchArticle() {
+function PlanningSection() {
   const article = articles[0];
 
   return (
@@ -251,7 +251,7 @@ function PrimaryResearchArticle() {
   );
 }
 
-function SecondaryResearchArticle() {
+function WorkPackagesSection() {
   const article = articles[1];
 
   return (
@@ -275,7 +275,7 @@ function SecondaryResearchArticle() {
               <CardContent className="px-4 py-4">
                 <div className="flex items-center justify-between gap-4">
                   <span className="text-sm font-semibold text-[#111827]">
-                    One-line prefab kit
+                    Prefab-ready assemblies
                   </span>
                   <span className="font-mono text-[0.68rem] font-bold uppercase tracking-[0.22em] text-[#4b5563]">
                     Q3
@@ -287,7 +287,7 @@ function SecondaryResearchArticle() {
               <CardContent className="px-4 py-4">
                 <div className="flex items-center justify-between gap-4">
                   <span className="text-sm font-semibold text-[#111827]">
-                    Panel room release
+                    Field install release
                   </span>
                   <span className="font-mono text-[0.68rem] font-bold uppercase tracking-[0.22em] text-[#4b5563]">
                     Q4
@@ -308,14 +308,14 @@ function SecondaryResearchArticle() {
   );
 }
 
-function ResearchNotesLink() {
+function ProductTourLink() {
   return (
     <a
       href="/"
       className="flex items-center justify-center gap-2 border-b border-[#d6c28a] bg-[#fff8e4] px-6 py-6 text-sm font-semibold text-[#111827] transition-colors hover:bg-[#fff1bf]"
     >
       <FileText className="size-4" aria-hidden="true" />
-      Browse all mocked research notes
+      Walk through the product experience
       <ArrowRight className="size-4" aria-hidden="true" />
     </a>
   );
@@ -328,18 +328,18 @@ function FeaturePipeline() {
         Features
       </span>
       <h2 className="mx-auto mt-6 max-w-5xl text-4xl font-semibold leading-tight tracking-normal text-[#111827] md:text-6xl">
-        How project signal{" "}
-        <span className="text-[#c48b00]">becomes a work plan.</span>
+        From bid set to install plan,{" "}
+        <span className="text-[#c48b00]">every step stays connected.</span>
       </h2>
       <p className="mx-auto mt-5 max-w-3xl text-lg leading-8 text-[#6b7280]">
-        Every estimate, drawing, constraint, and field note is normalized into a
-        single operational memory that teams can act on.
+        The product keeps project knowledge live across office, shop, and field,
+        so every team works from the same current picture.
       </p>
     </section>
   );
 }
 
-export function IndustrialResearchBody() {
+export function LandingPageBody() {
   return (
     <main className="min-h-screen bg-[#f5efd8] px-4 text-[#111827] sm:px-6 lg:px-10">
       <div className="mx-auto max-w-6xl border-x border-[#c39a26] bg-white">
@@ -351,10 +351,10 @@ export function IndustrialResearchBody() {
             backgroundSize: "12px 12px",
           }}
         />
-        <ResearchIntro />
-        <PrimaryResearchArticle />
-        <SecondaryResearchArticle />
-        <ResearchNotesLink />
+        <ProductIntro />
+        <PlanningSection />
+        <WorkPackagesSection />
+        <ProductTourLink />
         <FeaturePipeline />
       </div>
     </main>
