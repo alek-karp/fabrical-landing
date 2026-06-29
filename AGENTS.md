@@ -17,3 +17,4 @@ Do not add unnecessary comments, including sectional comments. Only keep comment
 # Verification
 
 Only run `bun run verify` to verify work.
+Never run the dev server.
