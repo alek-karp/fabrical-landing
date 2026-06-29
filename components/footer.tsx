@@ -43,13 +43,13 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative overflow-hidden bg-amber-400 text-white">
+    <footer className="relative overflow-hidden bg-amber-400 text-black">
       <div className="relative z-10 mx-auto grid max-w-[1920px] grid-cols-1 gap-14 px-8 pb-[28vw] pt-20 sm:px-12 md:grid-cols-[1.4fr_2fr] md:pb-[24vw] lg:px-20 xl:px-24">
         <div>
           <h2 className="max-w-md text-4xl font-semibold leading-[1.08] tracking-normal md:text-5xl">
             The intelligence layer for electrical construction.
           </h2>
-          <p className="mt-8 max-w-md text-xl leading-8 text-white/62">
+          <p className="mt-8 max-w-md text-xl leading-8 text-black/72">
             One system for coordination, execution, and scale. Built for the
             contractors powering modern infrastructure.
           </p>
@@ -58,14 +58,14 @@ export function Footer() {
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
           {footerSections.map((section) => (
             <nav key={section.title} aria-label={section.title}>
-              <h3 className="text-sm font-semibold uppercase tracking-[0.28em] text-white/45">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.28em] text-black/55">
                 {section.title}
               </h3>
               <ul className="mt-6 space-y-4">
                 {section.links.map((link) => (
                   <li key={link.label}>
                     <a
-                      className="text-xl text-white/88 transition-colors hover:text-white"
+                      className="text-xl text-black/88 transition-colors hover:text-black"
                       href={link.href}
                     >
                       {link.label}
@@ -77,7 +77,7 @@ export function Footer() {
           ))}
 
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-[0.28em] text-white/45">
+            <h3 className="text-sm font-semibold uppercase tracking-[0.28em] text-black/55">
               Connect
             </h3>
             <div className="mt-6 flex items-center gap-4">
@@ -87,7 +87,7 @@ export function Footer() {
                 return (
                   <a
                     aria-label={link.label}
-                    className="flex size-7 items-center justify-center text-white/92 transition-colors hover:text-white"
+                    className="flex size-7 items-center justify-center text-black/88 transition-colors hover:text-black"
                     href={link.href}
                     key={link.label}
                     rel="noopener noreferrer"
@@ -107,14 +107,14 @@ export function Footer() {
           </div>
         </div>
 
-        <p className="self-end text-sm font-semibold uppercase tracking-[0.28em] text-white/45 md:col-start-2 md:justify-self-end">
+        <p className="self-end text-sm font-semibold uppercase tracking-[0.28em] text-black/55 md:col-start-2 md:justify-self-end">
           &copy; {year} &middot; Fabrical Inc. &middot; All rights reserved
         </p>
       </div>
 
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-0 left-1/2 w-[110vw] -translate-x-1/2 translate-y-[22%] select-none text-center text-[clamp(7rem,23vw,27rem)] font-bold leading-none tracking-normal text-white/20"
+        className="pointer-events-none absolute bottom-0 left-1/2 w-[110vw] -translate-x-1/2 translate-y-[22%] select-none text-center text-[clamp(7rem,23vw,27rem)] font-bold leading-none tracking-normal text-black/15"
       >
         Fabrical.
       </div>
