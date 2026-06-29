@@ -33,8 +33,7 @@ export function Hero() {
           <div className="flex items-center gap-4">
             <Button
               asChild
-              variant="outline"
-              className="rounded-none border-white/30 bg-white/5 text-white/90 text-xs font-medium tracking-widest uppercase backdrop-blur-sm h-9 px-5 hover:bg-white/10 hover:text-white hover:border-white/50 shadow-none"
+              className="h-9 rounded-none border-amber-400 bg-amber-400 px-5 text-xs font-semibold uppercase tracking-widest text-black shadow-none hover:border-amber-300 hover:bg-amber-300 hover:text-black"
             >
               <a href={demoUrl} target="_blank" rel="noopener noreferrer">
                 See a demo
