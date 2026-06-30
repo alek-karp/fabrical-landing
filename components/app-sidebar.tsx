@@ -2,6 +2,7 @@
 
 import {
   AlertTriangleIcon,
+  BotIcon,
   Building2Icon,
   CalendarDaysIcon,
   ClipboardListIcon,
@@ -68,6 +69,17 @@ const data = {
         {
           title: "Today",
           url: "#",
+        },
+      ],
+    },
+    {
+      title: "Agent",
+      url: "/agent",
+      icon: <BotIcon />,
+      items: [
+        {
+          title: "Chat",
+          url: "/agent",
         },
       ],
     },
