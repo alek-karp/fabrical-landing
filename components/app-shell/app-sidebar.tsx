@@ -5,7 +5,6 @@ import {
   BotIcon,
   Building2Icon,
   CalendarDaysIcon,
-  ClipboardListIcon,
   FactoryIcon,
   FolderKanbanIcon,
   GaugeIcon,
@@ -24,6 +23,9 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { projects } from "@/lib/projects";
@@ -70,20 +72,6 @@ const data = {
       url: "/app",
       icon: <GaugeIcon />,
       isActive: true,
-      items: [
-        {
-          title: "Overview",
-          url: "/app",
-        },
-        {
-          title: "Readiness",
-          url: "#",
-        },
-        {
-          title: "Today",
-          url: "#",
-        },
-      ],
     },
     {
       title: "Agent",
@@ -91,49 +79,15 @@ const data = {
       icon: <BotIcon />,
     },
     {
-      title: "Work Packages",
-      url: "#",
-      icon: <ClipboardListIcon />,
-      items: [
-        {
-          title: "Ready",
-          url: "#",
-        },
-        {
-          title: "Blocked",
-          url: "#",
-        },
-        {
-          title: "Due today",
-          url: "#",
-        },
-      ],
-    },
-    {
       title: "Procurement",
       url: "/procurement",
       icon: <PackageCheckIcon />,
     },
-    {
-      title: "Settings",
-      url: "#",
-      icon: <Settings2Icon />,
-      items: [
-        {
-          title: "Project",
-          url: "#",
-        },
-        {
-          title: "Crew",
-          url: "#",
-        },
-        {
-          title: "Integrations",
-          url: "#",
-        },
-      ],
-    },
   ],
+  settings: {
+    title: "Settings",
+    url: "#",
+  },
   projects: projects.map((project, index) => ({
     name: project.name,
     url: `/projects/${project.slug}`,
@@ -153,6 +107,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild tooltip={data.settings.title}>
+              <a href={data.settings.url}>
+                <Settings2Icon />
+                <span>{data.settings.title}</span>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
         <NavUser user={data.user} />
       </SidebarFooter>
       <SidebarRail />
