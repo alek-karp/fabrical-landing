@@ -78,6 +78,11 @@ const data = {
       url: "/procurement",
       icon: <PackageCheckIcon />,
     },
+    {
+      title: "All Projects",
+      url: "/projects",
+      icon: <FolderKanbanIcon />,
+    },
   ],
   settings: {
     title: "Settings",
