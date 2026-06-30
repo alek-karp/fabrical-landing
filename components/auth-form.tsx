@@ -156,6 +156,7 @@ export function AuthForm({
               src="/hero-datacenter.webp"
               alt="Electrical construction site"
               fill
+              loading="eager"
               sizes="50vw"
               className="absolute inset-0 h-full w-full object-cover grayscale contrast-125 sepia"
             />

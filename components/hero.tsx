@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { demoUrl } from "@/lib/demo-url";
@@ -5,16 +6,18 @@ import { demoUrl } from "@/lib/demo-url";
 export function Hero() {
   return (
     <div className="min-h-screen flex flex-col text-white relative overflow-hidden">
-      <div
-        className="pointer-events-none absolute inset-0 z-0 scale-105"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/hero-datacenter.webp')",
-          backgroundSize: "cover",
-          backgroundPosition: "center top",
-          filter: "blur(3px)",
-        }}
-      />
+      <div className="pointer-events-none absolute inset-0 z-0 scale-105 overflow-hidden">
+        <Image
+          src="/hero-datacenter.webp"
+          alt=""
+          fill
+          priority
+          loading="eager"
+          sizes="100vw"
+          className="object-cover object-top blur-[3px]"
+        />
+        <div className="absolute inset-0 bg-black/60" />
+      </div>
 
       <div className="pointer-events-none absolute inset-4 md:inset-6 z-20">
         <div className="hero-frame-line-v absolute inset-y-0 left-0 w-px bg-white/20" />
