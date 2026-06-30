@@ -1,18 +1,13 @@
 import {
   AlertTriangle,
-  ArrowUpRight,
   CalendarDays,
   CheckCircle2,
   ClipboardList,
   PackageCheck,
 } from "lucide-react";
 
-import { AppSidebar } from "@/components/app-shell";
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
+import { AppHeader, AppSidebar } from "@/components/app-shell";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 const readinessItems = [
   { label: "Scope confidence", value: "91%", status: "14 risks cleared" },
@@ -42,28 +37,7 @@ export const AppHome = () => (
   <SidebarProvider>
     <AppSidebar />
     <SidebarInset className="min-h-svh bg-background text-foreground">
-      <header className="border-b border-border bg-background px-6 py-4 md:px-10">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
-          <div className="flex min-w-0 items-center gap-3">
-            <SidebarTrigger className="-ml-2 hover:bg-muted" />
-            <div className="min-w-0">
-              <p className="text-xs font-semibold uppercase text-muted-foreground">
-                Fabrical app
-              </p>
-              <h1 className="mt-1 text-2xl font-semibold tracking-normal">
-                Project command center
-              </h1>
-            </div>
-          </div>
-          <a
-            className="inline-flex h-10 items-center gap-2 border border-border bg-background px-4 text-sm font-semibold transition-colors hover:bg-muted"
-            href="/"
-          >
-            Landing
-            <ArrowUpRight className="size-4" aria-hidden="true" />
-          </a>
-        </div>
-      </header>
+      <AppHeader title="Project command center" />
 
       <div className="mx-auto grid max-w-7xl gap-6 px-6 py-6 md:px-10 lg:grid-cols-[1fr_22rem]">
         <section className="flex flex-col gap-6">
