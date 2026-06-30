@@ -1,15 +1,9 @@
 import { xai } from "@ai-sdk/xai";
 import type { LanguageModel } from "ai";
 
-export type AiModelProvider = "xai";
+import type { AiModelConfig } from "./types";
 
-export type AiModelConfig = {
-  id: string;
-  name: string;
-  provider: AiModelProvider;
-  providerLabel: string;
-  maxTokens: number;
-};
+export * from "./types";
 
 export const AI_MODELS = [
   {

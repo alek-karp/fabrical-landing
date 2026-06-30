@@ -40,7 +40,16 @@ trpc/
 
 app/api/trpc/[trpc]/route.ts   HTTP handler (fetch adapter) mounted at /api/trpc
 
-lib/                   pure data layer — functions take a SupabaseClient argument
+lib/                   pure data layer, organized per feature
+├── utils.ts           shared helpers (e.g. cn) — not feature-specific
+├── projects/
+│   ├── schema.ts        zod input schemas
+│   ├── types.ts         TS types (NewProject = z.infer<typeof schema>)
+│   ├── data.ts          static seed data + lookups
+│   └── index.ts         store functions (take a SupabaseClient) + barrel re-exports
+└── ai/
+    ├── types.ts
+    └── index.ts
 ```
 
 This mirrors the official tRPC + TanStack React Query App Router setup. Server
@@ -63,17 +72,27 @@ client.
 
 ## Data layer (`lib/`)
 
-Files under `lib/` (e.g. `lib/project-store.ts`) are **pure data functions**:
-they accept a `SupabaseClient` as their first argument and contain no request
-or framework coupling (no `cookies()`, no `next/headers`). This keeps them
-reusable and testable, and ensures the client is always the request-scoped one
-created in the tRPC context.
+Each feature lives in its own folder under `lib/` (e.g. `lib/projects/`), split
+by concern:
+
+- **`schema.ts`** — zod input schemas.
+- **`types.ts`** — TS types, including types inferred from the schema
+  (`type NewProject = z.infer<typeof newProjectSchema>`).
+- **`index.ts`** — the store functions plus barrel re-exports of the folder's
+  public surface. Importers use `@/lib/<feature>`, never a deep path.
+- Add extra files (`data.ts`, etc.) when a feature needs them.
+
+Store functions are **pure data functions**: they accept a `SupabaseClient` as
+their first argument and contain no request or framework coupling (no
+`cookies()`, no `next/headers`). This keeps them reusable and testable, and
+ensures the client is always the request-scoped one created in the tRPC context.
 
 ```ts
-// lib/project-store.ts
+// lib/projects/index.ts
 export const getPortfolioProjects = async (supabase: SupabaseClient) => { ... };
 
 // trpc/routers/projects.ts
+import { getPortfolioProjects } from "@/lib/projects";
 list: publicProcedure.query(({ ctx }) => getPortfolioProjects(ctx.supabase)),
 ```
 
@@ -134,8 +153,8 @@ return (
 1. Create `trpc/routers/<feature>.ts` with `createTRPCRouter` and the relevant
    `publicProcedure` / `protectedProcedure` definitions. Validate inputs with
    `zod`.
-2. Put the actual data access in a pure `lib/<feature>-store.ts` function that
-   takes `ctx.supabase`.
+2. Put the actual data access in a pure function under `lib/<feature>/`
+   (`schema.ts` / `types.ts` / `index.ts`) that takes `ctx.supabase`.
 3. Register the router in `trpc/routers/_app.ts`.
 4. Consume it via `caller` (server) or `useTRPC()` (client) — never reach into
    the data layer or Supabase directly from app code.

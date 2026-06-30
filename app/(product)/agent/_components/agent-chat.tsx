@@ -69,11 +69,7 @@ import {
 } from "@/components/ai-elements/prompt-input";
 import { Shimmer } from "@/components/ai-elements/shimmer";
 import { Button } from "@/components/ui/button";
-import {
-  AI_MODELS,
-  DEFAULT_CHAT_MODEL_ID,
-  getAllowedModel,
-} from "@/lib/ai/models";
+import { AI_MODELS, DEFAULT_CHAT_MODEL_ID, getAllowedModel } from "@/lib/ai";
 
 type QuickStartTab = "your-activity" | "from-tasks" | "upcoming";
 

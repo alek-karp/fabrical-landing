@@ -6,7 +6,7 @@ import {
   type UIMessage,
 } from "ai";
 
-import { resolveAiModel } from "@/lib/ai/models";
+import { resolveAiModel } from "@/lib/ai";
 
 export const maxDuration = 30;
 

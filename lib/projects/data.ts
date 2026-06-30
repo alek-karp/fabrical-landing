@@ -1,31 +1,4 @@
-export type Project = {
-  slug: string;
-  name: string;
-  location: string;
-  sector: string;
-  phase: string;
-  summary: string;
-  description: string;
-  image: string;
-  stats: {
-    label: string;
-    value: string;
-  }[];
-  milestones: {
-    label: string;
-    status: string;
-    date: string;
-  }[];
-  risks: {
-    label: string;
-    severity: string;
-  }[];
-  workPackages: {
-    name: string;
-    owner: string;
-    state: string;
-  }[];
-};
+import type { Project } from "./types";
 
 export const projects: Project[] = [
   {
@@ -174,6 +147,5 @@ export const projects: Project[] = [
   },
 ];
 
-export function getProject(slug: string) {
-  return projects.find((project) => project.slug === slug);
-}
+export const getProject = (slug: string) =>
+  projects.find((project) => project.slug === slug);

@@ -1,26 +1,11 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-import type { Project } from "./projects";
-import { getProject, projects } from "./projects";
+import { getProject, projects } from "./data";
+import type { NewProject, Project, StoredProjectRow } from "./types";
 
-type StoredProjectRow = {
-  slug: string;
-  name: string;
-  location: string;
-  sector: string;
-  phase: string;
-  summary: string;
-  description: string;
-};
-
-type NewStoredProject = {
-  name: string;
-  location: string;
-  sector: string;
-  phase: string;
-  summary: string;
-  description: string;
-};
+export { getProject, projects } from "./data";
+export { newProjectSchema } from "./schema";
+export * from "./types";
 
 const fallbackStats = [
   { label: "Readiness", value: "0%" },
@@ -111,7 +96,7 @@ export const getPortfolioProject = async (
 
 export const createStoredProject = async (
   supabase: SupabaseClient,
-  project: NewStoredProject,
+  project: NewProject,
 ) => {
   const baseSlug = slugify(project.name) || "project";
   const slug = `${baseSlug}-${crypto.randomUUID().slice(0, 8)}`;
