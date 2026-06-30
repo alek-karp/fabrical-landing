@@ -18,6 +18,7 @@ export const EditProjectForm = ({ project }: EditProjectFormProps) => (
       location: project.location,
       sector: project.sector,
       phase: project.phase,
+      deadline: project.deadline ?? "",
       summary: project.summary,
       description: project.description,
     }}

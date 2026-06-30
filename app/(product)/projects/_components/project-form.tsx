@@ -22,6 +22,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
+import { ProjectDeadlinePicker } from "./project-deadline-picker";
+import { ProjectPhaseSelect } from "./project-phase-select";
+
 export type ProjectFormState = {
   message: string;
 };
@@ -31,6 +34,7 @@ export type ProjectFormValues = {
   location: string;
   sector: string;
   phase: string;
+  deadline: string;
   summary: string;
   description: string;
 };
@@ -114,12 +118,14 @@ export const ProjectForm = ({
             </div>
             <Field>
               <FieldLabel htmlFor="project-phase">Phase</FieldLabel>
-              <Input
-                defaultValue={defaultValues?.phase}
-                id="project-phase"
-                name="phase"
-                placeholder="Planning"
-              />
+              <ProjectPhaseSelect defaultValue={defaultValues?.phase} />
+            </Field>
+            <Field>
+              <FieldLabel htmlFor="project-deadline">Deadline</FieldLabel>
+              <ProjectDeadlinePicker defaultValue={defaultValues?.deadline} />
+              <FieldDescription>
+                Optional target completion date for this project.
+              </FieldDescription>
             </Field>
             <Field>
               <FieldLabel htmlFor="project-summary">Summary</FieldLabel>

@@ -22,6 +22,7 @@ export const createProjectTool = tool({
           location: project.location,
           sector: project.sector,
           phase: project.phase,
+          deadline: project.deadline,
           summary: project.summary,
         },
       };

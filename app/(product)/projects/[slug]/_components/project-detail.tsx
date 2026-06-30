@@ -2,6 +2,7 @@
 
 import {
   AlertTriangle,
+  CalendarDays,
   CheckCircle2,
   ClipboardList,
   FileText,
@@ -13,6 +14,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Project } from "@/lib/projects";
+import { formatProjectDeadline } from "@/lib/projects";
 import { routes } from "@/lib/routes";
 
 type ProjectDetailProps = {
@@ -33,9 +35,17 @@ const placeholderTabs = tabs.filter(
 
 export const ProjectDetail = ({ project }: ProjectDetailProps) => (
   <main className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-6 py-6 md:px-10">
-    <h1 className="text-3xl font-semibold tracking-normal md:text-4xl">
-      {project.name}
-    </h1>
+    <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+      <h1 className="text-3xl font-semibold tracking-normal md:text-4xl">
+        {project.name}
+      </h1>
+      {formatProjectDeadline(project.deadline) ? (
+        <span className="flex items-center gap-2 text-sm text-muted-foreground">
+          <CalendarDays className="size-4" />
+          Deadline {formatProjectDeadline(project.deadline)}
+        </span>
+      ) : null}
+    </div>
 
     <Tabs className="gap-6" defaultValue="overview">
       <div className="flex flex-col gap-4 border-b border-border md:flex-row md:items-center md:justify-between">
@@ -79,6 +89,12 @@ export const ProjectDetail = ({ project }: ProjectDetailProps) => (
                   <MapPin className="size-4" />
                   {project.location}
                 </span>
+                {formatProjectDeadline(project.deadline) ? (
+                  <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                    <CalendarDays className="size-4" />
+                    {formatProjectDeadline(project.deadline)}
+                  </span>
+                ) : null}
               </div>
               <p className="mt-4 max-w-3xl text-sm leading-6 text-muted-foreground md:text-base md:leading-7">
                 {project.description}

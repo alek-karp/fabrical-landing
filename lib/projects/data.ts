@@ -7,6 +7,7 @@ export const projects: Project[] = [
     location: "Hillsboro, OR",
     sector: "Hyperscale data center",
     phase: "Electrical rough-in",
+    deadline: "2026-08-15",
     summary:
       "A fast-track data hall build coordinating feeders, switchgear, grounding, and commissioning readiness across office, shop, and field teams.",
     description:
@@ -55,6 +56,7 @@ export const projects: Project[] = [
     location: "Mesa, AZ",
     sector: "Advanced manufacturing",
     phase: "Prefab release",
+    deadline: "2026-07-30",
     summary:
       "A manufacturing expansion using prefab electrical rooms and sequenced material releases to keep installation aligned with process equipment turnover.",
     description:
@@ -107,6 +109,7 @@ export const projects: Project[] = [
     location: "Long Beach, CA",
     sector: "Infrastructure",
     phase: "Commissioning prep",
+    deadline: "2026-09-01",
     summary:
       "A port electrification project tracking cutover windows, procurement exposure, and commissioning dependencies across energized work zones.",
     description:

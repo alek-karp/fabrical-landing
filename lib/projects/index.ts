@@ -11,6 +11,14 @@ import type {
 
 export { getProject, projects } from "./data";
 export { newProjectSchema, updateProjectSchema } from "./schema";
+export {
+  DEFAULT_PROJECT_PHASE,
+  isProjectPhase,
+  PROJECT_PHASES,
+  projectPhaseSchema,
+  resolveProjectPhase,
+} from "./phases";
+export type { ProjectPhase } from "./phases";
 export * from "./types";
 
 const fallbackStats = [
@@ -37,12 +45,25 @@ const fallbackWorkPackages = [
   { name: "Baseline schedule", owner: "Planning", state: "Queued" },
 ];
 
+export const formatProjectDeadline = (deadline: string | null | undefined) => {
+  if (!deadline) {
+    return null;
+  }
+
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(new Date(`${deadline}T00:00:00`));
+};
+
 const toProject = (row: StoredProjectRow): Project => ({
   slug: row.slug,
   name: row.name,
   location: row.location,
   sector: row.sector,
   phase: row.phase,
+  deadline: row.deadline,
   summary: row.summary,
   description: row.description,
   image: "/hero-datacenter.webp",
@@ -55,7 +76,7 @@ const toProject = (row: StoredProjectRow): Project => ({
 export const getStoredProjects = async (supabase: SupabaseClient) => {
   const { data, error } = await supabase
     .from("projects")
-    .select("slug,name,location,sector,phase,summary,description")
+    .select("slug,name,location,sector,phase,deadline,summary,description")
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -81,7 +102,7 @@ export const getPortfolioProject = async (
 ) => {
   const { data, error } = await supabase
     .from("projects")
-    .select("slug,name,location,sector,phase,summary,description")
+    .select("slug,name,location,sector,phase,deadline,summary,description")
     .eq("slug", slug)
     .maybeSingle();
 
@@ -111,10 +132,11 @@ export const createStoredProject = async (
       location: project.location,
       sector: project.sector,
       phase: project.phase,
+      deadline: project.deadline ?? null,
       summary: project.summary,
       description: project.description,
     })
-    .select("slug,name,location,sector,phase,summary,description")
+    .select("slug,name,location,sector,phase,deadline,summary,description")
     .single();
 
   if (error) {
@@ -137,12 +159,13 @@ export const updateStoredProject = async (
         location: project.location,
         sector: project.sector,
         phase: project.phase,
+        deadline: project.deadline ?? null,
         summary: project.summary,
         description: project.description,
       },
       { onConflict: "slug" },
     )
-    .select("slug,name,location,sector,phase,summary,description")
+    .select("slug,name,location,sector,phase,deadline,summary,description")
     .single();
 
   if (error) {

@@ -8,6 +8,7 @@ export type Project = {
   location: string;
   sector: string;
   phase: string;
+  deadline: string | null;
   summary: string;
   description: string;
   image: string;
@@ -37,6 +38,7 @@ export type StoredProjectRow = {
   location: string;
   sector: string;
   phase: string;
+  deadline: string | null;
   summary: string;
   description: string;
 };

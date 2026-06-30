@@ -6,7 +6,7 @@ import { trpcToolContextSchema } from "./context";
 
 export const listProjectsTool = tool({
   description:
-    "List all portfolio projects with name, location, sector, phase, and summary.",
+    "List all portfolio projects with name, location, sector, phase, deadline, and summary.",
   inputSchema: z.object({}),
   contextSchema: trpcToolContextSchema,
   execute: async (_input, { context }) => {
@@ -21,6 +21,7 @@ export const listProjectsTool = tool({
           location: project.location,
           sector: project.sector,
           phase: project.phase,
+          deadline: project.deadline,
           summary: project.summary,
         })),
       };

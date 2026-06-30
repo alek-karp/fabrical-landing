@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import type { Project } from "@/lib/projects";
+import { resolveProjectPhase } from "@/lib/projects";
 import { routes } from "@/lib/routes";
 import { caller } from "@/trpc/server";
 
@@ -23,6 +24,12 @@ const getValue = (formData: FormData, key: string) => {
   return value.trim();
 };
 
+const getDeadline = (formData: FormData) => {
+  const value = getValue(formData, "deadline");
+
+  return value || null;
+};
+
 export const createProject = async (
   _state: CreateProjectState,
   formData: FormData,
@@ -31,7 +38,8 @@ export const createProject = async (
     name: getValue(formData, "name"),
     location: getValue(formData, "location"),
     sector: getValue(formData, "sector"),
-    phase: getValue(formData, "phase") || "Planning",
+    phase: resolveProjectPhase(getValue(formData, "phase")),
+    deadline: getDeadline(formData),
     summary: getValue(formData, "summary"),
     description: getValue(formData, "description"),
   };
@@ -74,7 +82,8 @@ export const updateProject = async (
     name: getValue(formData, "name"),
     location: getValue(formData, "location"),
     sector: getValue(formData, "sector"),
-    phase: getValue(formData, "phase") || "Planning",
+    phase: resolveProjectPhase(getValue(formData, "phase")),
+    deadline: getDeadline(formData),
     summary: getValue(formData, "summary"),
     description: getValue(formData, "description"),
   };

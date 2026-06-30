@@ -2,6 +2,7 @@
 
 import {
   ArrowRight,
+  CalendarDays,
   FolderKanban,
   LayoutGrid,
   List,
@@ -16,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import type { Project } from "@/lib/projects";
+import { formatProjectDeadline } from "@/lib/projects";
 import { routes } from "@/lib/routes";
 
 type ProjectsHomeProps = {
@@ -96,7 +98,15 @@ export const ProjectsHome = ({ projects }: ProjectsHomeProps) => {
                     {project.summary}
                   </p>
                   <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
-                    <Badge variant="outline">{project.phase}</Badge>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Badge variant="outline">{project.phase}</Badge>
+                      {formatProjectDeadline(project.deadline) ? (
+                        <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                          <CalendarDays className="size-3.5" />
+                          {formatProjectDeadline(project.deadline)}
+                        </span>
+                      ) : null}
+                    </div>
                     <ArrowRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-1" />
                   </div>
                 </Link>
@@ -107,7 +117,7 @@ export const ProjectsHome = ({ projects }: ProjectsHomeProps) => {
               <div className="divide-y divide-border">
                 {projects.map((project) => (
                   <Link
-                    className="group grid gap-3 px-5 py-4 transition-colors hover:bg-muted/40 md:grid-cols-[1fr_10rem_8rem_auto] md:items-center"
+                    className="group grid gap-3 px-5 py-4 transition-colors hover:bg-muted/40 md:grid-cols-[1fr_10rem_8rem_8rem_auto] md:items-center"
                     href={routes.projects.detail(project.slug)}
                     key={project.slug}
                   >
@@ -120,6 +130,9 @@ export const ProjectsHome = ({ projects }: ProjectsHomeProps) => {
                     <Badge className="w-fit" variant="outline">
                       {project.phase}
                     </Badge>
+                    <span className="text-sm text-muted-foreground">
+                      {formatProjectDeadline(project.deadline) ?? "No deadline"}
+                    </span>
                     <ArrowRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-1 md:justify-self-end" />
                   </Link>
                 ))}
