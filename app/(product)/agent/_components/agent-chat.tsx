@@ -76,7 +76,11 @@ export const AgentChat = () => {
           />
         </PromptInputBody>
         <PromptInputFooter>
-          <PromptInputSubmit status={status} onStop={stop} />
+          <PromptInputSubmit
+            className="ml-auto"
+            status={status}
+            onStop={stop}
+          />
         </PromptInputFooter>
       </PromptInput>
     </div>
