@@ -1,0 +1,138 @@
+import type { SupabaseClient } from "@supabase/supabase-js";
+
+import type { Project } from "./projects";
+import { getProject, projects } from "./projects";
+
+type StoredProjectRow = {
+  slug: string;
+  name: string;
+  location: string;
+  sector: string;
+  phase: string;
+  summary: string;
+  description: string;
+};
+
+type NewStoredProject = {
+  name: string;
+  location: string;
+  sector: string;
+  phase: string;
+  summary: string;
+  description: string;
+};
+
+const fallbackStats = [
+  { label: "Readiness", value: "0%" },
+  { label: "Activities", value: "0" },
+  { label: "Risks cleared", value: "0" },
+];
+
+const fallbackMilestones = [
+  { label: "Project kickoff", status: "Queued", date: "TBD" },
+  { label: "Scope validation", status: "Queued", date: "TBD" },
+  { label: "Field release plan", status: "Queued", date: "TBD" },
+];
+
+const fallbackRisks = [
+  { label: "Initial risk review", severity: "Pending" },
+  { label: "Procurement exposure", severity: "Pending" },
+  { label: "Crew availability", severity: "Pending" },
+];
+
+const fallbackWorkPackages = [
+  { name: "Project setup", owner: "PM review", state: "Queued" },
+  { name: "Scope import", owner: "Coordination", state: "Queued" },
+  { name: "Baseline schedule", owner: "Planning", state: "Queued" },
+];
+
+const slugify = (value: string) =>
+  value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)+/g, "")
+    .slice(0, 64);
+
+const toProject = (row: StoredProjectRow): Project => ({
+  slug: row.slug,
+  name: row.name,
+  location: row.location,
+  sector: row.sector,
+  phase: row.phase,
+  summary: row.summary,
+  description: row.description,
+  image: "/hero-datacenter.webp",
+  stats: fallbackStats,
+  milestones: fallbackMilestones,
+  risks: fallbackRisks,
+  workPackages: fallbackWorkPackages,
+});
+
+export const getStoredProjects = async (supabase: SupabaseClient) => {
+  const { data, error } = await supabase
+    .from("projects")
+    .select("slug,name,location,sector,phase,summary,description")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    return [];
+  }
+
+  return data.map((row) => toProject(row));
+};
+
+export const getPortfolioProjects = async (supabase: SupabaseClient) => {
+  const storedProjects = await getStoredProjects(supabase);
+  const storedSlugs = new Set(storedProjects.map((project) => project.slug));
+
+  return [
+    ...storedProjects,
+    ...projects.filter((project) => !storedSlugs.has(project.slug)),
+  ];
+};
+
+export const getPortfolioProject = async (
+  supabase: SupabaseClient,
+  slug: string,
+) => {
+  const { data, error } = await supabase
+    .from("projects")
+    .select("slug,name,location,sector,phase,summary,description")
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (error || !data) {
+    return getProject(slug);
+  }
+
+  return toProject(data);
+};
+
+export const createStoredProject = async (
+  supabase: SupabaseClient,
+  project: NewStoredProject,
+) => {
+  const baseSlug = slugify(project.name) || "project";
+  const slug = `${baseSlug}-${crypto.randomUUID().slice(0, 8)}`;
+
+  const { data, error } = await supabase
+    .from("projects")
+    .insert({
+      slug,
+      name: project.name,
+      location: project.location,
+      sector: project.sector,
+      phase: project.phase,
+      summary: project.summary,
+      description: project.description,
+    })
+    .select("slug,name,location,sector,phase,summary,description")
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return toProject(data);
+};

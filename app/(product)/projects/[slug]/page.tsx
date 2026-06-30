@@ -10,7 +10,8 @@ import { notFound } from "next/navigation";
 
 import { AppHeader, AppSidebar } from "@/components/app-shell";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { getProject, projects } from "@/lib/projects";
+import { projects } from "@/lib/projects";
+import { caller } from "@/trpc/server";
 
 type ProjectPageProps = {
   params: Promise<{ slug: string }>;
@@ -24,7 +25,7 @@ export async function generateMetadata({
   params,
 }: ProjectPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const project = getProject(slug);
+  const project = await caller.projects.bySlug({ slug });
 
   if (!project) {
     return {
@@ -40,7 +41,7 @@ export async function generateMetadata({
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const { slug } = await params;
-  const project = getProject(slug);
+  const project = await caller.projects.bySlug({ slug });
 
   if (!project) {
     notFound();

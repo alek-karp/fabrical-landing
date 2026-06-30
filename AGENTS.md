@@ -1,8 +1,26 @@
+<!-- intent-skills:start -->
+## Skill Loading
+
+Before editing files for a substantial task:
+- Run `bunx @tanstack/intent@latest list` from the workspace root to see available local skills.
+- If a listed skill matches the task, run `bunx @tanstack/intent@latest load <package>#<skill>` before changing files.
+- Use the loaded `SKILL.md` guidance while making the change.
+- Monorepos: when working across packages, run the skill check from the workspace root and prefer the local skill for the package being changed.
+- Multiple matches: prefer the most specific local skill for the package or concern you are changing; load additional skills only when the task spans multiple packages or concerns.
+<!-- intent-skills:end -->
+
 <!-- BEGIN:nextjs-agent-rules -->
 # This is NOT the Next.js you know
 
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 <!-- END:nextjs-agent-rules -->
+
+# Architecture
+
+Read `ARCHITECTURE.md` before adding data-fetching code, API endpoints, or server actions.
+All domain data flows through tRPC — components, pages, and server actions call procedures
+(via the server `caller` or the client `useTRPC()` hooks), never Supabase or the `lib/` data
+layer directly. Keep that single data path intact and update `ARCHITECTURE.md` when it changes.
 
 # Commits
 
