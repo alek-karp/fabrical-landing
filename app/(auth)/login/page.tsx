@@ -1,10 +1,17 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 import { LoginForm } from "@/components/login-form";
 import { Button } from "@/components/ui/button";
 
-export default function LoginPage() {
+const LoginPage = () => {
+  const login = async () => {
+    "use server";
+
+    redirect("/app");
+  };
+
   return (
     <div className="relative flex min-h-svh flex-col items-center justify-center bg-muted p-6 md:p-10">
       <Button
@@ -18,8 +25,10 @@ export default function LoginPage() {
         </Link>
       </Button>
       <div className="w-full max-w-sm md:max-w-4xl">
-        <LoginForm />
+        <LoginForm action={login} />
       </div>
     </div>
   );
-}
+};
+
+export default LoginPage;

@@ -11,19 +11,22 @@ import {
 import { Input } from "@/components/ui/input"
 
 export function LoginForm({
+  action,
   className,
   ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<"div"> & {
+  action?: (formData: FormData) => void | Promise<void>
+}) {
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="rounded-none border-[#cdbb85] shadow-none ring-0 overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+          <form action={action} className="p-6 md:p-8">
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
                 <h1 className="text-2xl font-bold">Welcome back</h1>
                 <p className="text-balance text-muted-foreground">
-                  Login to your Acme Inc account
+                  Login to your Fabrical account
                 </p>
               </div>
               <Field>
