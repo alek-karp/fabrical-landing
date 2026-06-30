@@ -7,14 +7,22 @@ import { AuthForm } from "@/components/auth-form";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/server";
 
+const getSafeRedirect = (path: string | undefined) => {
+  if (!path || !path.startsWith("/") || path.startsWith("//")) {
+    return "/app";
+  }
+
+  return path;
+};
+
 const LoginPage = async ({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; redirect?: string }>;
 }) => {
-  const { error } = await searchParams;
+  const { error, redirect: redirectPath } = await searchParams;
 
-  const login = async (formData: FormData) => {
+  const login = async (redirectPath: string, formData: FormData) => {
     "use server";
 
     const cookieStore = await cookies();
@@ -26,11 +34,17 @@ const LoginPage = async ({
     });
 
     if (error) {
-      redirect(`/login?error=${encodeURIComponent(error.message)}`);
+      const params = new URLSearchParams({
+        error: error.message,
+        redirect: redirectPath,
+      });
+      redirect(`/login?${params.toString()}`);
     }
 
-    redirect("/app");
+    redirect(redirectPath);
   };
+
+  const safeRedirect = getSafeRedirect(redirectPath);
 
   return (
     <div className="relative flex min-h-svh flex-col items-center justify-center bg-muted p-6 md:p-10">
@@ -45,7 +59,11 @@ const LoginPage = async ({
         </Link>
       </Button>
       <div className="w-full max-w-sm md:max-w-4xl">
-        <AuthForm variant="login" action={login} error={error} />
+        <AuthForm
+          variant="login"
+          action={login.bind(null, safeRedirect)}
+          error={error}
+        />
       </div>
     </div>
   );

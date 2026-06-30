@@ -8,11 +8,13 @@ import {
   updateProjectSchema,
   updateStoredProject,
 } from "@/lib/projects";
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "../init";
+import { createTRPCRouter, protectedProcedure } from "../init";
 
 export const projectsRouter = createTRPCRouter({
-  list: publicProcedure.query(({ ctx }) => getPortfolioProjects(ctx.supabase)),
-  bySlug: publicProcedure
+  list: protectedProcedure.query(({ ctx }) =>
+    getPortfolioProjects(ctx.supabase),
+  ),
+  bySlug: protectedProcedure
     .input(z.object({ slug: z.string() }))
     .query(({ ctx, input }) => getPortfolioProject(ctx.supabase, input.slug)),
   create: protectedProcedure

@@ -1,4 +1,5 @@
 import { createAgentUIStreamResponse } from "ai";
+import { cookies } from "next/headers";
 
 import { getAllowedModel } from "@/lib/ai";
 import { createFabricalAgent } from "@/lib/ai/agents/fabrical-agent";
@@ -8,10 +9,20 @@ import {
   MAX_CHAT_REQUEST_BYTES,
 } from "@/lib/ai/chat-request";
 import { caller } from "@/trpc/server";
+import { createClient } from "@/utils/supabase/server";
 
 export const maxDuration = 30;
 
 export const POST = async (req: Request) => {
+  const supabase = createClient(await cookies());
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return Response.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const contentLength = Number(req.headers.get("content-length") ?? 0);
   if (contentLength > MAX_CHAT_REQUEST_BYTES) {
     return Response.json({ error: "Request too large" }, { status: 413 });
