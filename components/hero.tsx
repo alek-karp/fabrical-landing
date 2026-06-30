@@ -17,14 +17,14 @@ export function Hero() {
       />
 
       <div className="pointer-events-none absolute inset-4 md:inset-6 z-20">
-        <div className="absolute inset-y-0 left-0 w-px bg-white/20" />
-        <div className="absolute inset-y-0 right-0 w-px bg-white/20" />
-        <div className="absolute inset-x-0 top-0 h-px bg-white/20" />
-        <div className="absolute inset-x-0 bottom-0 h-px bg-white/20" />
-        <div className="absolute -top-1 -left-1 size-2 bg-white" />
-        <div className="absolute -top-1 -right-1 size-2 bg-white" />
-        <div className="absolute -bottom-1 -left-1 size-2 bg-white" />
-        <div className="absolute -bottom-1 -right-1 size-2 bg-white" />
+        <div className="hero-frame-line-v absolute inset-y-0 left-0 w-px bg-white/20" />
+        <div className="hero-frame-line-v absolute inset-y-0 right-0 w-px bg-white/20" />
+        <div className="hero-frame-line-h absolute inset-x-0 top-0 h-px bg-white/20" />
+        <div className="hero-frame-line-h absolute inset-x-0 bottom-0 h-px bg-white/20" />
+        <div className="hero-frame-corner absolute -top-1 -left-1 size-2 bg-white" />
+        <div className="hero-frame-corner absolute -top-1 -right-1 size-2 bg-white" />
+        <div className="hero-frame-corner absolute -bottom-1 -left-1 size-2 bg-white" />
+        <div className="hero-frame-corner absolute -bottom-1 -right-1 size-2 bg-white" />
       </div>
 
       <div className="relative z-10 flex flex-col min-h-screen">
