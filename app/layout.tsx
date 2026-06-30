@@ -6,7 +6,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { TRPCReactProvider } from "@/trpc/client";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const spaceGroteskHeading = Space_Grotesk({subsets:['latin'],variable:'--font-heading'});
+
+const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-space-grotesk",
@@ -61,13 +63,11 @@ export default function RootLayout({
     <html
       lang="en"
       className={cn(
-        "dark",
-        "h-full",
-        "antialiased",
-        "font-sans",
-        inter.variable,
-        spaceGrotesk.variable,
-      )}
+              "dark",
+              "h-full",
+              "antialiased",
+              spaceGrotesk.variable,
+              "font-sans", inter.variable, spaceGroteskHeading.variable)}
     >
       <body className="min-h-full flex flex-col">
         <TRPCReactProvider>
