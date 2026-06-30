@@ -9,7 +9,6 @@ import {
 } from "lucide-react";
 
 import { AppHeader, AppSidebar } from "@/components/app-shell";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -40,6 +39,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const notificationSettings = [
   {
@@ -83,11 +83,7 @@ export const SettingsHome = () => (
       <div className="mx-auto flex max-w-7xl flex-col gap-6 px-6 py-6 md:px-10">
         <section className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
           <div>
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge variant="secondary">Workspace settings</Badge>
-              <Badge variant="outline">Fabrical</Badge>
-            </div>
-            <h1 className="mt-3 text-3xl font-semibold tracking-normal md:text-4xl">
+            <h1 className="text-3xl font-semibold tracking-normal md:text-4xl">
               Settings
             </h1>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
@@ -101,8 +97,31 @@ export const SettingsHome = () => (
           </Button>
         </section>
 
-        <section className="grid gap-6 lg:grid-cols-[1fr_22rem]">
-          <div className="flex flex-col gap-6">
+        <Tabs defaultValue="account" className="gap-6">
+          <TabsList className="w-full justify-start overflow-x-auto">
+            <TabsTrigger value="account">
+              <UserRoundIcon data-icon="inline-start" />
+              Account
+            </TabsTrigger>
+            <TabsTrigger value="project-defaults">
+              <SlidersHorizontalIcon data-icon="inline-start" />
+              Project defaults
+            </TabsTrigger>
+            <TabsTrigger value="notifications">
+              <BellIcon data-icon="inline-start" />
+              Notifications
+            </TabsTrigger>
+            <TabsTrigger value="workspace">
+              <Building2Icon data-icon="inline-start" />
+              Workspace
+            </TabsTrigger>
+            <TabsTrigger value="access">
+              <ShieldCheckIcon data-icon="inline-start" />
+              Access
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="account">
             <Card>
               <CardHeader>
                 <CardTitle>Account</CardTitle>
@@ -151,7 +170,9 @@ export const SettingsHome = () => (
                 <CheckCircle2Icon />
               </CardFooter>
             </Card>
+          </TabsContent>
 
+          <TabsContent value="project-defaults">
             <Card>
               <CardHeader>
                 <CardTitle>Project defaults</CardTitle>
@@ -230,9 +251,9 @@ export const SettingsHome = () => (
                 </FieldGroup>
               </CardContent>
             </Card>
-          </div>
+          </TabsContent>
 
-          <aside className="flex flex-col gap-6">
+          <TabsContent value="notifications">
             <Card>
               <CardHeader>
                 <CardTitle>Notifications</CardTitle>
@@ -262,7 +283,9 @@ export const SettingsHome = () => (
                 </FieldGroup>
               </CardContent>
             </Card>
+          </TabsContent>
 
+          <TabsContent value="workspace">
             <Card>
               <CardHeader>
                 <CardTitle>Workspace</CardTitle>
@@ -291,7 +314,9 @@ export const SettingsHome = () => (
                 ))}
               </CardContent>
             </Card>
+          </TabsContent>
 
+          <TabsContent value="access">
             <Card>
               <CardHeader>
                 <CardTitle>Access</CardTitle>
@@ -308,8 +333,8 @@ export const SettingsHome = () => (
                 </Button>
               </CardContent>
             </Card>
-          </aside>
-        </section>
+          </TabsContent>
+        </Tabs>
       </div>
     </SidebarInset>
   </SidebarProvider>
