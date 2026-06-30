@@ -28,6 +28,8 @@ Use the pattern `prefix(area): message` with no body/description.
 
 Example: `feat(landing): add hero section`
 
+Do not create a new branch unless explicitly asked.
+
 # Comments
 
 Do not add unnecessary comments, including sectional comments. Only keep comments that clarify non-obvious intent or constraints.
