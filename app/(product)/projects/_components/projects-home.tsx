@@ -1,15 +1,19 @@
+"use client";
+
 import {
   ArrowRight,
-  CheckCircle2,
   FolderKanban,
+  LayoutGrid,
+  List,
   PlusIcon,
-  TriangleAlert,
 } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 
 import { AppHeader, AppSidebar } from "@/components/app-shell";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import type { Project } from "@/lib/projects";
 
@@ -17,110 +21,112 @@ type ProjectsHomeProps = {
   projects: Project[];
 };
 
-export const ProjectsHome = ({ projects }: ProjectsHomeProps) => (
-  <SidebarProvider>
-    <AppSidebar />
-    <SidebarInset className="min-h-svh bg-background text-foreground">
-      <AppHeader title="Projects" />
+type ViewMode = "card" | "list";
 
-      <main className="mx-auto grid w-full max-w-7xl gap-6 px-6 py-6 md:px-10">
-        <section className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
-          <div>
-            <h1 className="text-3xl font-semibold tracking-normal md:text-4xl">
-              Projects
-            </h1>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-              Track active portfolio work and create new project records.
-            </p>
-          </div>
-          <Button asChild>
-            <Link href="/projects/new">
-              <PlusIcon data-icon="inline-start" />
-              New project
-            </Link>
-          </Button>
-        </section>
+export const ProjectsHome = ({ projects }: ProjectsHomeProps) => {
+  const [view, setView] = useState<ViewMode>("card");
 
-        <section className="grid gap-4 md:grid-cols-3">
-          {projects.map((project) => (
-            <Link
-              className="group border border-border bg-card p-5 text-card-foreground transition-colors hover:bg-muted/40"
-              href={`/projects/${project.slug}`}
-              key={project.slug}
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    {project.location}
-                  </p>
-                  <h1 className="mt-2 text-xl font-semibold tracking-normal">
-                    {project.name}
-                  </h1>
-                </div>
-                <FolderKanban className="size-5 text-muted-foreground" />
-              </div>
-              <p className="mt-4 text-sm leading-6 text-muted-foreground">
-                {project.summary}
-              </p>
-              <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
-                <Badge variant="outline">{project.phase}</Badge>
-                <ArrowRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-1" />
-              </div>
-            </Link>
-          ))}
-        </section>
+  return (
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset className="min-h-svh bg-background text-foreground">
+        <AppHeader title="Projects" />
 
-        <section className="border border-border bg-card text-card-foreground">
-          <div className="flex items-center justify-between border-b border-border px-5 py-4">
+        <main className="mx-auto grid w-full max-w-7xl gap-6 px-6 py-6 md:px-10">
+          <section className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
             <div>
-              <h2 className="text-lg font-semibold tracking-normal">
-                Project readiness
-              </h2>
-              <p className="text-sm text-muted-foreground">
-                Active projects across the portfolio
+              <h1 className="text-3xl font-semibold tracking-normal md:text-4xl">
+                Projects
+              </h1>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
+                Track active portfolio work and create new project records.
               </p>
             </div>
-            <CheckCircle2 className="size-5 text-primary" />
-          </div>
-          <div className="divide-y divide-border">
-            {projects.map((project) => (
-              <div
-                className="grid gap-3 px-5 py-4 md:grid-cols-[1fr_10rem_8rem_5rem] md:items-center"
-                key={project.slug}
-              >
-                <Link
-                  className="font-medium hover:text-primary"
-                  href={`/projects/${project.slug}`}
+            <div className="flex items-center gap-3">
+              <ButtonGroup className="rounded-md border border-border p-0.5">
+                <Button
+                  aria-label="Card view"
+                  aria-pressed={view === "card"}
+                  onClick={() => setView("card")}
+                  size="icon"
+                  variant={view === "card" ? "secondary" : "ghost"}
                 >
-                  {project.name}
+                  <LayoutGrid />
+                </Button>
+                <Button
+                  aria-label="List view"
+                  aria-pressed={view === "list"}
+                  onClick={() => setView("list")}
+                  size="icon"
+                  variant={view === "list" ? "secondary" : "ghost"}
+                >
+                  <List />
+                </Button>
+              </ButtonGroup>
+              <Button asChild>
+                <Link href="/projects/new">
+                  <PlusIcon data-icon="inline-start" />
+                  New project
                 </Link>
-                <span className="text-sm text-muted-foreground">
-                  {project.sector}
-                </span>
-                <span className="text-sm text-muted-foreground">
-                  {project.phase}
-                </span>
-                <span className="text-right font-semibold">
-                  {project.stats[0]?.value}
-                </span>
-              </div>
-            ))}
-          </div>
-        </section>
+              </Button>
+            </div>
+          </section>
 
-        <section className="border border-border bg-card p-5 text-card-foreground">
-          <div className="flex items-center justify-between gap-4">
-            <h2 className="text-lg font-semibold tracking-normal">
-              Portfolio risk
-            </h2>
-            <TriangleAlert className="size-5 text-primary" />
-          </div>
-          <p className="mt-4 max-w-3xl text-sm leading-6 text-muted-foreground">
-            New project records appear alongside the demo portfolio so work can
-            be opened from the project index after creation.
-          </p>
-        </section>
-      </main>
-    </SidebarInset>
-  </SidebarProvider>
-);
+          {view === "card" ? (
+            <section className="grid gap-4 md:grid-cols-3">
+              {projects.map((project) => (
+                <Link
+                  className="group border border-border bg-card p-5 text-card-foreground transition-colors hover:bg-muted/40"
+                  href={`/projects/${project.slug}`}
+                  key={project.slug}
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">
+                        {project.location}
+                      </p>
+                      <h2 className="mt-2 text-xl font-semibold tracking-normal">
+                        {project.name}
+                      </h2>
+                    </div>
+                    <FolderKanban className="size-5 text-muted-foreground" />
+                  </div>
+                  <p className="mt-4 text-sm leading-6 text-muted-foreground">
+                    {project.summary}
+                  </p>
+                  <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
+                    <Badge variant="outline">{project.phase}</Badge>
+                    <ArrowRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-1" />
+                  </div>
+                </Link>
+              ))}
+            </section>
+          ) : (
+            <section className="border border-border bg-card text-card-foreground">
+              <div className="divide-y divide-border">
+                {projects.map((project) => (
+                  <Link
+                    className="group grid gap-3 px-5 py-4 transition-colors hover:bg-muted/40 md:grid-cols-[1fr_10rem_8rem_auto] md:items-center"
+                    href={`/projects/${project.slug}`}
+                    key={project.slug}
+                  >
+                    <span className="font-medium group-hover:text-primary">
+                      {project.name}
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      {project.location}
+                    </span>
+                    <Badge className="w-fit" variant="outline">
+                      {project.phase}
+                    </Badge>
+                    <ArrowRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-1 md:justify-self-end" />
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
+        </main>
+      </SidebarInset>
+    </SidebarProvider>
+  );
+};
