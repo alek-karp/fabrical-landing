@@ -6,6 +6,7 @@
       "name": "fabrical-landing",
       "dependencies": {
         "@ai-sdk/react": "^4.0.9",
+        "@ai-sdk/xai": "^4.0.3",
         "@radix-ui/react-use-controllable-state": "^1.2.3",
         "@rive-app/react-webgl2": "^4.29.3",
         "@streamdown/cjk": "^1.0.3",
@@ -55,11 +56,15 @@
 
     "@ai-sdk/mcp": ["@ai-sdk/mcp@2.0.4", "", { "dependencies": { "@ai-sdk/provider": "4.0.1", "@ai-sdk/provider-utils": "5.0.2", "pkce-challenge": "^5.0.1" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-o5edIxgQrssKl/DABaXOzTUG/DUOyn25ilnnczQeLpnlSEUNXqYc3TSOZ7u6aBB+vkersQ7MXkfNMzqulR6CKw=="],
 
+    "@ai-sdk/openai-compatible": ["@ai-sdk/openai-compatible@3.0.2", "", { "dependencies": { "@ai-sdk/provider": "4.0.1", "@ai-sdk/provider-utils": "5.0.2" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-C6qUMe+qSMn7HVr1a0v5H9BXYKhsT5uO4Q2VYVHYdT7johzx+d1gYgFMhkRIoheBpCl5NPhljR4I4sHMWWfz6w=="],
+
     "@ai-sdk/provider": ["@ai-sdk/provider@4.0.1", "", { "dependencies": { "json-schema": "^0.4.0" } }, "sha512-6p3C/vGqVIjcptBu1DnVd/BZJ2wWmV9TUv9192vT6ZvT9KNED8EwRTqyqFpoQZKgSbMDSvBSq3dqR524Nt/Crw=="],
 
     "@ai-sdk/provider-utils": ["@ai-sdk/provider-utils@5.0.2", "", { "dependencies": { "@ai-sdk/provider": "4.0.1", "@standard-schema/spec": "^1.1.0", "@workflow/serde": "4.1.0", "eventsource-parser": "^3.0.8" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-EcmdjJb7yggsZPCbS3MFBpvAUnKaPW+QvanU5GzF00XCq0bqqAmvJ3MN19ejlmOETbW8sJNiq6qam48wTcbUNw=="],
 
     "@ai-sdk/react": ["@ai-sdk/react@4.0.9", "", { "dependencies": { "@ai-sdk/mcp": "2.0.4", "@ai-sdk/provider": "4.0.1", "@ai-sdk/provider-utils": "5.0.2", "ai": "7.0.8", "swr": "^2.4.1", "throttleit": "2.1.0" }, "peerDependencies": { "react": "^18 || ~19.0.1 || ~19.1.2 || ^19.2.1" } }, "sha512-KJ/b9OOHgWHIwugupb+ARBlfh1dqBJhO1hEPzLmlp5R0yD9kARSO0JZxS7a9MFoFML/DytHbcFUUbIuUMAvmsA=="],
+
+    "@ai-sdk/xai": ["@ai-sdk/xai@4.0.3", "", { "dependencies": { "@ai-sdk/openai-compatible": "3.0.2", "@ai-sdk/provider": "4.0.1", "@ai-sdk/provider-utils": "5.0.2" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-Ionx1KwoBYQa6zV0vhz+L4F2lZQ6LntmJPZegI92C4vPbXq3dY6GgVj1U2CVGfLoKXRBT9oill6+C7auDaMubg=="],
 
     "@alloc/quick-lru": ["@alloc/quick-lru@5.2.0", "", {}, "sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw=="],
 
