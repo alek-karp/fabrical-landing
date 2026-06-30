@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { TRPCReactProvider } from "@/trpc/client";
@@ -72,6 +73,7 @@ export default function RootLayout({
         <TRPCReactProvider>
           <TooltipProvider>{children}</TooltipProvider>
         </TRPCReactProvider>
+        <Toaster theme="dark" />
       </body>
     </html>
   );

@@ -3,12 +3,14 @@ import {
   CheckCircle2,
   ClipboardList,
   MapPin,
-  PackageCheck,
+  PencilIcon,
 } from "lucide-react";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { AppHeader, AppSidebar } from "@/components/app-shell";
+import { Button } from "@/components/ui/button";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { projects } from "@/lib/projects";
 import { caller } from "@/trpc/server";
@@ -74,7 +76,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                     {project.description}
                   </p>
                 </div>
-                <PackageCheck className="size-6 text-primary" />
+                <Button asChild variant="outline">
+                  <Link href={`/projects/${project.slug}/edit`}>
+                    <PencilIcon data-icon="inline-start" />
+                    Edit
+                  </Link>
+                </Button>
               </div>
             </section>
 

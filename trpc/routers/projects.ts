@@ -5,6 +5,8 @@ import {
   getPortfolioProject,
   getPortfolioProjects,
   newProjectSchema,
+  updateProjectSchema,
+  updateStoredProject,
 } from "@/lib/projects";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../init";
 
@@ -16,4 +18,7 @@ export const projectsRouter = createTRPCRouter({
   create: protectedProcedure
     .input(newProjectSchema)
     .mutation(({ ctx, input }) => createStoredProject(ctx.supabase, input)),
+  update: protectedProcedure
+    .input(updateProjectSchema)
+    .mutation(({ ctx, input }) => updateStoredProject(ctx.supabase, input)),
 });

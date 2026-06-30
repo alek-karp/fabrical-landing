@@ -1,6 +1,6 @@
 import type { z } from "zod";
 
-import type { newProjectSchema } from "./schema";
+import type { newProjectSchema, updateProjectSchema } from "./schema";
 
 export type Project = {
   slug: string;
@@ -42,3 +42,5 @@ export type StoredProjectRow = {
 };
 
 export type NewProject = z.infer<typeof newProjectSchema>;
+
+export type UpdateProject = z.infer<typeof updateProjectSchema>;

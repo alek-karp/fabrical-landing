@@ -63,3 +63,54 @@ export const createProject = async (
   revalidatePath(`/projects/${project.slug}`);
   redirect(`/projects/${project.slug}`);
 };
+
+export const updateProject = async (
+  _state: CreateProjectState,
+  formData: FormData,
+): Promise<CreateProjectState> => {
+  const slug = getValue(formData, "slug");
+  const values = {
+    name: getValue(formData, "name"),
+    location: getValue(formData, "location"),
+    sector: getValue(formData, "sector"),
+    phase: getValue(formData, "phase") || "Planning",
+    summary: getValue(formData, "summary"),
+    description: getValue(formData, "description"),
+  };
+
+  if (!slug) {
+    return {
+      message: "Unable to identify the project to update.",
+    };
+  }
+
+  const missingField = requiredFields.find((field) => !values[field]);
+
+  if (missingField) {
+    return {
+      message: "Name, location, sector, and summary are required.",
+    };
+  }
+
+  let project: Project;
+
+  try {
+    project = await caller.projects.update({
+      slug,
+      ...values,
+      description: values.description || values.summary,
+    });
+  } catch (error) {
+    return {
+      message:
+        error instanceof Error
+          ? error.message
+          : "Unable to update the project.",
+    };
+  }
+
+  revalidatePath("/projects");
+  revalidatePath(`/projects/${project.slug}`);
+  revalidatePath(`/projects/${project.slug}/edit`);
+  redirect(`/projects/${project.slug}`);
+};

@@ -39,6 +39,14 @@ Do not add unnecessary comments, including sectional comments. Only keep comment
 Avoid custom styling unless explicitly requested. Adding custom background colors or font colors can break existing light/dark pattern support.
 Avoid Tailwind arbitrary values for design tokens, such as `text-[#456231]`, unless explicitly requested.
 
+# Components
+
+Do not modify files in `components/ui/` — these are shadcn-generated primitives. Add or update them via the shadcn CLI, and adjust behavior at the call site (props, wrappers) instead.
+
+# Errors
+
+Always surface user-facing errors as shadcn (sonner) toasts via `toast.error(...)`, not inline on cards or forms.
+
 # Page Structure
 
 Pages should be composed from components. If a page needs substantial custom code, move that code into a dedicated component and import it into the page to keep the page modular.

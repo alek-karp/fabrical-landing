@@ -8,3 +8,7 @@ export const newProjectSchema = z.object({
   summary: z.string().min(1),
   description: z.string().min(1),
 });
+
+export const updateProjectSchema = newProjectSchema.extend({
+  slug: z.string().min(1),
+});

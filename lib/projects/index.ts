@@ -1,10 +1,15 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 import { getProject, projects } from "./data";
-import type { NewProject, Project, StoredProjectRow } from "./types";
+import type {
+  NewProject,
+  Project,
+  StoredProjectRow,
+  UpdateProject,
+} from "./types";
 
 export { getProject, projects } from "./data";
-export { newProjectSchema } from "./schema";
+export { newProjectSchema, updateProjectSchema } from "./schema";
 export * from "./types";
 
 const fallbackStats = [
@@ -112,6 +117,34 @@ export const createStoredProject = async (
       summary: project.summary,
       description: project.description,
     })
+    .select("slug,name,location,sector,phase,summary,description")
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return toProject(data);
+};
+
+export const updateStoredProject = async (
+  supabase: SupabaseClient,
+  project: UpdateProject,
+) => {
+  const { data, error } = await supabase
+    .from("projects")
+    .upsert(
+      {
+        slug: project.slug,
+        name: project.name,
+        location: project.location,
+        sector: project.sector,
+        phase: project.phase,
+        summary: project.summary,
+        description: project.description,
+      },
+      { onConflict: "slug" },
+    )
     .select("slug,name,location,sector,phase,summary,description")
     .single();
 
