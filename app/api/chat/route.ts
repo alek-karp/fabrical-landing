@@ -1,31 +1,47 @@
-import {
-  convertToModelMessages,
-  createUIMessageStreamResponse,
-  streamText,
-  toUIMessageStream,
-  type UIMessage,
-} from "ai";
+import { createAgentUIStreamResponse } from "ai";
 
-import { resolveAiModel } from "@/lib/ai";
+import { getAllowedModel } from "@/lib/ai";
+import { createFabricalAgent } from "@/lib/ai/agents/fabrical-agent";
+import {
+  chatRequestSchema,
+  getJsonBodyByteLength,
+  MAX_CHAT_REQUEST_BYTES,
+} from "@/lib/ai/chat-request";
+import { caller } from "@/trpc/server";
 
 export const maxDuration = 30;
 
 export const POST = async (req: Request) => {
-  const { messages, modelId }: { messages: UIMessage[]; modelId?: unknown } =
-    await req.json();
+  const contentLength = Number(req.headers.get("content-length") ?? 0);
+  if (contentLength > MAX_CHAT_REQUEST_BYTES) {
+    return Response.json({ error: "Request too large" }, { status: 413 });
+  }
 
-  const result = streamText({
-    model: resolveAiModel(modelId),
-    instructions:
-      "You are Fabrical's assistant for electrical construction teams. Help with coordination, scheduling, procurement, and field execution. Be concise and practical.",
-    messages: await convertToModelMessages(messages),
-  });
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return Response.json({ error: "Invalid JSON body" }, { status: 400 });
+  }
 
-  return createUIMessageStreamResponse({
-    stream: toUIMessageStream({
-      stream: result.stream,
-      onError: (error) =>
-        error instanceof Error ? error.message : String(error),
+  if (getJsonBodyByteLength(body) > MAX_CHAT_REQUEST_BYTES) {
+    return Response.json({ error: "Request too large" }, { status: 413 });
+  }
+
+  const parsed = chatRequestSchema.safeParse(body);
+  if (!parsed.success) {
+    return Response.json({ error: "Invalid request body" }, { status: 400 });
+  }
+
+  const { messages, modelId, timeZone } = parsed.data;
+
+  return createAgentUIStreamResponse({
+    agent: createFabricalAgent(caller, {
+      defaultTimeZone: timeZone ?? "UTC",
     }),
+    uiMessages: messages,
+    options: {
+      modelId: getAllowedModel(modelId).id,
+    },
   });
 };

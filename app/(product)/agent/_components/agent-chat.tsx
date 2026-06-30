@@ -1,77 +1,31 @@
 "use client";
 
-import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from "ai";
-import {
-  Activity,
-  Calendar,
-  FileIcon,
-  ListTodo,
-  Paperclip,
-  UploadCloud,
-  Zap,
-} from "lucide-react";
-import { type ReactNode, useEffect, useRef, useState } from "react";
+import { Activity, Calendar, ListTodo, UploadCloud, Zap } from "lucide-react";
+import { type ReactNode, useState } from "react";
 
-import {
-  Attachment,
-  AttachmentInfo,
-  AttachmentPreview,
-  AttachmentRemove,
-  Attachments,
-} from "@/components/ai-elements/attachments";
-import {
-  Context,
-  ContextContent,
-  ContextContentBody,
-  ContextContentFooter,
-  ContextContentHeader,
-  ContextInputUsage,
-  ContextOutputUsage,
-  ContextTrigger,
-} from "@/components/ai-elements/context";
 import {
   Conversation,
   ConversationContent,
   ConversationScrollButton,
 } from "@/components/ai-elements/conversation";
-import {
-  Message,
-  MessageContent,
-  MessageResponse,
-} from "@/components/ai-elements/message";
-import {
-  ModelSelector,
-  ModelSelectorContent,
-  ModelSelectorEmpty,
-  ModelSelectorGroup,
-  ModelSelectorInput,
-  ModelSelectorItem,
-  ModelSelectorList,
-  ModelSelectorLogo,
-  ModelSelectorName,
-  ModelSelectorTrigger,
-} from "@/components/ai-elements/model-selector";
-import {
-  PromptInput,
-  PromptInputActionAddAttachments,
-  PromptInputActionMenu,
-  PromptInputActionMenuContent,
-  PromptInputActionMenuTrigger,
-  PromptInputBody,
-  PromptInputFooter,
-  PromptInputHeader,
-  type PromptInputMessage,
-  PromptInputSubmit,
-  PromptInputTextarea,
-  PromptInputTools,
-  usePromptInputAttachments,
-} from "@/components/ai-elements/prompt-input";
+import { Message, MessageContent } from "@/components/ai-elements/message";
+import type { PromptInputMessage } from "@/components/ai-elements/prompt-input";
 import { Shimmer } from "@/components/ai-elements/shimmer";
-import { Button } from "@/components/ui/button";
-import { AI_MODELS, DEFAULT_CHAT_MODEL_ID, getAllowedModel } from "@/lib/ai";
+import { type AiModelId, DEFAULT_CHAT_MODEL_ID } from "@/lib/ai";
+import type { FabricalAgentUIMessage } from "@/lib/ai/agents/fabrical-agent";
+
+import { AgentChatPromptInput } from "./agent-chat-prompt-input";
+import { AgentMessagePart } from "./agent-message-part";
+import { useAgentChat } from "./use-agent-chat";
+import { useGlobalFileDrag } from "./use-global-file-drag";
 
 type QuickStartTab = "your-activity" | "from-tasks" | "upcoming";
+
+const QUICK_START_TAB_LABELS: Record<QuickStartTab, string> = {
+  "your-activity": "Recent activity",
+  "from-tasks": "From tasks",
+  upcoming: "Upcoming",
+};
 
 const QUICK_START_TABS: {
   id: QuickStartTab;
@@ -151,89 +105,39 @@ const QUICK_START_CARDS: Record<QuickStartTab, QuickCard[]> = {
   ],
 };
 
-const PromptAttachmentsPreview = () => {
-  const attachments = usePromptInputAttachments();
-
-  if (attachments.files.length === 0) {
-    return null;
-  }
-
-  return (
-    <PromptInputHeader>
-      <Attachments variant="inline">
-        {attachments.files.map((file) => (
-          <Attachment
-            data={file}
-            key={file.id}
-            onRemove={() => attachments.remove(file.id)}
-          >
-            <AttachmentPreview />
-            <AttachmentInfo />
-            <AttachmentRemove />
-          </Attachment>
-        ))}
-      </Attachments>
-    </PromptInputHeader>
+const countMessageTextLength = (messages: FabricalAgentUIMessage[]) =>
+  messages.reduce(
+    (total, message) =>
+      total +
+      message.parts.reduce(
+        (partTotal, part) =>
+          partTotal + (part.type === "text" ? part.text.length : 0),
+        0,
+      ),
+    0,
   );
-};
 
 export const AgentChat = () => {
   const [text, setText] = useState("");
-  const [selectedModelId, setSelectedModelId] = useState(DEFAULT_CHAT_MODEL_ID);
+  const [selectedModelId, setSelectedModelId] = useState<AiModelId>(
+    DEFAULT_CHAT_MODEL_ID,
+  );
   const [modelSelectorOpen, setModelSelectorOpen] = useState(false);
   const [activeQuickTab, setActiveQuickTab] =
     useState<QuickStartTab>("your-activity");
-  const [isDragging, setIsDragging] = useState(false);
-  const dragCounterRef = useRef(0);
 
-  const modelIdRef = useRef(selectedModelId);
-  modelIdRef.current = selectedModelId;
+  const isDragging = useGlobalFileDrag();
+  const { messages, sendMessage, status, selectModelId } = useAgentChat();
 
-  const { messages, sendMessage, status } = useChat({
-    transport: new DefaultChatTransport({
-      api: "/api/chat",
-      body: () => ({ modelId: modelIdRef.current }),
-    }),
-  });
-
-  const selectedModel = getAllowedModel(selectedModelId);
-  const usedTokens = messages.reduce(
-    (acc, m) =>
-      acc +
-      m.parts.reduce((s, p) => s + (p.type === "text" ? p.text.length : 0), 0),
-    0,
-  );
+  const usedTokens = countMessageTextLength(messages);
   const isStreaming = status === "streaming" || status === "submitted";
+  const quickStartCategoryLabel = QUICK_START_TAB_LABELS[activeQuickTab];
 
-  useEffect(() => {
-    const onDragEnter = (e: DragEvent) => {
-      if (!e.dataTransfer?.types?.includes("Files")) {
-        return;
-      }
-      dragCounterRef.current += 1;
-      if (dragCounterRef.current === 1) {
-        setIsDragging(true);
-      }
-    };
-    const onDragLeave = () => {
-      dragCounterRef.current -= 1;
-      if (dragCounterRef.current === 0) {
-        setIsDragging(false);
-      }
-    };
-    const onDrop = () => {
-      dragCounterRef.current = 0;
-      setIsDragging(false);
-    };
-    document.addEventListener("dragenter", onDragEnter);
-    document.addEventListener("dragleave", onDragLeave);
-    document.addEventListener("drop", onDrop);
-    return () => {
-      document.removeEventListener("dragenter", onDragEnter);
-      document.removeEventListener("dragleave", onDragLeave);
-      document.removeEventListener("drop", onDrop);
-    };
-  }, []);
+  const handleModelSelect = (modelId: AiModelId) => {
+    selectModelId(modelId);
+    setSelectedModelId(modelId);
+    setModelSelectorOpen(false);
+  };
 
   const handleSubmit = (message: PromptInputMessage) => {
     if (!message.text?.trim() && message.files.length === 0) {
@@ -243,96 +147,21 @@ export const AgentChat = () => {
     setText("");
   };
 
-  const promptInputJsx = (placeholder: string, className?: string) => (
-    <PromptInput
-      accept="image/*,application/pdf,text/plain,text/csv,.md,.docx,.xlsx"
-      className={className ?? "mx-auto w-full max-w-3xl"}
-      globalDrop
-      multiple
-      onSubmit={handleSubmit}
-    >
-      <PromptAttachmentsPreview />
-      <PromptInputBody>
-        <PromptInputTextarea
-          onChange={(e) => setText(e.target.value)}
-          placeholder={placeholder}
-          value={text}
-        />
-      </PromptInputBody>
-      <PromptInputFooter>
-        <PromptInputTools>
-          <PromptInputActionMenu>
-            <PromptInputActionMenuTrigger
-              className="text-muted-foreground"
-              tooltip="Attach files"
-            >
-              <Paperclip className="size-4" />
-            </PromptInputActionMenuTrigger>
-            <PromptInputActionMenuContent>
-              <PromptInputActionAddAttachments label="Upload image or file" />
-            </PromptInputActionMenuContent>
-          </PromptInputActionMenu>
-          <ModelSelector
-            onOpenChange={setModelSelectorOpen}
-            open={modelSelectorOpen}
-          >
-            <ModelSelectorTrigger asChild>
-              <Button
-                className="gap-1.5 text-muted-foreground text-sm"
-                size="sm"
-                type="button"
-                variant="ghost"
-              >
-                <ModelSelectorLogo provider={selectedModel.provider} />
-                {selectedModel.name}
-              </Button>
-            </ModelSelectorTrigger>
-            <ModelSelectorContent>
-              <ModelSelectorInput placeholder="Search models..." />
-              <ModelSelectorList>
-                <ModelSelectorEmpty>No models found.</ModelSelectorEmpty>
-                <ModelSelectorGroup heading="Models">
-                  {AI_MODELS.map((model) => (
-                    <ModelSelectorItem
-                      key={model.id}
-                      onSelect={() => {
-                        setSelectedModelId(model.id);
-                        setModelSelectorOpen(false);
-                      }}
-                      value={model.id}
-                    >
-                      <ModelSelectorLogo provider={model.provider} />
-                      <ModelSelectorName>{model.name}</ModelSelectorName>
-                    </ModelSelectorItem>
-                  ))}
-                </ModelSelectorGroup>
-              </ModelSelectorList>
-            </ModelSelectorContent>
-          </ModelSelector>
-          <Context
-            maxTokens={selectedModel.maxTokens}
-            modelId={selectedModel.id}
-            usedTokens={usedTokens}
-          >
-            <ContextTrigger className="text-sm" size="sm" />
-            <ContextContent>
-              <ContextContentHeader />
-              <ContextContentBody>
-                <ContextInputUsage />
-                <ContextOutputUsage />
-              </ContextContentBody>
-              <ContextContentFooter />
-            </ContextContent>
-          </Context>
-        </PromptInputTools>
-        <PromptInputSubmit status={isStreaming ? "streaming" : "ready"} />
-      </PromptInputFooter>
-    </PromptInput>
-  );
+  const promptInputProps = {
+    isStreaming,
+    modelSelectorOpen,
+    onModelSelect: handleModelSelect,
+    onModelSelectorOpenChange: setModelSelectorOpen,
+    onSubmit: handleSubmit,
+    onTextChange: setText,
+    selectedModelId,
+    text,
+    usedTokens,
+  };
 
   return (
     <div className="relative flex min-h-0 w-full flex-1 flex-col">
-      {isDragging && (
+      {isDragging ? (
         <div className="pointer-events-none fixed inset-0 z-50 flex flex-col items-center justify-center gap-3 bg-background/80 backdrop-blur-sm">
           <UploadCloud className="size-12 text-primary" />
           <p className="font-semibold text-lg">Drop files to attach</p>
@@ -340,7 +169,7 @@ export const AgentChat = () => {
             Images, PDFs, and documents
           </p>
         </div>
-      )}
+      ) : null}
 
       {messages.length === 0 ? (
         <div className="flex flex-1 flex-col items-center overflow-y-auto px-4">
@@ -354,10 +183,11 @@ export const AgentChat = () => {
               unblock procurement — all in one place.
             </p>
             <div className="mt-2 w-full max-w-3xl">
-              {promptInputJsx(
-                "Describe what you need — project, scope, crew, due date…",
-                "w-full",
-              )}
+              <AgentChatPromptInput
+                {...promptInputProps}
+                className="w-full"
+                placeholder="Describe what you need — project, scope, crew, due date…"
+              />
             </div>
           </div>
 
@@ -389,9 +219,7 @@ export const AgentChat = () => {
                   type="button"
                 >
                   <span className="font-medium text-muted-foreground text-sm">
-                    {activeQuickTab === "your-activity" && "Recent activity"}
-                    {activeQuickTab === "from-tasks" && "From tasks"}
-                    {activeQuickTab === "upcoming" && "Upcoming"}
+                    {quickStartCategoryLabel}
                   </span>
                   <p className="text-sm leading-snug">{card.label}</p>
                   <span className="mt-auto text-muted-foreground text-sm">
@@ -409,56 +237,31 @@ export const AgentChat = () => {
               {messages.map((msg) => (
                 <Message from={msg.role} key={msg.id}>
                   <MessageContent>
-                    {msg.parts.map((part, i) => {
-                      if (part.type === "text") {
-                        return (
-                          <MessageResponse key={`${msg.id}-${i}`}>
-                            {part.text}
-                          </MessageResponse>
-                        );
-                      }
-                      if (part.type === "file") {
-                        if (part.mediaType?.startsWith("image/")) {
-                          return (
-                            // biome-ignore lint/performance/noImgElement: attachment previews are local blob URLs, not optimizable by next/image
-                            <img
-                              alt={part.filename ?? "attachment"}
-                              className="max-h-64 max-w-full rounded-lg object-contain"
-                              key={`${msg.id}-${i}`}
-                              src={part.url}
-                            />
-                          );
-                        }
-                        return (
-                          <div
-                            className="flex items-center gap-2 rounded-md border bg-muted/50 px-3 py-2 text-sm"
-                            key={`${msg.id}-${i}`}
-                          >
-                            <FileIcon className="size-4 shrink-0 text-muted-foreground" />
-                            <span className="truncate">
-                              {part.filename ?? "file"}
-                            </span>
-                          </div>
-                        );
-                      }
-                      return null;
-                    })}
+                    {msg.parts.map((part, partIndex) => (
+                      <AgentMessagePart
+                        key={`${msg.id}-${partIndex}`}
+                        part={part}
+                      />
+                    ))}
                   </MessageContent>
                 </Message>
               ))}
-              {status === "submitted" && (
+              {status === "submitted" ? (
                 <Message from="assistant">
                   <MessageContent>
                     <Shimmer>Thinking…</Shimmer>
                   </MessageContent>
                 </Message>
-              )}
+              ) : null}
             </ConversationContent>
             <ConversationScrollButton />
           </Conversation>
 
           <div className="border-t bg-background px-4 py-4">
-            {promptInputJsx("Message…")}
+            <AgentChatPromptInput
+              {...promptInputProps}
+              placeholder="Message…"
+            />
           </div>
         </>
       )}

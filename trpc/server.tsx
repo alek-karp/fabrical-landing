@@ -14,6 +14,7 @@ import { appRouter } from "./routers/_app";
 
 export const getQueryClient = cache(makeQueryClient);
 
+/** Resolves auth from the current request via cached createTRPCContext (cookies). */
 export const caller = appRouter.createCaller(createTRPCContext);
 
 export const trpc = createTRPCOptionsProxy({

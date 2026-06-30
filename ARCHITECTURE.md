@@ -48,6 +48,12 @@ lib/                   pure data layer, organized per feature
 │   ├── data.ts          static seed data + lookups
 │   └── index.ts         store functions (take a SupabaseClient) + barrel re-exports
 └── ai/
+    ├── agents/
+    │   └── fabrical-agent.ts   ToolLoopAgent + InferAgentUIMessage export
+    ├── tools/
+    │   ├── context.ts          shared tool context (tRPC caller)
+    │   ├── *.ts                one tool per file
+    │   └── index.ts            agentTools registry + buildToolsContext
     ├── types.ts
     └── index.ts
 ```
@@ -158,3 +164,30 @@ return (
 3. Register the router in `trpc/routers/_app.ts`.
 4. Consume it via `caller` (server) or `useTRPC()` (client) — never reach into
    the data layer or Supabase directly from app code.
+
+## AI agent tools
+
+Agent tools live under `lib/ai/tools/` — one file per tool, registered in
+`lib/ai/tools/index.ts`. tRPC-backed tools are grouped in `trpcAgentTools`;
+`buildToolsContext` derives their context entries from that map automatically.
+Tools that read or write domain data call the tRPC `caller` (same path as server
+actions), injected per request via `toolsContext` when constructing the agent.
+
+The route handler passes `caller` from `@/trpc/server`. That singleton wraps
+`createTRPCContext`, which is cached per request and reads auth from cookies —
+so protected procedures like `projects.create` see the signed-in user.
+
+```
+app/api/chat/route.ts
+  └─► createFabricalAgent(caller, { defaultTimeZone })
+        └─► agentTools
+              └─► caller.projects.* (trpc)
+```
+
+To add a tool:
+
+1. Create `lib/ai/tools/<tool-name>.ts` with `tool({ description, inputSchema, execute })`.
+2. Register it in `agentTools` in `lib/ai/tools/index.ts`.
+3. If the tool needs the tRPC caller, add it to `trpcAgentTools` (context is wired automatically).
+4. If the tool needs other per-request context, extend `buildToolsContext`.
+5. Export `InferAgentUIMessage` types from the agent file for type-safe UI rendering.
