@@ -1,33 +1,35 @@
 import { Mail } from "lucide-react";
 
+import { routes } from "@/lib/routes";
+
 const footerSections = [
   {
     title: "Product",
     links: [
-      { label: "Preconstruction", href: "/preconstruction" },
-      { label: "Coordination", href: "/coordination" },
-      { label: "Procurement", href: "/procurement" },
-      { label: "Field Ops", href: "/field-ops" },
-      { label: "Reporting", href: "/reporting" },
-      { label: "Pricing", href: "/pricing" },
-      { label: "API", href: "/api" },
+      { label: "Preconstruction", href: routes.marketing.preconstruction },
+      { label: "Coordination", href: routes.marketing.coordination },
+      { label: "Procurement", href: routes.app.procurement },
+      { label: "Field Ops", href: routes.marketing.fieldOps },
+      { label: "Reporting", href: routes.marketing.reporting },
+      { label: "Pricing", href: routes.marketing.pricing },
+      { label: "API", href: routes.marketing.api },
     ],
   },
   {
     title: "Resources",
     links: [
-      { label: "Documentation", href: "/docs" },
-      { label: "Blog", href: "/blog" },
-      { label: "Benchmarks", href: "/benchmarks" },
+      { label: "Documentation", href: routes.marketing.docs },
+      { label: "Blog", href: routes.marketing.blog },
+      { label: "Benchmarks", href: routes.marketing.benchmarks },
     ],
   },
   {
     title: "Company",
     links: [
-      { label: "About", href: "/about" },
-      { label: "Careers", href: "/careers" },
-      { label: "Privacy", href: "/privacy" },
-      { label: "Terms", href: "/terms" },
+      { label: "About", href: routes.marketing.about },
+      { label: "Careers", href: routes.marketing.careers },
+      { label: "Privacy", href: routes.legal.privacy },
+      { label: "Terms", href: routes.legal.terms },
     ],
   },
 ];

@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 
 import { AuthForm } from "@/components/auth-form";
 import { Button } from "@/components/ui/button";
+import { routes } from "@/lib/routes";
 import { createClient } from "@/utils/supabase/server";
 
 const SignupPage = async ({
@@ -26,18 +27,20 @@ const SignupPage = async ({
     });
 
     if (error) {
-      redirect(`/signup?error=${encodeURIComponent(error.message)}`);
+      redirect(
+        `${routes.auth.signup}?error=${encodeURIComponent(error.message)}`,
+      );
     }
 
     if (!data.session) {
       redirect(
-        `/login?error=${encodeURIComponent(
+        `${routes.auth.login}?error=${encodeURIComponent(
           "Check your email to confirm your account.",
         )}`,
       );
     }
 
-    redirect("/app");
+    redirect(routes.app.home);
   };
 
   return (
@@ -47,7 +50,7 @@ const SignupPage = async ({
         variant="ghost"
         className="absolute left-4 top-4 rounded-none md:left-6 md:top-6"
       >
-        <Link href="/">
+        <Link href={routes.home}>
           <ArrowLeft />
           Back
         </Link>

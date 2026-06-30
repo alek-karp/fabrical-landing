@@ -5,6 +5,7 @@ import { AppHeader, AppSidebar } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import type { Project } from "@/lib/projects";
+import { routes } from "@/lib/routes";
 import { EditProjectForm } from "../../../_components/edit-project-form";
 
 type EditProjectHomeProps = {
@@ -28,7 +29,7 @@ export const EditProjectHome = ({ project }: EditProjectHomeProps) => (
             </p>
           </div>
           <Button asChild variant="outline">
-            <Link href={`/projects/${project.slug}`}>
+            <Link href={routes.projects.detail(project.slug)}>
               <ArrowLeftIcon data-icon="inline-start" />
               Back to project
             </Link>

@@ -26,6 +26,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { routes } from "@/lib/routes";
 import { createClient } from "@/utils/supabase/client";
 
 type NavUserData = {
@@ -80,7 +81,7 @@ export function NavUser() {
   const handleLogout = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.push("/login");
+    router.push(routes.auth.login);
   };
 
   const name = user?.name ?? "";

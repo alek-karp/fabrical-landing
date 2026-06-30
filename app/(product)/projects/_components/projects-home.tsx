@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import type { Project } from "@/lib/projects";
+import { routes } from "@/lib/routes";
 
 type ProjectsHomeProps = {
   projects: Project[];
@@ -64,7 +65,7 @@ export const ProjectsHome = ({ projects }: ProjectsHomeProps) => {
                 </Button>
               </ButtonGroup>
               <Button asChild>
-                <Link href="/projects/new">
+                <Link href={routes.projects.new}>
                   <PlusIcon data-icon="inline-start" />
                   New project
                 </Link>
@@ -77,7 +78,7 @@ export const ProjectsHome = ({ projects }: ProjectsHomeProps) => {
               {projects.map((project) => (
                 <Link
                   className="group border border-border bg-card p-5 text-card-foreground transition-colors hover:bg-muted/40"
-                  href={`/projects/${project.slug}`}
+                  href={routes.projects.detail(project.slug)}
                   key={project.slug}
                 >
                   <div className="flex items-start justify-between gap-4">
@@ -107,7 +108,7 @@ export const ProjectsHome = ({ projects }: ProjectsHomeProps) => {
                 {projects.map((project) => (
                   <Link
                     className="group grid gap-3 px-5 py-4 transition-colors hover:bg-muted/40 md:grid-cols-[1fr_10rem_8rem_auto] md:items-center"
-                    href={`/projects/${project.slug}`}
+                    href={routes.projects.detail(project.slug)}
                     key={project.slug}
                   >
                     <span className="font-medium group-hover:text-primary">

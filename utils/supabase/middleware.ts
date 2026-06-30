@@ -1,27 +1,18 @@
 import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
 
+import { authRoutePaths, protectedRoutePrefixes, routes } from "@/lib/routes";
+
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
-const authRoutes = ["/login", "/signup"];
-
-const protectedPrefixes = [
-  "/app",
-  "/agent",
-  "/projects",
-  "/settings",
-  "/procurement",
-  "/dashboard",
-  "/api/chat",
-];
-
 const isProtectedPath = (pathname: string) =>
-  protectedPrefixes.some(
+  protectedRoutePrefixes.some(
     (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
   );
 
-const isAuthPath = (pathname: string) => authRoutes.includes(pathname);
+const isAuthPath = (pathname: string) =>
+  authRoutePaths.includes(pathname as (typeof authRoutePaths)[number]);
 
 export const updateSession = async (request: NextRequest) => {
   if (!supabaseUrl || !supabaseKey) {
@@ -65,14 +56,14 @@ export const updateSession = async (request: NextRequest) => {
     }
 
     const loginUrl = request.nextUrl.clone();
-    loginUrl.pathname = "/login";
+    loginUrl.pathname = routes.auth.login;
     loginUrl.searchParams.set("redirect", pathname);
     return NextResponse.redirect(loginUrl);
   }
 
   if (user && isAuthPath(pathname)) {
     const appUrl = request.nextUrl.clone();
-    appUrl.pathname = "/app";
+    appUrl.pathname = routes.app.home;
     appUrl.search = "";
     return NextResponse.redirect(appUrl);
   }

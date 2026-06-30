@@ -5,11 +5,12 @@ import { redirect } from "next/navigation";
 
 import { AuthForm } from "@/components/auth-form";
 import { Button } from "@/components/ui/button";
+import { routes } from "@/lib/routes";
 import { createClient } from "@/utils/supabase/server";
 
 const getSafeRedirect = (path: string | undefined) => {
   if (!path || !path.startsWith("/") || path.startsWith("//")) {
-    return "/app";
+    return routes.app.home;
   }
 
   return path;
@@ -38,7 +39,7 @@ const LoginPage = async ({
         error: error.message,
         redirect: redirectPath,
       });
-      redirect(`/login?${params.toString()}`);
+      redirect(`${routes.auth.login}?${params.toString()}`);
     }
 
     redirect(redirectPath);
@@ -53,7 +54,7 @@ const LoginPage = async ({
         variant="ghost"
         className="absolute left-4 top-4 rounded-none md:left-6 md:top-6"
       >
-        <Link href="/">
+        <Link href={routes.home}>
           <ArrowLeft />
           Back
         </Link>

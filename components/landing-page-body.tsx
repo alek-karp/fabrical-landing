@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { routes } from "@/lib/routes";
 
 const scopeRows = [
   { label: "Feeder routing", value: 98, tone: "bg-[#fbbf24]" },
@@ -311,7 +312,7 @@ function WorkPackagesSection() {
 function ProductTourLink() {
   return (
     <a
-      href="/"
+      href={routes.home}
       className="flex items-center justify-center gap-2 border-b border-[#d6c28a] bg-[#fff8e4] px-6 py-6 text-sm font-semibold text-[#111827] transition-colors hover:bg-[#fff1bf]"
     >
       <FileText className="size-4" aria-hidden="true" />

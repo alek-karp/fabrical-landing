@@ -29,6 +29,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { projects } from "@/lib/projects";
+import { routes } from "@/lib/routes";
 
 function getProjectIcon(index: number) {
   switch (index) {
@@ -64,33 +65,33 @@ const data = {
   navMain: [
     {
       title: "Command Center",
-      url: "/app",
+      url: routes.app.home,
       icon: <GaugeIcon />,
       isActive: true,
     },
     {
       title: "Agent",
-      url: "/agent",
+      url: routes.app.agent,
       icon: <BotIcon />,
     },
     {
       title: "Procurement",
-      url: "/procurement",
+      url: routes.app.procurement,
       icon: <PackageCheckIcon />,
     },
     {
       title: "All Projects",
-      url: "/projects",
+      url: routes.projects.list,
       icon: <FolderKanbanIcon />,
     },
   ],
   settings: {
     title: "Settings",
-    url: "/settings",
+    url: routes.app.settings,
   },
   projects: projects.map((project, index) => ({
     name: project.name,
-    url: `/projects/${project.slug}`,
+    url: routes.projects.detail(project.slug),
     icon: getProjectIcon(index),
     location: project.location,
   })),

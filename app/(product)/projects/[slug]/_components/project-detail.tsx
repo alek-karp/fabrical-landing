@@ -13,6 +13,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Project } from "@/lib/projects";
+import { routes } from "@/lib/routes";
 
 type ProjectDetailProps = {
   project: Project;
@@ -58,7 +59,7 @@ export const ProjectDetail = ({ project }: ProjectDetailProps) => (
             Export
           </Button>
           <Button asChild>
-            <Link href="/projects/new">
+            <Link href={routes.projects.new}>
               <PlusIcon data-icon="inline-start" />
               Add Project
             </Link>

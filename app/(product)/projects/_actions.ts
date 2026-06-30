@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import type { Project } from "@/lib/projects";
+import { routes } from "@/lib/routes";
 import { caller } from "@/trpc/server";
 
 export type CreateProjectState = {
@@ -59,9 +60,9 @@ export const createProject = async (
     };
   }
 
-  revalidatePath("/projects");
-  revalidatePath(`/projects/${project.slug}`);
-  redirect(`/projects/${project.slug}`);
+  revalidatePath(routes.projects.list);
+  revalidatePath(routes.projects.detail(project.slug));
+  redirect(routes.projects.detail(project.slug));
 };
 
 export const updateProject = async (
@@ -109,8 +110,8 @@ export const updateProject = async (
     };
   }
 
-  revalidatePath("/projects");
-  revalidatePath(`/projects/${project.slug}`);
-  revalidatePath(`/projects/${project.slug}/edit`);
-  redirect(`/projects/${project.slug}`);
+  revalidatePath(routes.projects.list);
+  revalidatePath(routes.projects.detail(project.slug));
+  revalidatePath(routes.projects.edit(project.slug));
+  redirect(routes.projects.detail(project.slug));
 };

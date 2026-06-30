@@ -4,6 +4,7 @@ import Link from "next/link";
 import { AppHeader, AppSidebar } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { routes } from "@/lib/routes";
 import { CreateProjectForm } from "../../_components/create-project-form";
 
 export const NewProjectHome = () => (
@@ -23,7 +24,7 @@ export const NewProjectHome = () => (
             </p>
           </div>
           <Button asChild variant="outline">
-            <Link href="/projects">
+            <Link href={routes.projects.list}>
               <ArrowLeftIcon data-icon="inline-start" />
               Projects
             </Link>

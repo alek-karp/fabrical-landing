@@ -6,6 +6,7 @@ import { createTRPCClient, httpBatchLink } from "@trpc/client";
 import { createTRPCContext } from "@trpc/tanstack-react-query";
 import { useState } from "react";
 
+import { routes } from "@/lib/routes";
 import { makeQueryClient } from "./query-client";
 import type { AppRouter } from "./routers/_app";
 
@@ -28,7 +29,7 @@ const getUrl = () => {
     if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
     return "http://localhost:3000";
   })();
-  return `${base}/api/trpc`;
+  return `${base}${routes.api.trpc}`;
 };
 
 export const TRPCReactProvider = ({

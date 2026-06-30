@@ -12,6 +12,7 @@ import {
   FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { routes } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
 type AuthFormProps = React.ComponentProps<"div"> & {
@@ -28,7 +29,7 @@ const copy = {
     passwordAutoComplete: "current-password",
     footerPrompt: "Don't have an account?",
     footerLinkLabel: "Sign up",
-    footerHref: "/signup",
+    footerHref: routes.auth.signup,
   },
   signup: {
     title: "Create your account",
@@ -37,7 +38,7 @@ const copy = {
     passwordAutoComplete: "new-password",
     footerPrompt: "Already have an account?",
     footerLinkLabel: "Login",
-    footerHref: "/login",
+    footerHref: routes.auth.login,
   },
 } as const;
 
@@ -79,7 +80,7 @@ export function AuthForm({
                   <FieldLabel htmlFor="password">Password</FieldLabel>
                   {variant === "login" ? (
                     <a
-                      href="/login"
+                      href={routes.auth.login}
                       className="ml-auto text-sm underline-offset-2 hover:underline"
                     >
                       Forgot your password?
@@ -165,8 +166,8 @@ export function AuthForm({
       </Card>
       <FieldDescription className="px-6 text-center">
         By clicking continue, you agree to our{" "}
-        <a href="/terms">Terms of Service</a> and{" "}
-        <a href="/privacy">Privacy Policy</a>.
+        <a href={routes.legal.terms}>Terms of Service</a> and{" "}
+        <a href={routes.legal.privacy}>Privacy Policy</a>.
       </FieldDescription>
     </div>
   );
