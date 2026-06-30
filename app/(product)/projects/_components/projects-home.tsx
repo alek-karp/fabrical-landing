@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { AppHeader, AppSidebar } from "@/components/app-shell";
+import { LocationBadge } from "@/components/location-badge";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -85,9 +86,7 @@ export const ProjectsHome = ({ projects }: ProjectsHomeProps) => {
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <p className="text-sm font-medium text-muted-foreground">
-                        {project.location}
-                      </p>
+                      <LocationBadge location={project.location} />
                       <h2 className="mt-2 text-xl font-semibold tracking-normal">
                         {project.name}
                       </h2>
@@ -124,9 +123,7 @@ export const ProjectsHome = ({ projects }: ProjectsHomeProps) => {
                     <span className="font-medium group-hover:text-primary">
                       {project.name}
                     </span>
-                    <span className="text-sm text-muted-foreground">
-                      {project.location}
-                    </span>
+                    <LocationBadge location={project.location} />
                     <Badge className="w-fit" variant="outline">
                       {project.phase}
                     </Badge>

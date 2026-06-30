@@ -6,11 +6,11 @@ import {
   CheckCircle2,
   ClipboardList,
   FileText,
-  MapPin,
   PlusIcon,
 } from "lucide-react";
 import Link from "next/link";
 
+import { LocationBadge } from "@/components/location-badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Project } from "@/lib/projects";
@@ -85,10 +85,7 @@ export const ProjectDetail = ({ project }: ProjectDetailProps) => (
                 <span className="w-fit border border-border px-2 py-1 text-xs font-semibold uppercase">
                   {project.phase}
                 </span>
-                <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                  <MapPin className="size-4" />
-                  {project.location}
-                </span>
+                <LocationBadge location={project.location} />
                 {formatProjectDeadline(project.deadline) ? (
                   <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
                     <CalendarDays className="size-4" />
