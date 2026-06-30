@@ -7,7 +7,7 @@ import {
   PackageCheck,
 } from "lucide-react";
 
-import { AppSidebar } from "@/components/app-sidebar";
+import { AppSidebar } from "@/components/app-shell";
 import {
   SidebarInset,
   SidebarProvider,
