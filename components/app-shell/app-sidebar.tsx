@@ -19,7 +19,6 @@ import { NavMain } from "@/components/nav-main";
 import { NavProjects } from "@/components/nav-projects";
 import { NavUser } from "@/components/nav-user";
 import { TeamSwitcher } from "@/components/team-switcher";
-
 import {
   Sidebar,
   SidebarContent,
@@ -27,6 +26,20 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { projects } from "@/lib/projects";
+
+function getProjectIcon(index: number) {
+  switch (index) {
+    case 0:
+      return <FolderKanbanIcon />;
+    case 1:
+      return <UsersRoundIcon />;
+    case 2:
+      return <AlertTriangleIcon />;
+    default:
+      return <CalendarDaysIcon />;
+  }
+}
 
 const data = {
   user: {
@@ -76,12 +89,6 @@ const data = {
       title: "Agent",
       url: "/agent",
       icon: <BotIcon />,
-      items: [
-        {
-          title: "Chat",
-          url: "/agent",
-        },
-      ],
     },
     {
       title: "Work Packages",
@@ -104,22 +111,8 @@ const data = {
     },
     {
       title: "Procurement",
-      url: "#",
+      url: "/procurement",
       icon: <PackageCheckIcon />,
-      items: [
-        {
-          title: "Material actions",
-          url: "#",
-        },
-        {
-          title: "Submittals",
-          url: "#",
-        },
-        {
-          title: "Vendor holds",
-          url: "#",
-        },
-      ],
     },
     {
       title: "Settings",
@@ -141,28 +134,12 @@ const data = {
       ],
     },
   ],
-  projects: [
-    {
-      name: "Level 04 rough-in",
-      url: "#",
-      icon: <FolderKanbanIcon />,
-    },
-    {
-      name: "MCC room prefab",
-      url: "#",
-      icon: <UsersRoundIcon />,
-    },
-    {
-      name: "Switchgear release",
-      url: "#",
-      icon: <AlertTriangleIcon />,
-    },
-    {
-      name: "Install week plan",
-      url: "#",
-      icon: <CalendarDaysIcon />,
-    },
-  ],
+  projects: projects.map((project, index) => ({
+    name: project.name,
+    url: `/projects/${project.slug}`,
+    icon: getProjectIcon(index),
+    location: project.location,
+  })),
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {

@@ -30,6 +30,7 @@ export function NavProjects({
     name: string;
     url: string;
     icon: React.ReactNode;
+    location?: string;
   }[];
 }) {
   const { isMobile } = useSidebar();
@@ -61,9 +62,11 @@ export function NavProjects({
                 side={isMobile ? "bottom" : "right"}
                 align={isMobile ? "end" : "start"}
               >
-                <DropdownMenuItem>
-                  <FolderIcon />
-                  <span>View Project</span>
+                <DropdownMenuItem asChild>
+                  <a href={item.url}>
+                    <FolderIcon />
+                    <span>View Project</span>
+                  </a>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <ArrowRightIcon />
