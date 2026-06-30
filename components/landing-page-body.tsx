@@ -1,6 +1,7 @@
 import { ArrowDownRight, ArrowRight, FileText, Zap } from "lucide-react";
 import type { ReactNode } from "react";
 
+import { BenchmarksSection } from "@/components/benchmarks-section";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -355,6 +356,7 @@ export function LandingPageBody() {
         <ProductIntro />
         <PlanningSection />
         <WorkPackagesSection />
+        <BenchmarksSection />
         <ProductTourLink />
         <FeaturePipeline />
       </div>
