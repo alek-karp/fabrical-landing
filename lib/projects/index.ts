@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import slugify from "slugify";
 
 import { getProject, projects } from "./data";
 import type {
@@ -35,14 +36,6 @@ const fallbackWorkPackages = [
   { name: "Scope import", owner: "Coordination", state: "Queued" },
   { name: "Baseline schedule", owner: "Planning", state: "Queued" },
 ];
-
-const slugify = (value: string) =>
-  value
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)+/g, "")
-    .slice(0, 64);
 
 const toProject = (row: StoredProjectRow): Project => ({
   slug: row.slug,
@@ -103,7 +96,11 @@ export const createStoredProject = async (
   supabase: SupabaseClient,
   project: NewProject,
 ) => {
-  const baseSlug = slugify(project.name) || "project";
+  const baseSlug = slugify(project.name, {
+    lower: true,
+    strict: true,
+    trim: true,
+  });
   const slug = `${baseSlug}-${crypto.randomUUID().slice(0, 8)}`;
 
   const { data, error } = await supabase
