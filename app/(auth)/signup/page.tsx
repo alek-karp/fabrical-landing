@@ -7,26 +7,34 @@ import { AuthForm } from "@/components/auth-form";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/server";
 
-const LoginPage = async ({
+const SignupPage = async ({
   searchParams,
 }: {
   searchParams: Promise<{ error?: string }>;
 }) => {
   const { error } = await searchParams;
 
-  const login = async (formData: FormData) => {
+  const signup = async (formData: FormData) => {
     "use server";
 
     const cookieStore = await cookies();
     const supabase = createClient(cookieStore);
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signUp({
       email: String(formData.get("email")),
       password: String(formData.get("password")),
     });
 
     if (error) {
-      redirect(`/login?error=${encodeURIComponent(error.message)}`);
+      redirect(`/signup?error=${encodeURIComponent(error.message)}`);
+    }
+
+    if (!data.session) {
+      redirect(
+        `/login?error=${encodeURIComponent(
+          "Check your email to confirm your account.",
+        )}`,
+      );
     }
 
     redirect("/app");
@@ -45,10 +53,10 @@ const LoginPage = async ({
         </Link>
       </Button>
       <div className="w-full max-w-sm md:max-w-4xl">
-        <AuthForm variant="login" action={login} error={error} />
+        <AuthForm variant="signup" action={signup} error={error} />
       </div>
     </div>
   );
 };
 
-export default LoginPage;
+export default SignupPage;

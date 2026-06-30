@@ -44,11 +44,6 @@ function getProjectIcon(index: number) {
 }
 
 const data = {
-  user: {
-    name: "Site PM",
-    email: "pm@fabrical.ai",
-    avatar: "",
-  },
   teams: [
     {
       name: "Fabrical",
@@ -117,7 +112,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
