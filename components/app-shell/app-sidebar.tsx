@@ -86,7 +86,7 @@ const data = {
   ],
   settings: {
     title: "Settings",
-    url: "#",
+    url: "/settings",
   },
   projects: projects.map((project, index) => ({
     name: project.name,
