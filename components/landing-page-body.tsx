@@ -343,8 +343,8 @@ function FeaturePipeline() {
 
 export function LandingPageBody() {
   return (
-    <main className="min-h-screen bg-[#f5efd8] px-4 text-[#111827] sm:px-6 lg:px-10">
-      <div className="mx-auto max-w-6xl border-x border-[#c39a26] bg-white">
+    <main className="min-h-screen bg-white px-4 text-[#111827] sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-[1400px] border-x border-[#c39a26] bg-white">
         <div
           className="h-20 border-b border-[#c39a26]"
           style={{

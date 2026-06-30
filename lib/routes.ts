@@ -2,7 +2,6 @@ export const routes = {
   home: "/",
 
   marketing: {
-    new: "/new",
     preconstruction: "/preconstruction",
     coordination: "/coordination",
     fieldOps: "/field-ops",
