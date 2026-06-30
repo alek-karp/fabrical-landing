@@ -6,14 +6,6 @@ import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
   Field,
   FieldDescription,
   FieldGroup,
@@ -72,18 +64,17 @@ export const ProjectForm = ({
   }, [state]);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
-        <CardAction>
-          <Icon />
-        </CardAction>
-      </CardHeader>
-      <CardContent>
+    <div className="border border-border bg-card text-card-foreground">
+      <div className="flex items-start justify-between border-b border-border px-6 py-4">
+        <div>
+          <p className="font-medium">{title}</p>
+          <p className="mt-0.5 text-sm text-muted-foreground">{description}</p>
+        </div>
+      </div>
+      <div className="p-6">
         <form action={formAction}>
           {slug ? <input name="slug" type="hidden" value={slug} /> : null}
-          <FieldGroup>
+          <FieldGroup className="gap-5">
             <Field>
               <FieldLabel htmlFor="project-name">Project name</FieldLabel>
               <Input
@@ -116,17 +107,17 @@ export const ProjectForm = ({
                 />
               </Field>
             </div>
-            <Field>
-              <FieldLabel htmlFor="project-phase">Phase</FieldLabel>
-              <ProjectPhaseSelect defaultValue={defaultValues?.phase} />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="project-deadline">Deadline</FieldLabel>
-              <ProjectDeadlinePicker defaultValue={defaultValues?.deadline} />
-              <FieldDescription>
-                Optional target completion date for this project.
-              </FieldDescription>
-            </Field>
+            <div className="grid gap-4 md:grid-cols-2">
+              <Field>
+                <FieldLabel htmlFor="project-phase">Phase</FieldLabel>
+                <ProjectPhaseSelect defaultValue={defaultValues?.phase} />
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="project-deadline">Deadline</FieldLabel>
+                <ProjectDeadlinePicker defaultValue={defaultValues?.deadline} />
+                <FieldDescription>Optional target completion date.</FieldDescription>
+              </Field>
+            </div>
             <Field>
               <FieldLabel htmlFor="project-summary">Summary</FieldLabel>
               <Textarea
@@ -137,7 +128,7 @@ export const ProjectForm = ({
                 required
               />
               <FieldDescription>
-                This appears on project cards and in the portfolio table.
+                Appears on project cards and in the portfolio table.
               </FieldDescription>
             </Field>
             <Field>
@@ -157,7 +148,7 @@ export const ProjectForm = ({
             </Field>
           </FieldGroup>
         </form>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
