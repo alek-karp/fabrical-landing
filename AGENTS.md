@@ -30,3 +30,7 @@ Prefer arrow functions for new code and refactors, including React components, u
 
 Only run `bun run verify` to verify work.
 Never run the dev server.
+
+# Environment Variables
+
+When adding or changing environment variables, update `.env.example` in the same change.
