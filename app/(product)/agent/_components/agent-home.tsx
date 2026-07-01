@@ -1,15 +1,9 @@
-import { AppHeader, AppSidebar } from "@/components/app-shell";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { AppShell } from "@/components/app-shell";
 
 import { AgentChat } from "./agent-chat";
 
 export const AgentHome = () => (
-  <SidebarProvider>
-    <AppSidebar />
-    <SidebarInset className="flex min-h-svh flex-col bg-background text-foreground">
-      <AppHeader title="Agent" />
-
-      <AgentChat />
-    </SidebarInset>
-  </SidebarProvider>
+  <AppShell title="Agent" bare>
+    <AgentChat />
+  </AppShell>
 );

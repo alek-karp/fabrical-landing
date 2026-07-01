@@ -34,7 +34,7 @@ const placeholderTabs = tabs.filter(
 );
 
 export const ProjectDetail = ({ project }: ProjectDetailProps) => (
-  <main className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-6 py-6 md:px-10">
+  <>
     <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
       <h1 className="text-3xl font-semibold tracking-normal md:text-4xl">
         {project.name}
@@ -227,5 +227,5 @@ export const ProjectDetail = ({ project }: ProjectDetailProps) => (
         </TabsContent>
       ))}
     </Tabs>
-  </main>
+  </>
 );

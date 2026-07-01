@@ -7,10 +7,9 @@ import {
   TvIcon,
 } from "lucide-react";
 
-import { AppHeader, AppSidebar } from "@/components/app-shell";
+import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 const transactions = [
   {
@@ -56,55 +55,46 @@ const formatAmount = (amount: number) => {
 };
 
 export const TransactionsHome = () => (
-  <SidebarProvider>
-    <AppSidebar />
-    <SidebarInset className="min-h-svh bg-background text-foreground">
-      <AppHeader title="Transactions" />
-
-      <div className="flex flex-col gap-6 px-6 py-6 md:px-10">
-        <div className="flex items-start justify-between">
-          <div>
-            <h1 className="text-xl font-semibold">Recent Transactions</h1>
-            <p className="text-sm text-muted-foreground">
-              Your latest account activity.
-            </p>
-          </div>
-          <Button variant="outline" size="sm">
-            View All
-          </Button>
-        </div>
-
-        <div className="flex flex-col">
-          {transactions.map((tx, i) => (
-            <div key={tx.name}>
-              <div className="flex items-center gap-4 py-4">
-                <div className="flex size-12 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
-                  {tx.icon}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="font-medium">{tx.name}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {tx.category}
-                  </p>
-                </div>
-                <p className="hidden flex-1 text-sm text-muted-foreground sm:block">
-                  {tx.date}
-                </p>
-                <p
-                  className={`font-medium tabular-nums ${tx.amount >= 0 ? "text-green-500" : ""}`}
-                >
-                  {formatAmount(tx.amount)}
-                </p>
-                <Button variant="ghost" size="icon" className="shrink-0">
-                  <MoreHorizontalIcon className="size-4" />
-                  <span className="sr-only">More options</span>
-                </Button>
-              </div>
-              {i < transactions.length - 1 && <Separator />}
-            </div>
-          ))}
-        </div>
+  <AppShell title="Transactions">
+    <div className="flex items-start justify-between">
+      <div>
+        <h1 className="text-xl font-semibold">Recent Transactions</h1>
+        <p className="text-sm text-muted-foreground">
+          Your latest account activity.
+        </p>
       </div>
-    </SidebarInset>
-  </SidebarProvider>
+      <Button variant="outline" size="sm">
+        View All
+      </Button>
+    </div>
+
+    <div className="flex flex-col">
+      {transactions.map((tx, i) => (
+        <div key={tx.name}>
+          <div className="flex items-center gap-4 py-4">
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
+              {tx.icon}
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="font-medium">{tx.name}</p>
+              <p className="text-sm text-muted-foreground">{tx.category}</p>
+            </div>
+            <p className="hidden flex-1 text-sm text-muted-foreground sm:block">
+              {tx.date}
+            </p>
+            <p
+              className={`font-medium tabular-nums ${tx.amount >= 0 ? "text-green-500" : ""}`}
+            >
+              {formatAmount(tx.amount)}
+            </p>
+            <Button variant="ghost" size="icon" className="shrink-0">
+              <MoreHorizontalIcon className="size-4" />
+              <span className="sr-only">More options</span>
+            </Button>
+          </div>
+          {i < transactions.length - 1 && <Separator />}
+        </div>
+      ))}
+    </div>
+  </AppShell>
 );

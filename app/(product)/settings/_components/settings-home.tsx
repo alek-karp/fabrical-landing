@@ -8,7 +8,7 @@ import {
   UserRoundIcon,
 } from "lucide-react";
 
-import { AppHeader, AppSidebar } from "@/components/app-shell";
+import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -37,7 +37,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -75,267 +74,247 @@ const workspaceSettings = [
 ];
 
 export const SettingsHome = () => (
-  <SidebarProvider>
-    <AppSidebar />
-    <SidebarInset className="min-h-svh bg-background text-foreground">
-      <AppHeader title="Settings" />
-
-      <div className="mx-auto flex max-w-7xl flex-col gap-6 px-6 py-6 md:px-10">
-        <section className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
-          <div>
-            <h1 className="text-3xl font-semibold tracking-normal md:text-4xl">
-              Settings
-            </h1>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-              Manage account details, project defaults, notifications, and
-              access controls for the product workspace.
-            </p>
-          </div>
-          <Button>
-            Save changes
-            <SaveIcon data-icon="inline-end" />
-          </Button>
-        </section>
-
-        <Tabs defaultValue="account" className="gap-6">
-          <TabsList className="w-full justify-start overflow-x-auto">
-            <TabsTrigger value="account">
-              <UserRoundIcon data-icon="inline-start" />
-              Account
-            </TabsTrigger>
-            <TabsTrigger value="project-defaults">
-              <SlidersHorizontalIcon data-icon="inline-start" />
-              Project defaults
-            </TabsTrigger>
-            <TabsTrigger value="notifications">
-              <BellIcon data-icon="inline-start" />
-              Notifications
-            </TabsTrigger>
-            <TabsTrigger value="workspace">
-              <Building2Icon data-icon="inline-start" />
-              Workspace
-            </TabsTrigger>
-            <TabsTrigger value="access">
-              <ShieldCheckIcon data-icon="inline-start" />
-              Access
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="account">
-            <Card>
-              <CardHeader>
-                <CardTitle>Account</CardTitle>
-                <CardDescription>
-                  Profile information shown across project activity.
-                </CardDescription>
-                <CardAction>
-                  <UserRoundIcon />
-                </CardAction>
-              </CardHeader>
-              <CardContent>
-                <FieldGroup>
-                  <Field>
-                    <FieldLabel htmlFor="settings-name">Name</FieldLabel>
-                    <Input id="settings-name" defaultValue="Site PM" />
-                  </Field>
-                  <Field>
-                    <FieldLabel htmlFor="settings-email">Email</FieldLabel>
-                    <Input
-                      id="settings-email"
-                      defaultValue="pm@fabrical.ai"
-                      type="email"
-                    />
-                  </Field>
-                  <Field>
-                    <FieldLabel htmlFor="settings-role">Role</FieldLabel>
-                    <Select defaultValue="pm">
-                      <SelectTrigger id="settings-role" className="w-full">
-                        <SelectValue placeholder="Select role" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectItem value="pm">Project manager</SelectItem>
-                          <SelectItem value="foreman">Foreman</SelectItem>
-                          <SelectItem value="executive">Executive</SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </Field>
-                </FieldGroup>
-              </CardContent>
-              <CardFooter className="justify-between border-t">
-                <p className="text-sm text-muted-foreground">
-                  Last profile sync completed today.
-                </p>
-                <CheckCircle2Icon />
-              </CardFooter>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="project-defaults">
-            <Card>
-              <CardHeader>
-                <CardTitle>Project defaults</CardTitle>
-                <CardDescription>
-                  Configure how the app prioritizes active construction work.
-                </CardDescription>
-                <CardAction>
-                  <SlidersHorizontalIcon />
-                </CardAction>
-              </CardHeader>
-              <CardContent>
-                <FieldGroup>
-                  <Field>
-                    <FieldLabel htmlFor="settings-project">
-                      Default project
-                    </FieldLabel>
-                    <Select defaultValue="dc-west">
-                      <SelectTrigger id="settings-project" className="w-full">
-                        <SelectValue placeholder="Select project" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectItem value="dc-west">
-                            Data Center West
-                          </SelectItem>
-                          <SelectItem value="advanced-manufacturing">
-                            Advanced Manufacturing
-                          </SelectItem>
-                          <SelectItem value="campus-upgrade">
-                            Campus Upgrade
-                          </SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </Field>
-                  <Field>
-                    <FieldLabel htmlFor="settings-risk-window">
-                      Risk review window
-                    </FieldLabel>
-                    <Select defaultValue="14">
-                      <SelectTrigger
-                        id="settings-risk-window"
-                        className="w-full"
-                      >
-                        <SelectValue placeholder="Select window" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectItem value="7">Next 7 days</SelectItem>
-                          <SelectItem value="14">Next 14 days</SelectItem>
-                          <SelectItem value="30">Next 30 days</SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </Field>
-                  <Field>
-                    <FieldLabel htmlFor="settings-timezone">
-                      Time zone
-                    </FieldLabel>
-                    <Select defaultValue="pacific">
-                      <SelectTrigger id="settings-timezone" className="w-full">
-                        <SelectValue placeholder="Select time zone" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectItem value="pacific">Pacific Time</SelectItem>
-                          <SelectItem value="mountain">
-                            Mountain Time
-                          </SelectItem>
-                          <SelectItem value="central">Central Time</SelectItem>
-                          <SelectItem value="eastern">Eastern Time</SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </Field>
-                </FieldGroup>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="notifications">
-            <Card>
-              <CardHeader>
-                <CardTitle>Notifications</CardTitle>
-                <CardDescription>
-                  Choose which workspace events need attention.
-                </CardDescription>
-                <CardAction>
-                  <BellIcon />
-                </CardAction>
-              </CardHeader>
-              <CardContent>
-                <FieldGroup>
-                  {notificationSettings.map((setting) => (
-                    <Field orientation="horizontal" key={setting.title}>
-                      <Switch
-                        aria-label={setting.title}
-                        defaultChecked={setting.defaultChecked}
-                      />
-                      <FieldContent>
-                        <FieldTitle>{setting.title}</FieldTitle>
-                        <FieldDescription>
-                          {setting.description}
-                        </FieldDescription>
-                      </FieldContent>
-                    </Field>
-                  ))}
-                </FieldGroup>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="workspace">
-            <Card>
-              <CardHeader>
-                <CardTitle>Workspace</CardTitle>
-                <CardDescription>
-                  Current operating defaults for the app.
-                </CardDescription>
-                <CardAction>
-                  <Building2Icon />
-                </CardAction>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-4">
-                {workspaceSettings.map((setting, index) => (
-                  <div className="flex flex-col gap-3" key={setting.label}>
-                    <div className="flex items-start justify-between gap-4">
-                      <p className="text-sm text-muted-foreground">
-                        {setting.label}
-                      </p>
-                      <p className="max-w-40 text-right text-sm font-medium">
-                        {setting.value}
-                      </p>
-                    </div>
-                    {index < workspaceSettings.length - 1 ? (
-                      <Separator />
-                    ) : null}
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="access">
-            <Card>
-              <CardHeader>
-                <CardTitle>Access</CardTitle>
-                <CardDescription>
-                  Admin approval is required for workspace role changes.
-                </CardDescription>
-                <CardAction>
-                  <ShieldCheckIcon />
-                </CardAction>
-              </CardHeader>
-              <CardContent>
-                <Button className="w-full" variant="outline">
-                  Manage access
-                </Button>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+  <AppShell title="Settings">
+    <section className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
+      <div>
+        <h1 className="text-3xl font-semibold tracking-normal md:text-4xl">
+          Settings
+        </h1>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
+          Manage account details, project defaults, notifications, and access
+          controls for the product workspace.
+        </p>
       </div>
-    </SidebarInset>
-  </SidebarProvider>
+      <Button>
+        Save changes
+        <SaveIcon data-icon="inline-end" />
+      </Button>
+    </section>
+
+    <Tabs defaultValue="account" className="gap-6">
+      <TabsList className="w-full justify-start overflow-x-auto">
+        <TabsTrigger value="account">
+          <UserRoundIcon data-icon="inline-start" />
+          Account
+        </TabsTrigger>
+        <TabsTrigger value="project-defaults">
+          <SlidersHorizontalIcon data-icon="inline-start" />
+          Project defaults
+        </TabsTrigger>
+        <TabsTrigger value="notifications">
+          <BellIcon data-icon="inline-start" />
+          Notifications
+        </TabsTrigger>
+        <TabsTrigger value="workspace">
+          <Building2Icon data-icon="inline-start" />
+          Workspace
+        </TabsTrigger>
+        <TabsTrigger value="access">
+          <ShieldCheckIcon data-icon="inline-start" />
+          Access
+        </TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="account">
+        <Card>
+          <CardHeader>
+            <CardTitle>Account</CardTitle>
+            <CardDescription>
+              Profile information shown across project activity.
+            </CardDescription>
+            <CardAction>
+              <UserRoundIcon />
+            </CardAction>
+          </CardHeader>
+          <CardContent>
+            <FieldGroup>
+              <Field>
+                <FieldLabel htmlFor="settings-name">Name</FieldLabel>
+                <Input id="settings-name" defaultValue="Site PM" />
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="settings-email">Email</FieldLabel>
+                <Input
+                  id="settings-email"
+                  defaultValue="pm@fabrical.ai"
+                  type="email"
+                />
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="settings-role">Role</FieldLabel>
+                <Select defaultValue="pm">
+                  <SelectTrigger id="settings-role" className="w-full">
+                    <SelectValue placeholder="Select role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="pm">Project manager</SelectItem>
+                      <SelectItem value="foreman">Foreman</SelectItem>
+                      <SelectItem value="executive">Executive</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </Field>
+            </FieldGroup>
+          </CardContent>
+          <CardFooter className="justify-between border-t">
+            <p className="text-sm text-muted-foreground">
+              Last profile sync completed today.
+            </p>
+            <CheckCircle2Icon />
+          </CardFooter>
+        </Card>
+      </TabsContent>
+
+      <TabsContent value="project-defaults">
+        <Card>
+          <CardHeader>
+            <CardTitle>Project defaults</CardTitle>
+            <CardDescription>
+              Configure how the app prioritizes active construction work.
+            </CardDescription>
+            <CardAction>
+              <SlidersHorizontalIcon />
+            </CardAction>
+          </CardHeader>
+          <CardContent>
+            <FieldGroup>
+              <Field>
+                <FieldLabel htmlFor="settings-project">
+                  Default project
+                </FieldLabel>
+                <Select defaultValue="dc-west">
+                  <SelectTrigger id="settings-project" className="w-full">
+                    <SelectValue placeholder="Select project" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="dc-west">Data Center West</SelectItem>
+                      <SelectItem value="advanced-manufacturing">
+                        Advanced Manufacturing
+                      </SelectItem>
+                      <SelectItem value="campus-upgrade">
+                        Campus Upgrade
+                      </SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="settings-risk-window">
+                  Risk review window
+                </FieldLabel>
+                <Select defaultValue="14">
+                  <SelectTrigger id="settings-risk-window" className="w-full">
+                    <SelectValue placeholder="Select window" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="7">Next 7 days</SelectItem>
+                      <SelectItem value="14">Next 14 days</SelectItem>
+                      <SelectItem value="30">Next 30 days</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="settings-timezone">Time zone</FieldLabel>
+                <Select defaultValue="pacific">
+                  <SelectTrigger id="settings-timezone" className="w-full">
+                    <SelectValue placeholder="Select time zone" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="pacific">Pacific Time</SelectItem>
+                      <SelectItem value="mountain">Mountain Time</SelectItem>
+                      <SelectItem value="central">Central Time</SelectItem>
+                      <SelectItem value="eastern">Eastern Time</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </Field>
+            </FieldGroup>
+          </CardContent>
+        </Card>
+      </TabsContent>
+
+      <TabsContent value="notifications">
+        <Card>
+          <CardHeader>
+            <CardTitle>Notifications</CardTitle>
+            <CardDescription>
+              Choose which workspace events need attention.
+            </CardDescription>
+            <CardAction>
+              <BellIcon />
+            </CardAction>
+          </CardHeader>
+          <CardContent>
+            <FieldGroup>
+              {notificationSettings.map((setting) => (
+                <Field orientation="horizontal" key={setting.title}>
+                  <Switch
+                    aria-label={setting.title}
+                    defaultChecked={setting.defaultChecked}
+                  />
+                  <FieldContent>
+                    <FieldTitle>{setting.title}</FieldTitle>
+                    <FieldDescription>{setting.description}</FieldDescription>
+                  </FieldContent>
+                </Field>
+              ))}
+            </FieldGroup>
+          </CardContent>
+        </Card>
+      </TabsContent>
+
+      <TabsContent value="workspace">
+        <Card>
+          <CardHeader>
+            <CardTitle>Workspace</CardTitle>
+            <CardDescription>
+              Current operating defaults for the app.
+            </CardDescription>
+            <CardAction>
+              <Building2Icon />
+            </CardAction>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4">
+            {workspaceSettings.map((setting, index) => (
+              <div className="flex flex-col gap-3" key={setting.label}>
+                <div className="flex items-start justify-between gap-4">
+                  <p className="text-sm text-muted-foreground">
+                    {setting.label}
+                  </p>
+                  <p className="max-w-40 text-right text-sm font-medium">
+                    {setting.value}
+                  </p>
+                </div>
+                {index < workspaceSettings.length - 1 ? <Separator /> : null}
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      </TabsContent>
+
+      <TabsContent value="access">
+        <Card>
+          <CardHeader>
+            <CardTitle>Access</CardTitle>
+            <CardDescription>
+              Admin approval is required for workspace role changes.
+            </CardDescription>
+            <CardAction>
+              <ShieldCheckIcon />
+            </CardAction>
+          </CardHeader>
+          <CardContent>
+            <Button className="w-full" variant="outline">
+              Manage access
+            </Button>
+          </CardContent>
+        </Card>
+      </TabsContent>
+    </Tabs>
+  </AppShell>
 );

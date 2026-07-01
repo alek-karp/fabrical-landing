@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { AppHeader, AppSidebar } from "@/components/app-shell";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { AppShell } from "@/components/app-shell";
 import { projects } from "@/lib/projects";
 import { caller } from "@/trpc/server";
 
@@ -43,12 +42,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   }
 
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset className="min-h-svh bg-background text-foreground">
-        <AppHeader title={project.name} />
-        <ProjectDetail project={project} />
-      </SidebarInset>
-    </SidebarProvider>
+    <AppShell title={project.name}>
+      <ProjectDetail project={project} />
+    </AppShell>
   );
 }
