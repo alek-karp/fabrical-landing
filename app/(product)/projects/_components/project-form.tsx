@@ -115,7 +115,9 @@ export const ProjectForm = ({
               <Field>
                 <FieldLabel htmlFor="project-deadline">Deadline</FieldLabel>
                 <ProjectDeadlinePicker defaultValue={defaultValues?.deadline} />
-                <FieldDescription>Optional target completion date.</FieldDescription>
+                <FieldDescription>
+                  Optional target completion date.
+                </FieldDescription>
               </Field>
             </div>
             <Field>

@@ -72,9 +72,7 @@ const ProjectRow = ({ project }: { project: Project }) => (
     className="group grid gap-3 px-5 py-4 transition-colors hover:bg-muted/40 md:grid-cols-[1fr_10rem_8rem_8rem_auto] md:items-center"
     href={routes.projects.detail(project.slug)}
   >
-    <span className="font-medium group-hover:text-primary">
-      {project.name}
-    </span>
+    <span className="font-medium group-hover:text-primary">{project.name}</span>
     <LocationBadge location={project.location} />
     <ProjectPhaseBadge className="w-fit" phase={project.phase} />
     <span className="text-sm text-muted-foreground">
