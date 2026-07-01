@@ -39,6 +39,9 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import type { Workspace } from "@/lib/workspace";
+
+import { WorkspaceNameField } from "./workspace-name-field";
 
 const notificationSettings = [
   {
@@ -73,7 +76,11 @@ const workspaceSettings = [
   },
 ];
 
-export const SettingsHome = () => (
+type SettingsHomeProps = {
+  workspace: Workspace;
+};
+
+export const SettingsHome = ({ workspace }: SettingsHomeProps) => (
   <AppShell title="Settings">
     <section className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
       <div>
@@ -280,6 +287,8 @@ export const SettingsHome = () => (
             </CardAction>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
+            <WorkspaceNameField name={workspace.name} />
+            <Separator />
             {workspaceSettings.map((setting, index) => (
               <div className="flex flex-col gap-3" key={setting.label}>
                 <div className="flex items-start justify-between gap-4">

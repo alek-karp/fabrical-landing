@@ -45,11 +45,9 @@ function getProjectIcon(index: number) {
   }
 }
 
+const DEFAULT_TEAM_NAME = "Fabrical";
+
 const data = {
-  team: {
-    name: "Fabrical",
-    logo: <ZapIcon />,
-  },
   navMain: [
     {
       title: "Command Center",
@@ -84,6 +82,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { data: portfolioProjects, isLoading } = useQuery(
     trpc.projects.list.queryOptions(),
   );
+  const { data: workspace } = useQuery(trpc.workspace.get.queryOptions());
 
   const sidebarProjects = (portfolioProjects ?? [])
     .slice(0, SIDEBAR_PROJECT_LIMIT)
@@ -100,7 +99,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher team={data.team} />
+        <TeamSwitcher
+          team={{
+            name: workspace?.name ?? DEFAULT_TEAM_NAME,
+            logo: <ZapIcon />,
+          }}
+        />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
