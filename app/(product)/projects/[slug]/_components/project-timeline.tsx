@@ -6,15 +6,26 @@ import { BotIcon } from "lucide-react";
 import { useEffect } from "react";
 import { toast } from "sonner";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarGroup,
+  AvatarImage,
+} from "@/components/ui/avatar";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import {
   ACTIVITY_ACTOR_TYPES,
   type ActivityActor,
   type ActivityEvent,
   type ActivityLog,
+  type ActivityPerson,
 } from "@/lib/activity";
 import { formatProjectDeadline } from "@/lib/projects";
-import { getInitials } from "@/lib/utils";
+import { cn, getInitials } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
 
 type ProjectTimelineProps = {
@@ -46,7 +57,7 @@ const ActorAvatar = ({ actor }: { actor: ActivityActor }) => {
   if (actor.type === ACTIVITY_ACTOR_TYPES.Agent) {
     return (
       <Avatar>
-        <AvatarFallback>
+        <AvatarFallback className="bg-primary text-primary-foreground">
           <BotIcon className="size-4" />
         </AvatarFallback>
       </Avatar>
@@ -61,12 +72,41 @@ const ActorAvatar = ({ actor }: { actor: ActivityActor }) => {
   );
 };
 
+const CoauthorAvatar = ({ coauthor }: { coauthor: ActivityPerson }) => (
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <Avatar>
+        <AvatarImage
+          alt={coauthor.name}
+          src={coauthor.avatarUrl ?? undefined}
+        />
+        <AvatarFallback>{getInitials(coauthor.name)}</AvatarFallback>
+      </Avatar>
+    </TooltipTrigger>
+    <TooltipContent>{coauthor.name}</TooltipContent>
+  </Tooltip>
+);
+
 const TimelineEntry = ({ log }: { log: ActivityLog }) => (
   <li className="relative">
-    <span className="absolute -left-[2.85rem] flex size-8 items-center justify-center">
-      <ActorAvatar actor={log.actor} />
+    <span className="-left-12 absolute flex size-8 items-center justify-center">
+      {log.coauthors.length > 0 ? (
+        <AvatarGroup>
+          <ActorAvatar actor={log.actor} />
+          {log.coauthors.map((coauthor) => (
+            <CoauthorAvatar coauthor={coauthor} key={coauthor.id} />
+          ))}
+        </AvatarGroup>
+      ) : (
+        <ActorAvatar actor={log.actor} />
+      )}
     </span>
-    <div className="flex min-h-8 flex-col gap-1 md:flex-row md:items-center md:justify-between md:gap-4">
+    <div
+      className={cn(
+        "flex min-h-8 flex-col gap-1 md:flex-row md:items-center md:justify-between md:gap-4",
+        log.coauthors.length > 0 && "ml-4",
+      )}
+    >
       <p className="text-sm">
         <span className="font-medium">{log.actor.name}</span>{" "}
         <span className="text-muted-foreground">
@@ -78,10 +118,17 @@ const TimelineEntry = ({ log }: { log: ActivityLog }) => (
       </span>
     </div>
     {log.description ? (
-      <p className="mt-1 text-sm text-muted-foreground">{log.description}</p>
+      <p
+        className={cn(
+          "mt-1 text-sm text-muted-foreground",
+          log.coauthors.length > 0 && "ml-4",
+        )}
+      >
+        {log.description}
+      </p>
     ) : null}
     {log.coauthors.length > 0 ? (
-      <p className="mt-1 text-xs text-muted-foreground">
+      <p className="mt-1 ml-4 text-xs text-muted-foreground">
         Co-authored by{" "}
         {log.coauthors.map((coauthor) => coauthor.name).join(", ")}
       </p>
