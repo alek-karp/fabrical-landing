@@ -33,10 +33,17 @@ const workPackages = [
 ];
 
 export const AppHome = () => (
-  <AppShell
-    title="Project command center"
-    className="grid lg:grid-cols-[1fr_22rem]"
-  >
+  <AppShell title="Command Center" className="grid lg:grid-cols-[1fr_22rem]">
+    <section className="flex flex-col gap-2 lg:col-span-2">
+      <h1 className="text-3xl font-semibold tracking-normal md:text-4xl">
+        Command Center
+      </h1>
+      <p className="max-w-2xl text-sm leading-6 text-muted-foreground">
+        Monitor readiness, active work packages, daily priorities, and
+        procurement risk from one place.
+      </p>
+    </section>
+
     <section className="flex flex-col gap-6">
       <div className="grid gap-4 md:grid-cols-3">
         {readinessItems.map((item) => (
