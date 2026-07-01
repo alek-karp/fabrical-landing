@@ -1,6 +1,5 @@
 import {
   AlertTriangle,
-  CalendarDays,
   CheckCircle2,
   ClipboardList,
   PackageCheck,
@@ -97,29 +96,6 @@ export const AppHome = () => (
     </section>
 
     <aside className="flex flex-col gap-6">
-      <section className="border border-border bg-card p-5 text-card-foreground">
-        <div className="flex items-center justify-between gap-4">
-          <h2 className="text-lg font-semibold tracking-normal">
-            Today&apos;s focus
-          </h2>
-          <CalendarDays className="size-5 text-muted-foreground" />
-        </div>
-        <ol className="mt-5 flex flex-col gap-4 text-sm text-muted-foreground">
-          <li className="flex gap-3">
-            <span className="font-semibold text-foreground">01</span>
-            Resolve long-lead switchgear submittal comments.
-          </li>
-          <li className="flex gap-3">
-            <span className="font-semibold text-foreground">02</span>
-            Release prefab package for the MCC room.
-          </li>
-          <li className="flex gap-3">
-            <span className="font-semibold text-foreground">03</span>
-            Confirm crew allocation for Level 04 rough-in.
-          </li>
-        </ol>
-      </section>
-
       <section className="border border-border bg-card p-5 text-card-foreground">
         <div className="flex items-center justify-between gap-4">
           <h2 className="text-lg font-semibold tracking-normal">
