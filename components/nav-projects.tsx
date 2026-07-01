@@ -21,9 +21,11 @@ import {
   SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSkeleton,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const PROJECT_SKELETON_WIDTHS = ["70%", "55%", "80%", "60%", "50%"];
 
 export function NavProjects({
   projects,
@@ -46,10 +48,13 @@ export function NavProjects({
       <SidebarGroupLabel>Projects</SidebarGroupLabel>
       <SidebarMenu>
         {isLoading &&
-          Array.from({ length: 5 }).map((_, index) => (
+          PROJECT_SKELETON_WIDTHS.map((width, index) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: skeleton rows have no stable identity
             <SidebarMenuItem key={index}>
-              <SidebarMenuSkeleton showIcon />
+              <div className="flex h-8 items-center gap-2 rounded-md px-2">
+                <Skeleton className="size-4 rounded-md" />
+                <Skeleton className="h-4 flex-1" style={{ maxWidth: width }} />
+              </div>
             </SidebarMenuItem>
           ))}
         {!isLoading &&
