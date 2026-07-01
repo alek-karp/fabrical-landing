@@ -1,11 +1,13 @@
 import type { AiToolCaller } from "./context";
 import { createProjectTool } from "./create-project";
 import { getCurrentDateTimeTool } from "./get-current-datetime";
+import { listActivityTool } from "./list-activity";
 import { listProjectsTool } from "./list-projects";
 
 export const trpcAgentTools = {
   listProjects: listProjectsTool,
   createProject: createProjectTool,
+  listActivity: listActivityTool,
 } as const;
 
 export const agentTools = {

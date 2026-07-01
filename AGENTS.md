@@ -62,3 +62,19 @@ Never run the dev server.
 # Environment Variables
 
 When adding or changing environment variables, update `.env.example` in the same change.
+
+# Types
+
+Prefer `as const` objects for enum-like values and derive the union type from them, rather than writing string literal unions directly.
+
+```ts
+export const ACTIVITY_ENTITY_TYPES = {
+  Project: "project",
+  Procurement: "procurement",
+} as const;
+
+export type ActivityEntityType =
+  (typeof ACTIVITY_ENTITY_TYPES)[keyof typeof ACTIVITY_ENTITY_TYPES];
+```
+
+This keeps the runtime values and the type in sync without duplication.
