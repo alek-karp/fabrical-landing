@@ -1,5 +1,13 @@
+import { caller } from "@/trpc/server";
 import { ProcurementHome } from "./_components/procurement-home";
 
-const Page = () => <ProcurementHome />;
+const ProcurementPage = async () => {
+  const [projects, requests] = await Promise.all([
+    caller.projects.list(),
+    caller.procurement.list({}),
+  ]);
 
-export default Page;
+  return <ProcurementHome projects={projects} requests={requests} />;
+};
+
+export default ProcurementPage;

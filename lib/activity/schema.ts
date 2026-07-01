@@ -25,6 +25,16 @@ export const activityEventSchema = z.discriminatedUnion("type", [
     type: z.literal("procurement.unblocked"),
   }),
   z.object({
+    type: z.literal("procurement.requested"),
+    item: z.string(),
+  }),
+  z.object({
+    type: z.literal("procurement.status_changed"),
+    item: z.string(),
+    from: z.string(),
+    to: z.string(),
+  }),
+  z.object({
     type: z.literal("transaction.flagged"),
     amount: z.number(),
     reason: z.string().optional(),

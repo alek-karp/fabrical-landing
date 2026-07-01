@@ -48,6 +48,10 @@ const describeEvent = (event: ActivityEvent): string => {
         : "blocked procurement";
     case "procurement.unblocked":
       return "unblocked procurement";
+    case "procurement.requested":
+      return `requested material "${event.item}"`;
+    case "procurement.status_changed":
+      return `moved "${event.item}" from ${event.from} to ${event.to}`;
     case "transaction.flagged":
       return `flagged a transaction of $${event.amount.toLocaleString()}${event.reason ? ` — ${event.reason}` : ""}`;
   }
