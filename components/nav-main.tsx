@@ -28,6 +28,7 @@ export function NavMain({
     items?: {
       title: string;
       url: string;
+      isActive?: boolean;
     }[];
   }[];
 }) {
@@ -39,7 +40,11 @@ export function NavMain({
           if (!item.items?.length) {
             return (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild tooltip={item.title}>
+                <SidebarMenuButton
+                  asChild
+                  isActive={item.isActive}
+                  tooltip={item.title}
+                >
                   <a href={item.url}>
                     {item.icon}
                     <span>{item.title}</span>
@@ -58,7 +63,10 @@ export function NavMain({
             >
               <SidebarMenuItem>
                 <CollapsibleTrigger asChild>
-                  <SidebarMenuButton tooltip={item.title}>
+                  <SidebarMenuButton
+                    isActive={item.isActive}
+                    tooltip={item.title}
+                  >
                     {item.icon}
                     <span>{item.title}</span>
                     <ChevronRightIcon className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -68,7 +76,10 @@ export function NavMain({
                   <SidebarMenuSub>
                     {item.items.map((subItem) => (
                       <SidebarMenuSubItem key={subItem.title}>
-                        <SidebarMenuSubButton asChild>
+                        <SidebarMenuSubButton
+                          asChild
+                          isActive={subItem.isActive}
+                        >
                           <a href={subItem.url}>
                             <span>{subItem.title}</span>
                           </a>

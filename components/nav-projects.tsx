@@ -30,6 +30,7 @@ const PROJECT_SKELETON_WIDTHS = ["70%", "55%", "80%", "60%", "50%"];
 export function NavProjects({
   projects,
   moreUrl,
+  isMoreActive,
   isLoading,
 }: {
   projects: {
@@ -37,8 +38,10 @@ export function NavProjects({
     url: string;
     icon: React.ReactNode;
     location?: string;
+    isActive?: boolean;
   }[];
   moreUrl?: string;
+  isMoreActive?: boolean;
   isLoading?: boolean;
 }) {
   const { isMobile } = useSidebar();
@@ -60,7 +63,7 @@ export function NavProjects({
         {!isLoading &&
           projects.map((item) => (
             <SidebarMenuItem key={item.name}>
-              <SidebarMenuButton asChild>
+              <SidebarMenuButton asChild isActive={item.isActive}>
                 <Link href={item.url}>
                   {item.icon}
                   <span>{item.name}</span>
@@ -102,7 +105,11 @@ export function NavProjects({
           ))}
         {!isLoading && moreUrl ? (
           <SidebarMenuItem>
-            <SidebarMenuButton asChild className="text-sidebar-foreground/70">
+            <SidebarMenuButton
+              asChild
+              className="text-sidebar-foreground/70"
+              isActive={isMoreActive}
+            >
               <Link href={moreUrl}>
                 <MoreHorizontalIcon className="text-sidebar-foreground/70" />
                 <span>More</span>

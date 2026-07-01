@@ -9,6 +9,7 @@ import {
   PackageCheckIcon,
   Settings2Icon,
 } from "lucide-react";
+import { usePathname } from "next/navigation";
 import type * as React from "react";
 import { LogoIcon } from "@/components/logo";
 import { NavMain } from "@/components/nav-main";
@@ -32,13 +33,15 @@ const SIDEBAR_PROJECT_LIMIT = 5;
 
 const DEFAULT_TEAM_NAME = "Fabrical";
 
+const isRouteActive = (pathname: string, url: string) =>
+  pathname === url || pathname.startsWith(`${url}/`);
+
 const data = {
   navMain: [
     {
       title: "Command Center",
       url: routes.app.home,
       icon: <GaugeIcon />,
-      isActive: true,
     },
     {
       title: "Agent",
@@ -63,6 +66,7 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname();
   const trpc = useTRPC();
   const { data: portfolioProjects, isLoading } = useQuery(
     trpc.projects.list.queryOptions(),
@@ -76,10 +80,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       url: routes.projects.detail(project.slug),
       icon: <FolderDotIcon />,
       location: project.location,
+      isActive: isRouteActive(pathname, routes.projects.detail(project.slug)),
     }));
 
   const hasMoreProjects =
     (portfolioProjects?.length ?? 0) > SIDEBAR_PROJECT_LIMIT;
+  const hasActiveSidebarProject = sidebarProjects.some(
+    (project) => project.isActive,
+  );
+  const isMoreProjectsActive =
+    isRouteActive(pathname, routes.projects.list) &&
+    pathname !== routes.projects.list &&
+    pathname !== routes.projects.new &&
+    !hasActiveSidebarProject;
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -92,17 +105,30 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain
+          items={data.navMain.map((item) => ({
+            ...item,
+            isActive:
+              item.url === routes.projects.list
+                ? pathname === item.url || pathname === routes.projects.new
+                : isRouteActive(pathname, item.url),
+          }))}
+        />
         <NavProjects
           projects={sidebarProjects}
           moreUrl={hasMoreProjects ? routes.projects.list : undefined}
+          isMoreActive={isMoreProjectsActive}
           isLoading={isLoading}
         />
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild tooltip={data.settings.title}>
+            <SidebarMenuButton
+              asChild
+              isActive={isRouteActive(pathname, data.settings.url)}
+              tooltip={data.settings.title}
+            >
               <a href={data.settings.url}>
                 <Settings2Icon />
                 <span>{data.settings.title}</span>
