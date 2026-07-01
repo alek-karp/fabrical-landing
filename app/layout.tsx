@@ -7,12 +7,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { TRPCReactProvider } from "@/trpc/client";
 
-const spaceGroteskHeading = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-heading",
-});
+const spaceGroteskHeading = Space_Grotesk({subsets:['latin'],variable:'--font-heading'});
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-space-grotesk",
