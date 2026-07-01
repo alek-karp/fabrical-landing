@@ -6,9 +6,13 @@ import {
   ChevronsUpDownIcon,
   CreditCardIcon,
   LogOutIcon,
+  MonitorIcon,
+  MoonIcon,
   SparklesIcon,
+  SunIcon,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -35,6 +39,24 @@ type NavUserData = {
   avatar: string;
 };
 
+type ThemeMode = "system" | "light" | "dark";
+
+const themeModes: ThemeMode[] = ["system", "light", "dark"];
+
+const themeLabels: Record<ThemeMode, string> = {
+  system: "System",
+  light: "Light",
+  dark: "Dark",
+};
+
+const getNextTheme = (value: string | undefined): ThemeMode => {
+  const current = themeModes.includes(value as ThemeMode)
+    ? (value as ThemeMode)
+    : "system";
+  const currentIndex = themeModes.indexOf(current);
+  return themeModes[(currentIndex + 1) % themeModes.length];
+};
+
 function getInitials(value: string) {
   const parts = value.trim().split(/\s+/).filter(Boolean);
   if (parts.length === 0) return "?";
@@ -45,7 +67,17 @@ function getInitials(value: string) {
 export function NavUser() {
   const { isMobile } = useSidebar();
   const router = useRouter();
+  const { setTheme, theme } = useTheme();
   const [user, setUser] = useState<NavUserData | null>(null);
+  const currentTheme = themeModes.includes(theme as ThemeMode)
+    ? (theme as ThemeMode)
+    : "system";
+  const ThemeIcon =
+    currentTheme === "light"
+      ? SunIcon
+      : currentTheme === "dark"
+        ? MoonIcon
+        : MonitorIcon;
 
   useEffect(() => {
     const supabase = createClient();
@@ -151,6 +183,13 @@ export function NavUser() {
               <DropdownMenuItem>
                 <BellIcon />
                 Notifications
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem onSelect={() => setTheme(getNextTheme(theme))}>
+                <ThemeIcon />
+                Theme: {themeLabels[currentTheme]}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
