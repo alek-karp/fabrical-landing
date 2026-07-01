@@ -49,6 +49,20 @@ export const projects: Project[] = [
         state: "Due today",
       },
     ],
+    documents: [
+      {
+        name: "switchgear-submittal-package.pdf",
+      },
+      {
+        name: "level-04-feeder-install-drawings.dwg",
+      },
+      {
+        name: "mcc-room-prefab-release-notes.pdf",
+      },
+      {
+        name: "commissioning-readiness-checklist.xlsx",
+      },
+    ],
   },
   {
     slug: "mesa-battery-plant",
@@ -102,6 +116,17 @@ export const projects: Project[] = [
         state: "At risk",
       },
     ],
+    documents: [
+      {
+        name: "prefab-electrical-room-a-release.pdf",
+      },
+      {
+        name: "process-tool-utility-routing-markups.pdf",
+      },
+      {
+        name: "panelboard-release-batch.xlsx",
+      },
+    ],
   },
   {
     slug: "harbor-grid-upgrade",
@@ -146,6 +171,17 @@ export const projects: Project[] = [
         state: "In review",
       },
       { name: "Temporary power removal", owner: "Field ops", state: "Queued" },
+    ],
+    documents: [
+      {
+        name: "cutover-window-validation-packet.pdf",
+      },
+      {
+        name: "medium-voltage-test-plan.pdf",
+      },
+      {
+        name: "temporary-power-removal-plan.pdf",
+      },
     ],
   },
 ];

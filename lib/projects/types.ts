@@ -30,6 +30,9 @@ export type Project = {
     owner: string;
     state: string;
   }[];
+  documents: {
+    name: string;
+  }[];
 };
 
 export type StoredProjectRow = {

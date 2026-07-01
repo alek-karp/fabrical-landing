@@ -46,6 +46,12 @@ const fallbackWorkPackages = [
   { name: "Baseline schedule", owner: "Planning", state: "Queued" },
 ];
 
+const fallbackDocuments = [
+  { name: "project-charter.pdf" },
+  { name: "scope-baseline.xlsx" },
+  { name: "procurement-register.xlsx" },
+];
+
 export const formatProjectDeadline = (deadline: string | null | undefined) => {
   if (!deadline) {
     return null;
@@ -72,6 +78,7 @@ const toProject = (row: StoredProjectRow): Project => ({
   milestones: fallbackMilestones,
   risks: fallbackRisks,
   workPackages: fallbackWorkPackages,
+  documents: fallbackDocuments,
 });
 
 export const getStoredProjects = async (supabase: SupabaseClient) => {

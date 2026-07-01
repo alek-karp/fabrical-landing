@@ -19,6 +19,7 @@ import { formatProjectDeadline, isProjectComplete } from "@/lib/projects";
 import { routes } from "@/lib/routes";
 
 import { completedPhaseBadgeClassName } from "../../_components/project-phase-badge";
+import { ProjectDocumentsTab } from "./project-documents-tab";
 import { ProjectStageControl } from "./project-stage-control";
 import { ProjectTimeline } from "./project-timeline";
 
@@ -26,17 +27,19 @@ type ProjectDetailProps = {
   project: Project;
 };
 
-const tabs = [
+const activeTabs = [
   { value: "overview", label: "Overview" },
-  { value: "work-packages", label: "Work Packages" },
+  { value: "documents", label: "Documents" },
   { value: "timeline", label: "Timeline" },
+] as const;
+
+const emptyTabs = [
+  { value: "work-packages", label: "Work Packages" },
   { value: "team", label: "Team" },
   { value: "risk-watch", label: "Risk Watch" },
-];
+] as const;
 
-const placeholderTabs = tabs.filter(
-  (tab) => tab.value !== "overview" && tab.value !== "timeline",
-);
+const tabs = [...activeTabs, ...emptyTabs] as const;
 
 export const ProjectDetail = ({ project }: ProjectDetailProps) => (
   <>
@@ -69,6 +72,9 @@ export const ProjectDetail = ({ project }: ProjectDetailProps) => (
           {tabs.map((tab) => (
             <TabsTrigger
               className="flex-none pb-3"
+              disabled={emptyTabs.some(
+                (emptyTab) => emptyTab.value === tab.value,
+              )}
               key={tab.value}
               value={tab.value}
             >
@@ -207,17 +213,13 @@ export const ProjectDetail = ({ project }: ProjectDetailProps) => (
         </div>
       </TabsContent>
 
+      <TabsContent value="documents">
+        <ProjectDocumentsTab documents={project.documents} />
+      </TabsContent>
+
       <TabsContent value="timeline">
         <ProjectTimeline slug={project.slug} />
       </TabsContent>
-
-      {placeholderTabs.map((tab) => (
-        <TabsContent key={tab.value} value={tab.value}>
-          <div className="border border-border bg-card p-10 text-center text-sm text-muted-foreground">
-            {tab.label} coming soon.
-          </div>
-        </TabsContent>
-      ))}
     </Tabs>
   </>
 );
