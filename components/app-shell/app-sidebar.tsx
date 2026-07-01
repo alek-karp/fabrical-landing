@@ -1,11 +1,10 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import {
   AlertTriangleIcon,
   BotIcon,
-  Building2Icon,
   CalendarDaysIcon,
-  FactoryIcon,
   FolderKanbanIcon,
   GaugeIcon,
   PackageCheckIcon,
@@ -28,8 +27,10 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { projects } from "@/lib/projects";
 import { routes } from "@/lib/routes";
+import { useTRPC } from "@/trpc/client";
+
+const SIDEBAR_PROJECT_LIMIT = 5;
 
 function getProjectIcon(index: number) {
   switch (index) {
@@ -45,23 +46,11 @@ function getProjectIcon(index: number) {
 }
 
 const data = {
-  teams: [
-    {
-      name: "Fabrical",
-      logo: <ZapIcon />,
-      plan: "Command center",
-    },
-    {
-      name: "Data Center West",
-      logo: <Building2Icon />,
-      plan: "Electrical scope",
-    },
-    {
-      name: "Advanced Manufacturing",
-      logo: <FactoryIcon />,
-      plan: "Prefab scope",
-    },
-  ],
+  team: {
+    name: "Fabrical",
+    logo: <ZapIcon />,
+    plan: "Command center",
+  },
   navMain: [
     {
       title: "Command Center",
@@ -89,23 +78,38 @@ const data = {
     title: "Settings",
     url: routes.app.settings,
   },
-  projects: projects.map((project, index) => ({
-    name: project.name,
-    url: routes.projects.detail(project.slug),
-    icon: getProjectIcon(index),
-    location: project.location,
-  })),
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const trpc = useTRPC();
+  const { data: portfolioProjects, isLoading } = useQuery(
+    trpc.projects.list.queryOptions(),
+  );
+
+  const sidebarProjects = (portfolioProjects ?? [])
+    .slice(0, SIDEBAR_PROJECT_LIMIT)
+    .map((project, index) => ({
+      name: project.name,
+      url: routes.projects.detail(project.slug),
+      icon: getProjectIcon(index),
+      location: project.location,
+    }));
+
+  const hasMoreProjects =
+    (portfolioProjects?.length ?? 0) > SIDEBAR_PROJECT_LIMIT;
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <TeamSwitcher team={data.team} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavProjects
+          projects={sidebarProjects}
+          moreUrl={hasMoreProjects ? routes.projects.list : undefined}
+          isLoading={isLoading}
+        />
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
