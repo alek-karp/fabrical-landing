@@ -3,10 +3,12 @@ import { createProjectTool } from "./create-project";
 import { getCurrentDateTimeTool } from "./get-current-datetime";
 import { listActivityTool } from "./list-activity";
 import { listProjectsTool } from "./list-projects";
+import { updateProjectTool } from "./update-project";
 
 export const trpcAgentTools = {
   listProjects: listProjectsTool,
   createProject: createProjectTool,
+  updateProject: updateProjectTool,
   listActivity: listActivityTool,
 } as const;
 
