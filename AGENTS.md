@@ -80,3 +80,5 @@ export type ActivityEntityType =
 ```
 
 This keeps the runtime values and the type in sync without duplication.
+
+Never use `any`. It signals poor typing — use a precise type, `unknown` with narrowing, or a generic instead.
