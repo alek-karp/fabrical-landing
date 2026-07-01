@@ -49,7 +49,6 @@ const data = {
   team: {
     name: "Fabrical",
     logo: <ZapIcon />,
-    plan: "Command center",
   },
   navMain: [
     {
