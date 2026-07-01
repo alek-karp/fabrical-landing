@@ -13,12 +13,13 @@ import { useState } from "react";
 
 import { AppShell } from "@/components/app-shell";
 import { LocationBadge } from "@/components/location-badge";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import type { Project } from "@/lib/projects";
-import { formatProjectDeadline } from "@/lib/projects";
+import { formatProjectDeadline, isProjectComplete } from "@/lib/projects";
 import { routes } from "@/lib/routes";
+
+import { ProjectPhaseBadge } from "./project-phase-badge";
 
 type ProjectsHomeProps = {
   projects: Project[];
@@ -26,8 +27,72 @@ type ProjectsHomeProps = {
 
 type ViewMode = "card" | "list";
 
+const CompletedDivider = () => (
+  <div className="flex items-center gap-3 text-sm font-medium text-muted-foreground">
+    <span className="h-px flex-1 bg-border" />
+    Completed
+    <span className="h-px flex-1 bg-border" />
+  </div>
+);
+
+const ProjectCard = ({ project }: { project: Project }) => (
+  <Link
+    className="group border border-border bg-card p-5 text-card-foreground transition-colors hover:bg-muted/40"
+    href={routes.projects.detail(project.slug)}
+  >
+    <div className="flex items-start justify-between gap-4">
+      <div>
+        <LocationBadge location={project.location} />
+        <h2 className="mt-2 text-xl font-semibold tracking-normal">
+          {project.name}
+        </h2>
+      </div>
+      <FolderKanban className="size-5 text-muted-foreground" />
+    </div>
+    <p className="mt-4 text-sm leading-6 text-muted-foreground">
+      {project.summary}
+    </p>
+    <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
+      <div className="flex flex-wrap items-center gap-2">
+        <ProjectPhaseBadge phase={project.phase} />
+        {formatProjectDeadline(project.deadline) ? (
+          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <CalendarDays className="size-3.5" />
+            {formatProjectDeadline(project.deadline)}
+          </span>
+        ) : null}
+      </div>
+      <ArrowRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-1" />
+    </div>
+  </Link>
+);
+
+const ProjectRow = ({ project }: { project: Project }) => (
+  <Link
+    className="group grid gap-3 px-5 py-4 transition-colors hover:bg-muted/40 md:grid-cols-[1fr_10rem_8rem_8rem_auto] md:items-center"
+    href={routes.projects.detail(project.slug)}
+  >
+    <span className="font-medium group-hover:text-primary">
+      {project.name}
+    </span>
+    <LocationBadge location={project.location} />
+    <ProjectPhaseBadge className="w-fit" phase={project.phase} />
+    <span className="text-sm text-muted-foreground">
+      {formatProjectDeadline(project.deadline) ?? "No deadline"}
+    </span>
+    <ArrowRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-1 md:justify-self-end" />
+  </Link>
+);
+
 export const ProjectsHome = ({ projects }: ProjectsHomeProps) => {
   const [view, setView] = useState<ViewMode>("card");
+
+  const activeProjects = projects.filter(
+    (project) => !isProjectComplete(project.phase),
+  );
+  const completedProjects = projects.filter((project) =>
+    isProjectComplete(project.phase),
+  );
 
   return (
     <AppShell title="Projects">
@@ -71,64 +136,45 @@ export const ProjectsHome = ({ projects }: ProjectsHomeProps) => {
       </section>
 
       {view === "card" ? (
-        <section className="grid gap-4 md:grid-cols-3">
-          {projects.map((project) => (
-            <Link
-              className="group border border-border bg-card p-5 text-card-foreground transition-colors hover:bg-muted/40"
-              href={routes.projects.detail(project.slug)}
-              key={project.slug}
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <LocationBadge location={project.location} />
-                  <h2 className="mt-2 text-xl font-semibold tracking-normal">
-                    {project.name}
-                  </h2>
-                </div>
-                <FolderKanban className="size-5 text-muted-foreground" />
-              </div>
-              <p className="mt-4 text-sm leading-6 text-muted-foreground">
-                {project.summary}
-              </p>
-              <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
-                <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="outline">{project.phase}</Badge>
-                  {formatProjectDeadline(project.deadline) ? (
-                    <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                      <CalendarDays className="size-3.5" />
-                      {formatProjectDeadline(project.deadline)}
-                    </span>
-                  ) : null}
-                </div>
-                <ArrowRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-1" />
-              </div>
-            </Link>
-          ))}
-        </section>
-      ) : (
-        <section className="border border-border bg-card text-card-foreground">
-          <div className="divide-y divide-border">
-            {projects.map((project) => (
-              <Link
-                className="group grid gap-3 px-5 py-4 transition-colors hover:bg-muted/40 md:grid-cols-[1fr_10rem_8rem_8rem_auto] md:items-center"
-                href={routes.projects.detail(project.slug)}
-                key={project.slug}
-              >
-                <span className="font-medium group-hover:text-primary">
-                  {project.name}
-                </span>
-                <LocationBadge location={project.location} />
-                <Badge className="w-fit" variant="outline">
-                  {project.phase}
-                </Badge>
-                <span className="text-sm text-muted-foreground">
-                  {formatProjectDeadline(project.deadline) ?? "No deadline"}
-                </span>
-                <ArrowRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-1 md:justify-self-end" />
-              </Link>
+        <>
+          <section className="grid gap-4 md:grid-cols-3">
+            {activeProjects.map((project) => (
+              <ProjectCard key={project.slug} project={project} />
             ))}
-          </div>
-        </section>
+          </section>
+          {completedProjects.length > 0 ? (
+            <>
+              <CompletedDivider />
+              <section className="grid gap-4 md:grid-cols-3">
+                {completedProjects.map((project) => (
+                  <ProjectCard key={project.slug} project={project} />
+                ))}
+              </section>
+            </>
+          ) : null}
+        </>
+      ) : (
+        <>
+          <section className="border border-border bg-card text-card-foreground">
+            <div className="divide-y divide-border">
+              {activeProjects.map((project) => (
+                <ProjectRow key={project.slug} project={project} />
+              ))}
+            </div>
+          </section>
+          {completedProjects.length > 0 ? (
+            <>
+              <CompletedDivider />
+              <section className="border border-border bg-card text-card-foreground">
+                <div className="divide-y divide-border">
+                  {completedProjects.map((project) => (
+                    <ProjectRow key={project.slug} project={project} />
+                  ))}
+                </div>
+              </section>
+            </>
+          ) : null}
+        </>
       )}
     </AppShell>
   );

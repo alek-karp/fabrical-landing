@@ -10,15 +10,16 @@ import type {
 } from "./types";
 
 export { getProject, projects } from "./data";
-export { newProjectSchema, updateProjectSchema } from "./schema";
+export type { ProjectPhase } from "./phases";
 export {
   DEFAULT_PROJECT_PHASE,
+  isProjectComplete,
   isProjectPhase,
   PROJECT_PHASES,
   projectPhaseSchema,
   resolveProjectPhase,
 } from "./phases";
-export type { ProjectPhase } from "./phases";
+export { newProjectSchema, updateProjectSchema } from "./schema";
 export * from "./types";
 
 const fallbackStats = [

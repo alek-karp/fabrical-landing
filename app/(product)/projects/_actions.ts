@@ -124,3 +124,40 @@ export const updateProject = async (
   revalidatePath(routes.projects.edit(project.slug));
   redirect(routes.projects.detail(project.slug));
 };
+
+export type UpdateProjectStageState = {
+  message: string;
+};
+
+export const updateProjectStage = async (
+  slug: string,
+  phase: string,
+  project: Pick<
+    Project,
+    "name" | "location" | "sector" | "deadline" | "summary" | "description"
+  >,
+): Promise<UpdateProjectStageState> => {
+  try {
+    await caller.projects.update({
+      slug,
+      name: project.name,
+      location: project.location,
+      sector: project.sector,
+      phase: resolveProjectPhase(phase),
+      deadline: project.deadline,
+      summary: project.summary,
+      description: project.description,
+    });
+  } catch (error) {
+    return {
+      message:
+        error instanceof Error
+          ? error.message
+          : "Unable to update the project stage.",
+    };
+  }
+
+  revalidatePath(routes.projects.list);
+  revalidatePath(routes.projects.detail(slug));
+  return { message: "" };
+};

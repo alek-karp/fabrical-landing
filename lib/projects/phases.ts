@@ -22,3 +22,9 @@ export const isProjectPhase = (value: string): value is ProjectPhase =>
 
 export const resolveProjectPhase = (value?: string): ProjectPhase =>
   value && isProjectPhase(value) ? value : DEFAULT_PROJECT_PHASE;
+
+const COMPLETED_PROJECT_PHASE: ProjectPhase =
+  PROJECT_PHASES[PROJECT_PHASES.length - 1];
+
+export const isProjectComplete = (phase: string) =>
+  phase === COMPLETED_PROJECT_PHASE;

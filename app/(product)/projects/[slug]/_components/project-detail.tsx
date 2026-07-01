@@ -11,11 +11,15 @@ import {
 import Link from "next/link";
 
 import { LocationBadge } from "@/components/location-badge";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Project } from "@/lib/projects";
-import { formatProjectDeadline } from "@/lib/projects";
+import { formatProjectDeadline, isProjectComplete } from "@/lib/projects";
 import { routes } from "@/lib/routes";
+
+import { completedPhaseBadgeClassName } from "../../_components/project-phase-badge";
+import { ProjectStageControl } from "./project-stage-control";
 
 type ProjectDetailProps = {
   project: Project;
@@ -36,9 +40,17 @@ const placeholderTabs = tabs.filter(
 export const ProjectDetail = ({ project }: ProjectDetailProps) => (
   <>
     <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-      <h1 className="text-3xl font-semibold tracking-normal md:text-4xl">
-        {project.name}
-      </h1>
+      <div className="flex flex-wrap items-center gap-3">
+        <h1 className="text-3xl font-semibold tracking-normal md:text-4xl">
+          {project.name}
+        </h1>
+        {isProjectComplete(project.phase) ? (
+          <Badge className={completedPhaseBadgeClassName} variant="outline">
+            <CheckCircle2 data-icon="inline-start" />
+            Completed
+          </Badge>
+        ) : null}
+      </div>
       {formatProjectDeadline(project.deadline) ? (
         <span className="flex items-center gap-2 text-sm text-muted-foreground">
           <CalendarDays className="size-4" />
@@ -82,9 +94,7 @@ export const ProjectDetail = ({ project }: ProjectDetailProps) => (
           <section className="flex flex-col gap-6">
             <section className="border border-border bg-card p-5 text-card-foreground">
               <div className="flex flex-wrap items-center gap-3">
-                <span className="w-fit border border-border px-2 py-1 text-xs font-semibold uppercase">
-                  {project.phase}
-                </span>
+                <ProjectStageControl project={project} />
                 <LocationBadge location={project.location} />
                 {formatProjectDeadline(project.deadline) ? (
                   <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
