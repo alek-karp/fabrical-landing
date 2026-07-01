@@ -20,6 +20,7 @@ import { routes } from "@/lib/routes";
 
 import { completedPhaseBadgeClassName } from "../../_components/project-phase-badge";
 import { ProjectStageControl } from "./project-stage-control";
+import { ProjectTimeline } from "./project-timeline";
 
 type ProjectDetailProps = {
   project: Project;
@@ -207,26 +208,7 @@ export const ProjectDetail = ({ project }: ProjectDetailProps) => (
       </TabsContent>
 
       <TabsContent value="timeline">
-        <section className="border border-border bg-card p-5 text-card-foreground md:p-8">
-          <ol className="relative flex flex-col gap-8 border-l border-border pl-8">
-            {project.milestones.map((milestone, index) => (
-              <li className="relative" key={milestone.label}>
-                <span className="absolute -left-[2.55rem] flex size-7 items-center justify-center border border-border bg-background text-xs font-semibold">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <div className="flex flex-col gap-1 md:flex-row md:items-center md:justify-between md:gap-4">
-                  <span className="font-medium">{milestone.label}</span>
-                  <span className="text-sm text-muted-foreground">
-                    {milestone.date}
-                  </span>
-                </div>
-                <span className="mt-2 inline-block w-fit border border-border px-2 py-1 text-xs font-semibold uppercase">
-                  {milestone.status}
-                </span>
-              </li>
-            ))}
-          </ol>
-        </section>
+        <ProjectTimeline slug={project.slug} />
       </TabsContent>
 
       {placeholderTabs.map((tab) => (

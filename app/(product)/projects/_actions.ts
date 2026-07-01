@@ -3,10 +3,21 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+import { ACTIVITY_ENTITY_TYPES } from "@/lib/activity";
 import type { Project } from "@/lib/projects";
 import { resolveProjectPhase } from "@/lib/projects";
 import { routes } from "@/lib/routes";
 import { caller } from "@/trpc/server";
+
+const logActivitySafely = async (
+  input: Parameters<typeof caller.activity.log>[0],
+) => {
+  try {
+    await caller.activity.log(input);
+  } catch (error) {
+    console.error("Failed to record activity log", error);
+  }
+};
 
 export type CreateProjectState = {
   message: string;
@@ -68,6 +79,13 @@ export const createProject = async (
     };
   }
 
+  await logActivitySafely({
+    project_id: project.slug,
+    entity_type: ACTIVITY_ENTITY_TYPES.Project,
+    entity_id: project.slug,
+    event: { type: "project.created", name: project.name },
+  });
+
   revalidatePath(routes.projects.list);
   revalidatePath(routes.projects.detail(project.slug));
   redirect(routes.projects.detail(project.slug));
@@ -102,6 +120,8 @@ export const updateProject = async (
     };
   }
 
+  const previousProject = await caller.projects.bySlug({ slug });
+
   let project: Project;
 
   try {
@@ -119,6 +139,33 @@ export const updateProject = async (
     };
   }
 
+  await Promise.all([
+    previousProject && previousProject.phase !== project.phase
+      ? logActivitySafely({
+          project_id: project.slug,
+          entity_type: ACTIVITY_ENTITY_TYPES.Project,
+          entity_id: project.slug,
+          event: {
+            type: "project.phase_changed",
+            from: previousProject.phase,
+            to: project.phase,
+          },
+        })
+      : null,
+    previousProject && previousProject.deadline !== project.deadline
+      ? logActivitySafely({
+          project_id: project.slug,
+          entity_type: ACTIVITY_ENTITY_TYPES.Project,
+          entity_id: project.slug,
+          event: {
+            type: "project.deadline_changed",
+            from: previousProject.deadline,
+            to: project.deadline,
+          },
+        })
+      : null,
+  ]);
+
   revalidatePath(routes.projects.list);
   revalidatePath(routes.projects.detail(project.slug));
   revalidatePath(routes.projects.edit(project.slug));
@@ -131,19 +178,22 @@ export type UpdateProjectStageState = {
 
 export const updateProjectStage = async (
   slug: string,
+  previousPhase: string,
   phase: string,
   project: Pick<
     Project,
     "name" | "location" | "sector" | "deadline" | "summary" | "description"
   >,
 ): Promise<UpdateProjectStageState> => {
+  const nextPhase = resolveProjectPhase(phase);
+
   try {
     await caller.projects.update({
       slug,
       name: project.name,
       location: project.location,
       sector: project.sector,
-      phase: resolveProjectPhase(phase),
+      phase: nextPhase,
       deadline: project.deadline,
       summary: project.summary,
       description: project.description,
@@ -155,6 +205,19 @@ export const updateProjectStage = async (
           ? error.message
           : "Unable to update the project stage.",
     };
+  }
+
+  if (previousPhase !== nextPhase) {
+    await logActivitySafely({
+      project_id: slug,
+      entity_type: ACTIVITY_ENTITY_TYPES.Project,
+      entity_id: slug,
+      event: {
+        type: "project.phase_changed",
+        from: previousPhase,
+        to: nextPhase,
+      },
+    });
   }
 
   revalidatePath(routes.projects.list);

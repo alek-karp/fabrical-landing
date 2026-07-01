@@ -56,10 +56,10 @@ export function NavProjects({
           projects.map((item) => (
             <SidebarMenuItem key={item.name}>
               <SidebarMenuButton asChild>
-                <a href={item.url}>
+                <Link href={item.url}>
                   {item.icon}
                   <span>{item.name}</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -77,10 +77,10 @@ export function NavProjects({
                   align={isMobile ? "end" : "start"}
                 >
                   <DropdownMenuItem asChild>
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <FolderIcon />
                       <span>View Project</span>
-                    </a>
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <ArrowRightIcon />

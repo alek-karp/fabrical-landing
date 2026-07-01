@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { tool } from "ai";
 
-import { listActivitySchema } from "@/lib/activity";
+import { ACTIVITY_ACTOR_TYPES, listActivitySchema } from "@/lib/activity";
 import { trpcToolContextSchema } from "./context";
 
 export const listActivityTool = tool({
@@ -21,7 +21,11 @@ export const listActivityTool = tool({
           entity_id: log.entity_id,
           event: log.event,
           description: log.description,
-          actor_id: log.actor_id,
+          actor:
+            log.actor.type === ACTIVITY_ACTOR_TYPES.Agent
+              ? { type: ACTIVITY_ACTOR_TYPES.Agent, name: log.actor.name }
+              : { type: ACTIVITY_ACTOR_TYPES.User, name: log.actor.name },
+          coauthors: log.coauthors.map((coauthor) => coauthor.name),
           created_at: log.created_at,
         })),
       };

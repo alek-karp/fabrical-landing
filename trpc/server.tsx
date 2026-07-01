@@ -1,11 +1,7 @@
 import "server-only";
 
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import {
-  createTRPCOptionsProxy,
-  type DefaultFeatureFlags,
-  type TRPCQueryOptions,
-} from "@trpc/tanstack-react-query";
+import { createTRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import { cache } from "react";
 
 import { createTRPCContext } from "./init";
@@ -32,21 +28,22 @@ export const HydrateClient = (props: { children: React.ReactNode }) => {
   );
 };
 
-type AnyQueryOptions = ReturnType<
-  TRPCQueryOptions<{
-    input: unknown;
-    output: unknown;
-    transformer: false;
-    errorShape: unknown;
-    featureFlags: DefaultFeatureFlags;
-  }>
->;
+// Just enough shape to branch on regular vs. infinite queries; the concrete
+// TRPCQueryOptions return type doesn't stay assignable to a shared generic
+// constraint across different procedures' input/output types, so we only
+// require what this function actually inspects and hand the rest to
+// react-query's own (already well-typed) prefetch overloads.
+type PrefetchableQueryOptions = {
+  queryKey: readonly [readonly string[], { type?: string }?];
+};
 
-export const prefetch = <T extends AnyQueryOptions>(queryOptions: T) => {
+export const prefetch = <T extends PrefetchableQueryOptions>(
+  queryOptions: T,
+) => {
   const queryClient = getQueryClient();
   if (queryOptions.queryKey[1]?.type === "infinite") {
     void queryClient.prefetchInfiniteQuery(queryOptions as never);
   } else {
-    void queryClient.prefetchQuery(queryOptions);
+    void queryClient.prefetchQuery(queryOptions as never);
   }
 };

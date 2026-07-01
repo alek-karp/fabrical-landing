@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { AppShell } from "@/components/app-shell";
 import { projects } from "@/lib/projects";
-import { caller } from "@/trpc/server";
+import { caller, HydrateClient, prefetch, trpc } from "@/trpc/server";
 
 import { ProjectDetail } from "./_components/project-detail";
 
@@ -41,9 +41,13 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     notFound();
   }
 
+  prefetch(trpc.activity.list.queryOptions({ project_id: slug }));
+
   return (
     <AppShell title={project.name}>
-      <ProjectDetail project={project} />
+      <HydrateClient>
+        <ProjectDetail project={project} />
+      </HydrateClient>
     </AppShell>
   );
 }

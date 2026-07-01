@@ -37,6 +37,8 @@ export const logActivitySchema = z.object({
   entity_id: z.string(),
   event: activityEventSchema,
   description: z.string().optional(),
+  /** True when the agent performed this change on the signed-in user's behalf. */
+  via_agent: z.boolean().optional(),
 });
 
 export const listActivitySchema = z.object({

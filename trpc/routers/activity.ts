@@ -1,4 +1,5 @@
 import {
+  ACTIVITY_ACTOR_TYPES,
   getActivityLogs,
   listActivitySchema,
   logActivity,
@@ -20,7 +21,23 @@ export const activityRouter = createTRPCRouter({
 
   log: protectedProcedure
     .input(logActivitySchema)
-    .mutation(({ ctx, input }) =>
-      logActivity(ctx.supabase, ctx.user.id, input),
-    ),
+    .mutation(({ ctx, input }) => {
+      const { via_agent, ...event } = input;
+
+      if (via_agent) {
+        return logActivity(
+          ctx.supabase,
+          { type: ACTIVITY_ACTOR_TYPES.Agent },
+          [{ type: ACTIVITY_ACTOR_TYPES.User, id: ctx.user.id }],
+          event,
+        );
+      }
+
+      return logActivity(
+        ctx.supabase,
+        { type: ACTIVITY_ACTOR_TYPES.User, id: ctx.user.id },
+        [],
+        event,
+      );
+    }),
 });

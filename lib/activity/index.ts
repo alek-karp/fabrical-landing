@@ -1,6 +1,16 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-import type { ActivityLog, LogActivity } from "./types";
+import { getProfilesByIds } from "@/lib/profiles";
+
+import {
+  ACTIVITY_ACTOR_TYPES,
+  type ActivityActor,
+  type ActivityCoauthorRow,
+  type ActivityLog,
+  type ActivityLogRow,
+  type ActivityPerson,
+  type LogActivity,
+} from "./types";
 
 export {
   activityEventSchema,
@@ -8,18 +18,32 @@ export {
   logActivitySchema,
 } from "./schema";
 export type {
+  ActivityActor,
+  ActivityActorType,
   ActivityEntityType,
   ActivityEvent,
   ActivityLog,
+  ActivityPerson,
   LogActivity,
 } from "./types";
-export { ACTIVITY_ENTITY_TYPE_VALUES, ACTIVITY_ENTITY_TYPES } from "./types";
+export {
+  ACTIVITY_ACTOR_TYPES,
+  ACTIVITY_ENTITY_TYPE_VALUES,
+  ACTIVITY_ENTITY_TYPES,
+} from "./types";
+
+export const AGENT_ACTOR_NAME = "Fabrical Agent";
+
+export type ActivityActorInput =
+  | { type: typeof ACTIVITY_ACTOR_TYPES.User; id: string }
+  | { type: typeof ACTIVITY_ACTOR_TYPES.Agent };
 
 export const logActivity = async (
   supabase: SupabaseClient,
-  actorId: string,
+  actor: ActivityActorInput,
+  coauthors: ActivityCoauthorRow[],
   input: LogActivity,
-): Promise<ActivityLog> => {
+): Promise<ActivityLogRow> => {
   const { data, error } = await supabase
     .from("activity_logs")
     .insert({
@@ -28,7 +52,9 @@ export const logActivity = async (
       entity_id: input.entity_id,
       event: input.event,
       description: input.description ?? null,
-      actor_id: actorId,
+      actor_type: actor.type,
+      actor_id: actor.type === ACTIVITY_ACTOR_TYPES.User ? actor.id : null,
+      coauthors,
     })
     .select()
     .single();
@@ -37,8 +63,25 @@ export const logActivity = async (
     throw new Error(error.message);
   }
 
-  return data as ActivityLog;
+  return data as ActivityLogRow;
 };
+
+type ActivityProfile = {
+  full_name: string | null;
+  avatar_url: string | null;
+  email: string | null;
+};
+
+const toPerson = (
+  id: string,
+  profile: ActivityProfile | undefined,
+): ActivityPerson => ({
+  type: ACTIVITY_ACTOR_TYPES.User,
+  id,
+  name:
+    profile?.full_name ?? profile?.email?.split("@")[0] ?? "Unknown teammate",
+  avatarUrl: profile?.avatar_url ?? null,
+});
 
 export const getActivityLogs = async (
   supabase: SupabaseClient,
@@ -79,5 +122,42 @@ export const getActivityLogs = async (
     throw new Error(error.message);
   }
 
-  return data as ActivityLog[];
+  const rows = data as ActivityLogRow[];
+
+  const userIds = new Set<string>();
+  for (const row of rows) {
+    if (row.actor_type === ACTIVITY_ACTOR_TYPES.User && row.actor_id) {
+      userIds.add(row.actor_id);
+    }
+    for (const coauthor of row.coauthors) {
+      userIds.add(coauthor.id);
+    }
+  }
+
+  const profiles = await getProfilesByIds(supabase, [...userIds]);
+  const profileById = new Map(profiles.map((profile) => [profile.id, profile]));
+
+  return rows.map((row) => {
+    const actor: ActivityActor =
+      row.actor_type === ACTIVITY_ACTOR_TYPES.Agent
+        ? { type: ACTIVITY_ACTOR_TYPES.Agent, name: AGENT_ACTOR_NAME }
+        : toPerson(
+            row.actor_id as string,
+            profileById.get(row.actor_id as string),
+          );
+
+    return {
+      id: row.id,
+      project_id: row.project_id,
+      entity_type: row.entity_type,
+      entity_id: row.entity_id,
+      event: row.event,
+      description: row.description,
+      actor,
+      coauthors: row.coauthors.map((coauthor) =>
+        toPerson(coauthor.id, profileById.get(coauthor.id)),
+      ),
+      created_at: row.created_at,
+    };
+  });
 };

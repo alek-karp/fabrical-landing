@@ -30,14 +30,19 @@ export const ProjectStageControl = ({ project }: ProjectStageControlProps) => {
     setPhase(nextPhase);
 
     startTransition(async () => {
-      const result = await updateProjectStage(project.slug, nextPhase, {
-        name: project.name,
-        location: project.location,
-        sector: project.sector,
-        deadline: project.deadline,
-        summary: project.summary,
-        description: project.description,
-      });
+      const result = await updateProjectStage(
+        project.slug,
+        previousPhase,
+        nextPhase,
+        {
+          name: project.name,
+          location: project.location,
+          sector: project.sector,
+          deadline: project.deadline,
+          summary: project.summary,
+          description: project.description,
+        },
+      );
 
       if (result.message) {
         setPhase(previousPhase);

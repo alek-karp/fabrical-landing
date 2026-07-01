@@ -31,6 +31,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { routes } from "@/lib/routes";
+import { getInitials } from "@/lib/utils";
 import { createClient } from "@/utils/supabase/client";
 
 type NavUserData = {
@@ -56,13 +57,6 @@ const getNextTheme = (value: string | undefined): ThemeMode => {
   const currentIndex = themeModes.indexOf(current);
   return themeModes[(currentIndex + 1) % themeModes.length];
 };
-
-function getInitials(value: string) {
-  const parts = value.trim().split(/\s+/).filter(Boolean);
-  if (parts.length === 0) return "?";
-  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-  return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
-}
 
 export function NavUser() {
   const { isMobile } = useSidebar();
