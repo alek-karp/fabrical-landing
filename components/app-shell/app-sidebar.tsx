@@ -2,14 +2,12 @@
 
 import { useQuery } from "@tanstack/react-query";
 import {
-  AlertTriangleIcon,
   BotIcon,
-  CalendarDaysIcon,
+  FolderDotIcon,
   FolderKanbanIcon,
   GaugeIcon,
   PackageCheckIcon,
   Settings2Icon,
-  UsersRoundIcon,
 } from "lucide-react";
 import type * as React from "react";
 import { LogoIcon } from "@/components/logo";
@@ -31,19 +29,6 @@ import { routes } from "@/lib/routes";
 import { useTRPC } from "@/trpc/client";
 
 const SIDEBAR_PROJECT_LIMIT = 5;
-
-function getProjectIcon(index: number) {
-  switch (index) {
-    case 0:
-      return <FolderKanbanIcon />;
-    case 1:
-      return <UsersRoundIcon />;
-    case 2:
-      return <AlertTriangleIcon />;
-    default:
-      return <CalendarDaysIcon />;
-  }
-}
 
 const DEFAULT_TEAM_NAME = "Fabrical";
 
@@ -86,10 +71,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   const sidebarProjects = (portfolioProjects ?? [])
     .slice(0, SIDEBAR_PROJECT_LIMIT)
-    .map((project, index) => ({
+    .map((project) => ({
       name: project.name,
       url: routes.projects.detail(project.slug),
-      icon: getProjectIcon(index),
+      icon: <FolderDotIcon />,
       location: project.location,
     }));
 
