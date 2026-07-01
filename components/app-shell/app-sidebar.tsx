@@ -10,9 +10,9 @@ import {
   PackageCheckIcon,
   Settings2Icon,
   UsersRoundIcon,
-  ZapIcon,
 } from "lucide-react";
 import type * as React from "react";
+import { LogoIcon } from "@/components/logo";
 import { NavMain } from "@/components/nav-main";
 import { NavProjects } from "@/components/nav-projects";
 import { NavUser } from "@/components/nav-user";
@@ -102,7 +102,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <TeamSwitcher
           team={{
             name: workspace?.name ?? DEFAULT_TEAM_NAME,
-            logo: <ZapIcon />,
+            logo: <LogoIcon />,
           }}
         />
       </SidebarHeader>
