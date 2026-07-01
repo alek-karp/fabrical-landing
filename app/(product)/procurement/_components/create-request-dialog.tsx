@@ -1,6 +1,7 @@
 "use client";
 
 import { PackageCheckIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
 
@@ -30,12 +31,17 @@ import { ProcurementProjectSelect } from "./procurement-project-select";
 
 type CreateRequestDialogProps = {
   projects: Project[];
+  fixedProject?: Project;
 };
 
-export const CreateRequestDialog = ({ projects }: CreateRequestDialogProps) => {
+export const CreateRequestDialog = ({
+  fixedProject,
+  projects,
+}: CreateRequestDialogProps) => {
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const formRef = useRef<HTMLFormElement>(null);
+  const router = useRouter();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -54,6 +60,7 @@ export const CreateRequestDialog = ({ projects }: CreateRequestDialogProps) => {
 
       formRef.current?.reset();
       setOpen(false);
+      router.refresh();
     });
   };
 
@@ -80,10 +87,25 @@ export const CreateRequestDialog = ({ projects }: CreateRequestDialogProps) => {
           <FieldGroup className="gap-5">
             <Field>
               <FieldLabel htmlFor="request-project">Job</FieldLabel>
-              <ProcurementProjectSelect
-                id="request-project"
-                projects={projects}
-              />
+              {fixedProject ? (
+                <>
+                  <input
+                    name="project_id"
+                    type="hidden"
+                    value={fixedProject.slug}
+                  />
+                  <Input
+                    disabled
+                    id="request-project"
+                    value={fixedProject.name}
+                  />
+                </>
+              ) : (
+                <ProcurementProjectSelect
+                  id="request-project"
+                  projects={projects}
+                />
+              )}
             </Field>
             <div className="grid gap-4 md:grid-cols-2">
               <Field>

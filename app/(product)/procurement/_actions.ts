@@ -73,6 +73,7 @@ export const createProcurementRequestAction = async (
   });
 
   revalidatePath(routes.app.procurement);
+  revalidatePath(routes.projects.detail(request.project_id));
   return { message: "" };
 };
 
@@ -127,6 +128,7 @@ export const updateProcurementStatusAction = async (
   }
 
   revalidatePath(routes.app.procurement);
+  revalidatePath(routes.projects.detail(request.project_id));
   return { message: "" };
 };
 

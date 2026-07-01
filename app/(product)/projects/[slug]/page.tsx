@@ -35,7 +35,10 @@ export async function generateMetadata({
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const { slug } = await params;
-  const project = await caller.projects.bySlug({ slug });
+  const [project, procurementRequests] = await Promise.all([
+    caller.projects.bySlug({ slug }),
+    caller.procurement.list({ project_id: slug }),
+  ]);
 
   if (!project) {
     notFound();
@@ -46,7 +49,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   return (
     <AppShell title={project.name}>
       <HydrateClient>
-        <ProjectDetail project={project} />
+        <ProjectDetail
+          procurementRequests={procurementRequests}
+          project={project}
+        />
       </HydrateClient>
     </AppShell>
   );

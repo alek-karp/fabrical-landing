@@ -6,29 +6,30 @@ import {
   CheckCircle2,
   ClipboardList,
   FileText,
-  PlusIcon,
 } from "lucide-react";
-import Link from "next/link";
 
 import { LocationBadge } from "@/components/location-badge";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import type { ProcurementRequest } from "@/lib/procurement";
 import type { Project } from "@/lib/projects";
 import { formatProjectDeadline, isProjectComplete } from "@/lib/projects";
-import { routes } from "@/lib/routes";
 
 import { completedPhaseBadgeClassName } from "../../_components/project-phase-badge";
 import { ProjectDocumentsTab } from "./project-documents-tab";
+import { ProjectProcurementTab } from "./project-procurement-tab";
 import { ProjectStageControl } from "./project-stage-control";
 import { ProjectTimeline } from "./project-timeline";
 
 type ProjectDetailProps = {
   project: Project;
+  procurementRequests: ProcurementRequest[];
 };
 
 const activeTabs = [
   { value: "overview", label: "Overview" },
+  { value: "procurement", label: "Procurement" },
   { value: "documents", label: "Documents" },
   { value: "timeline", label: "Timeline" },
 ] as const;
@@ -41,7 +42,10 @@ const emptyTabs = [
 
 const tabs = [...activeTabs, ...emptyTabs] as const;
 
-export const ProjectDetail = ({ project }: ProjectDetailProps) => (
+export const ProjectDetail = ({
+  procurementRequests,
+  project,
+}: ProjectDetailProps) => (
   <>
     <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
       <div className="flex flex-wrap items-center gap-3">
@@ -86,12 +90,6 @@ export const ProjectDetail = ({ project }: ProjectDetailProps) => (
           <Button variant="outline">
             <FileText data-icon="inline-start" />
             Export
-          </Button>
-          <Button asChild>
-            <Link href={routes.projects.new}>
-              <PlusIcon data-icon="inline-start" />
-              Add Project
-            </Link>
           </Button>
         </div>
       </div>
@@ -215,6 +213,13 @@ export const ProjectDetail = ({ project }: ProjectDetailProps) => (
 
       <TabsContent value="documents">
         <ProjectDocumentsTab documents={project.documents} />
+      </TabsContent>
+
+      <TabsContent value="procurement">
+        <ProjectProcurementTab
+          project={project}
+          requests={procurementRequests}
+        />
       </TabsContent>
 
       <TabsContent value="timeline">
