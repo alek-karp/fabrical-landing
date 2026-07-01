@@ -30,6 +30,8 @@ Example: `feat(landing): add hero section`
 
 Do not create a new branch unless explicitly asked.
 
+When asked to commit or stage changes, only commit or stage files modified in the current session, not all outstanding changes in the working tree, unless explicitly told otherwise.
+
 # Comments
 
 Do not add unnecessary comments, including sectional comments. Only keep comments that clarify non-obvious intent or constraints.
