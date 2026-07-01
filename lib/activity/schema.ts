@@ -43,5 +43,7 @@ export const listActivitySchema = z.object({
   project_id: z.string(),
   entity_type: z.enum(ACTIVITY_ENTITY_TYPE_VALUES).optional(),
   entity_id: z.string().optional(),
+  from: z.string().datetime({ offset: true }).optional(),
+  to: z.string().datetime({ offset: true }).optional(),
   limit: z.number().min(1).max(100).default(50),
 });

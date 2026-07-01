@@ -12,6 +12,8 @@ export const activityRouter = createTRPCRouter({
       project_id: input.project_id,
       entity_type: input.entity_type,
       entity_id: input.entity_id,
+      from: input.from,
+      to: input.to,
       limit: input.limit,
     }),
   ),

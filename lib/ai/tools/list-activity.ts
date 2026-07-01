@@ -6,7 +6,7 @@ import { trpcToolContextSchema } from "./context";
 
 export const listActivityTool = tool({
   description:
-    "List business activity logs for a project. Shows what changed, when, who changed it, and any added context. Use to answer questions like 'what happened to project X', 'why was procurement blocked', or 'what phase changes occurred this week'.",
+    "List business activity logs for a project. Shows what changed, when, who changed it, and any added context. Supports date filtering via 'from' and 'to' ISO timestamps. Use to answer questions like 'what happened today', 'summarize last week', 'why was procurement blocked', or 'what phase changes occurred this month'.",
   inputSchema: listActivitySchema,
   contextSchema: trpcToolContextSchema,
   execute: async (input, { context }) => {

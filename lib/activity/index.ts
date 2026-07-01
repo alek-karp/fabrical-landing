@@ -46,6 +46,8 @@ export const getActivityLogs = async (
     project_id: string;
     entity_type?: string;
     entity_id?: string;
+    from?: string;
+    to?: string;
     limit?: number;
   },
 ): Promise<ActivityLog[]> => {
@@ -61,6 +63,14 @@ export const getActivityLogs = async (
 
   if (options.entity_id) {
     query = query.eq("entity_id", options.entity_id);
+  }
+
+  if (options.from) {
+    query = query.gte("created_at", options.from);
+  }
+
+  if (options.to) {
+    query = query.lte("created_at", options.to);
   }
 
   const { data, error } = await query.limit(options.limit ?? 50);

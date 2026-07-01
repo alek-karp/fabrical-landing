@@ -48,3 +48,91 @@ set
   deadline = excluded.deadline,
   summary = excluded.summary,
   description = excluded.description;
+
+do $$
+declare
+  actor uuid := (select id from auth.users limit 1);
+begin
+  if actor is null then
+    return;
+  end if;
+
+  insert into public.activity_logs (project_id, entity_type, entity_id, event, description, actor_id, created_at) values
+    (
+      'cascade-data-hall', 'project', 'cascade-data-hall',
+      '{"type":"project.created","name":"Cascade Data Hall"}',
+      'Project created',
+      actor,
+      now() - interval '14 days'
+    ),
+    (
+      'cascade-data-hall', 'project', 'cascade-data-hall',
+      '{"type":"project.phase_changed","from":"Permitting","to":"Electrical rough-in"}',
+      'Phase advanced after permit approval',
+      actor,
+      now() - interval '7 days'
+    ),
+    (
+      'cascade-data-hall', 'procurement', 'a1b2c3d4-0001-0001-0001-000000000001',
+      '{"type":"procurement.blocked","reason":"Switchgear lead time extended by vendor"}',
+      null,
+      actor,
+      now() - interval '3 days'
+    ),
+    (
+      'cascade-data-hall', 'transaction', 'b1b2c3d4-0001-0001-0001-000000000002',
+      '{"type":"transaction.flagged","amount":142500,"reason":"Amount exceeds approved PO by 18%"}',
+      null,
+      actor,
+      now() - interval '1 day'
+    ),
+    (
+      'mesa-battery-plant', 'project', 'mesa-battery-plant',
+      '{"type":"project.created","name":"Mesa Battery Plant"}',
+      'Project created',
+      actor,
+      now() - interval '21 days'
+    ),
+    (
+      'mesa-battery-plant', 'project', 'mesa-battery-plant',
+      '{"type":"project.deadline_changed","from":"2026-06-30","to":"2026-07-30"}',
+      'Deadline pushed after equipment delivery slip',
+      actor,
+      now() - interval '10 days'
+    ),
+    (
+      'mesa-battery-plant', 'procurement', 'a1b2c3d4-0002-0002-0002-000000000001',
+      '{"type":"procurement.blocked","reason":"Custom bus duct fabrication behind schedule"}',
+      null,
+      actor,
+      now() - interval '5 days'
+    ),
+    (
+      'mesa-battery-plant', 'procurement', 'a1b2c3d4-0002-0002-0002-000000000002',
+      '{"type":"procurement.unblocked"}',
+      'Fabricator confirmed revised ship date',
+      actor,
+      now() - interval '2 days'
+    ),
+    (
+      'harbor-grid-upgrade', 'project', 'harbor-grid-upgrade',
+      '{"type":"project.created","name":"Harbor Grid Upgrade"}',
+      'Project created',
+      actor,
+      now() - interval '30 days'
+    ),
+    (
+      'harbor-grid-upgrade', 'project', 'harbor-grid-upgrade',
+      '{"type":"project.phase_changed","from":"Design","to":"Commissioning prep"}',
+      'Entered commissioning prep after design freeze',
+      actor,
+      now() - interval '8 days'
+    ),
+    (
+      'harbor-grid-upgrade', 'transaction', 'b1b2c3d4-0003-0003-0003-000000000001',
+      '{"type":"transaction.flagged","amount":87000,"reason":"Vendor invoice received before PO issuance"}',
+      null,
+      actor,
+      now() - interval '4 days'
+    );
+end $$;
