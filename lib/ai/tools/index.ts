@@ -1,7 +1,10 @@
 import type { AiToolCaller } from "./context";
+import { createProcurementOrderTool } from "./create-procurement-order";
 import { createProjectTool } from "./create-project";
 import { getCurrentDateTimeTool } from "./get-current-datetime";
+import { getProcurementOrderTool } from "./get-procurement-order";
 import { listActivityTool } from "./list-activity";
+import { listProcurementOrdersTool } from "./list-procurement-orders";
 import { listProjectsTool } from "./list-projects";
 import { updateProjectTool } from "./update-project";
 
@@ -9,6 +12,9 @@ export const trpcAgentTools = {
   listProjects: listProjectsTool,
   createProject: createProjectTool,
   updateProject: updateProjectTool,
+  listProcurementOrders: listProcurementOrdersTool,
+  createProcurementOrder: createProcurementOrderTool,
+  getProcurementOrder: getProcurementOrderTool,
   listActivity: listActivityTool,
 } as const;
 

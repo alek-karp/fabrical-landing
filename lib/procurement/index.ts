@@ -12,6 +12,7 @@ import type {
 
 export {
   addProcurementNoteSchema,
+  getProcurementRequestSchema,
   listProcurementNotesSchema,
   listProcurementRequestsSchema,
   newProcurementRequestSchema,

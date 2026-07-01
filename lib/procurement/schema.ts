@@ -16,6 +16,10 @@ export const updateProcurementStatusSchema = z.object({
   status: procurementStatusSchema,
 });
 
+export const getProcurementRequestSchema = z.object({
+  id: z.string().min(1),
+});
+
 export const listProcurementRequestsSchema = z.object({
   project_id: z.string().optional(),
 });

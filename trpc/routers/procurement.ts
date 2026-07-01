@@ -2,6 +2,8 @@ import {
   addProcurementNote,
   addProcurementNoteSchema,
   createProcurementRequest,
+  getProcurementRequest,
+  getProcurementRequestSchema,
   listProcurementNotes,
   listProcurementNotesSchema,
   listProcurementRequests,
@@ -18,6 +20,9 @@ export const procurementRouter = createTRPCRouter({
     .query(({ ctx, input }) =>
       listProcurementRequests(ctx.supabase, input.project_id),
     ),
+  byId: protectedProcedure
+    .input(getProcurementRequestSchema)
+    .query(({ ctx, input }) => getProcurementRequest(ctx.supabase, input.id)),
   create: protectedProcedure
     .input(newProcurementRequestSchema)
     .mutation(({ ctx, input }) =>
