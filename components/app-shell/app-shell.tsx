@@ -10,12 +10,7 @@ type AppShellProps = {
   bare?: boolean;
 };
 
-export const AppShell = ({
-  title,
-  children,
-  className,
-  bare,
-}: AppShellProps) => (
+export const AppShell = ({ children, className, bare }: AppShellProps) => (
   <SidebarProvider>
     <AppSidebar />
     <SidebarInset
@@ -24,7 +19,7 @@ export const AppShell = ({
         bare ? "flex min-h-svh flex-col" : "min-h-svh",
       )}
     >
-      <AppHeader title={title} />
+      <AppHeader />
       {bare ? (
         children
       ) : (
